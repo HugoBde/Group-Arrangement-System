@@ -1,0 +1,19 @@
+{
+  "name": "sds-foo",
+  "version": "1.0.0",
+  "description": "playground for sds",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --outDir source-js",
+    "start": "node source-js",
+    "dev"  : "npm run build && npm run start",
+    "clean": "rm source-js/**/*",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.6.3",
+    "typescript": "^4.7.4"
+  }
+}
