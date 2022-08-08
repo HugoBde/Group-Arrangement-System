@@ -10,7 +10,7 @@ Name | Github Profile | Role
 Huynh Phuong Anh Nguyen | @ | Front end/ Back end developer
 Fahad Khan | @ | Front end developer
 Sarah Sindone | @ |Scrum Master / Front end developer
-Jack Tollefsen | @ | Back end developer
+Jack Tollefsen | @jackUTS | Back end developer
 Hugo Bouderlique | @HugoBde | Back end Developer
 Srujan Kaukuntla | @srujankarthik | Front end/ Back end developer
 Brendon Mai | @brendonmai | Business analyst
