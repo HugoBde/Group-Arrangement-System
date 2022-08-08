@@ -7,7 +7,7 @@ PROJECT: TO BE DEFINED
 ## Contributors
 Name | Github Profile | Role
 -----|----------------|------
-Huynh Phuong Anh Nguyen | @ | Front end/ Back end developer
+Huynh Phuong Anh Nguyen | @SnowGuun | Front end/ Back end developer
 Fahad Khan | @ | Front end developer
 Sarah Sindone | @ |Scrum Master / Front end developer
 Jack Tollefsen | @ | Back end developer
