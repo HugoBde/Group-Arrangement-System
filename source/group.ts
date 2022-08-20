@@ -1,4 +1,4 @@
-import {Student} from "./student"
+import Student = require("./student");
 
 export class Group {
     students: Student[] = [];

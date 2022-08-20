@@ -7,7 +7,7 @@ import mongodb = require("mongodb");
 //       username and passwords would be exposed. An alternative
 //       would be to save the URI as an environment variable
 //       which can be stored in a file that is not tracked by Git
-const db_client = new mongodb.MongoClient("mongodb+srv://gas-admin:tXJg2afFSC5GkauF@gas-cluster.smm5ykq.mongodb.net/?retryWrites=true&w=majority");
+const db_client : mongodb.MongoClient  = new mongodb.MongoClient("mongodb+srv://gas-admin:tXJg2afFSC5GkauF@gas-cluster.smm5ykq.mongodb.net/?retryWrites=true&w=majority");
 
 // Export client for use by our app
 export = db_client;

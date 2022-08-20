@@ -1,11 +1,11 @@
 import e from "express";
 import * as Utils from "./utils";
 
-export class Student {
+class Student {
     // Personal details 
-    id  : number;
-    first_name: string;
-    last_name:  string;
+    id:            number;
+    first_name:    string;
+    last_name:     string;
     email_address: string;
     password:      string;
 
@@ -16,5 +16,6 @@ export class Student {
         this.email_address = email_address ;
         this.password      = password  ;
     }
-
 }
+
+export = Student;
