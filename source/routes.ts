@@ -62,58 +62,42 @@ async function register(req: express.Request, res: express.Response) {
     //const students_db = db_client.db("gas-db").collection<Student>("students");
     console.log("register func");
     
-    bcryptjs.hash(req.body.password, 10, function(err, hash) {
-        var items = {
-            id_num: req.body.id_num,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
-            password: hash
-        }
+    let hash = await bcryptjs.hash(req.body.password, 10);
+
+    let student = {
+        id_num: req.body.id_num,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+        password: hash
+    }
         //conneting to the database
-        MongoClient.connect(url, function(err:any, client:any){
-            assert.equal(null, err); //Used to compare data and throw exceptions
+    let client = await MongoClient.connect(url);
       
-            const db = client.db(databaseName);
-            var documentCount;
-            var limit = 1;
+    const db = client.db(databaseName);
+    var limit = 1;
 
-            //console.log("Database created!");
-            console.log(items);
+    //console.log("Database created!");
+    console.log(student);
       
-            db.collection("students").countDocuments({email: req.body.email}, limit)
-                .then(function(items:any) {
-                  console.log(items); // comment this out
-                  documentCount = items;
+    var documentCount = await db.collection("students").countDocuments({email: req.body.email}, limit)
       
-                  //checks if the email already exists
-                  if( documentCount == 0 ){
-                    //Mongodb's Insert function
-                    db.collection('students').insertOne(items, function(err:any, result:any){
-                      assert.equal(null, err);
-                      
-                      client.close(); //close database
+    //checks if the email already exists
+    if( documentCount == 0 ){
+        //Mongodb's Insert function
+        let result = await db.collection('students').insertOne(student);
+        
+        if (result) {
+            console.log("User added to the database!");
+            res.redirect("/login");
+        } else {
+            console.log("error");
+            res.redirect("/register");
+        }
+        client.close()      
 
-                      console.log("User added to database!");
-      
-                      res.redirect('/login');
-      
-                    });
-                  }
-                  else{
-                    console.log("there was an error!");
-                    regErrMsg = true;
-                    res.redirect('/register');
-                  }
-      
-                })
-       
-          });
-      
-        });
-
+    }
 }
-
 
 /*Database Functions*/
 /*express.Router.get("get-users", function(req, res, next) {
