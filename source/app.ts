@@ -14,21 +14,19 @@ const port = 8080;
 // Create express app
 const app = express();
 
+app.set("views", path.join(__dirname, "public/views"));
+
 // Enable POST requests parsers
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 // Enable static file serving
+app.use(express.static("public/views", {extensions: ["html"]}));
 app.use("/stylesheets", express.static("public/stylesheets"));
 app.use("/scripts", express.static("public/scripts"));
 
 // Login route
 app.post("/post", routes.login);
-
-// Dummy main page route
-app.get("/", (req: express.Request, res: express.Response) => {
-    res.sendFile(path.join(__dirname, "../public/views/index.html"));
-});
 
 // Start server
 const server = app.listen(port, () => {
