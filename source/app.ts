@@ -57,6 +57,15 @@ app.post("/login", routes.login_form_submit);
 app.get("/dashboard", routes.dashboard_page);
 
 
+// Register route
+app.get('/register', (req, res) => {
+    console.log("register get");
+    res.sendFile(path.join(__dirname, "../public/views/register.html"));
+});
+
+app.post("/register", routes.register_form_submit);
+
+
 // Start server
 const server = app.listen(port, () => {
     console.log(`Server started, listening on port ${port}...`);

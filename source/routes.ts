@@ -91,10 +91,51 @@ function dashboard_page(req: express.Request, res: express.Response) {
 }
 
 
+// Register route
+async function register_form_submit(req: express.Request, res: express.Response) {
+    
+    // Get the students collection
+    console.log("register func");
+    
+    let hash = await bcryptjs.hash(req.body.password, 10);
+
+    let student = {
+        id_num: req.body.id_num,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+        password: hash
+    }
+        //conneting to the database
+    const db = db_client.db("gas-db");
+    var limit = 1;
+
+    //console.log("Database created!");
+    console.log(student);
+      
+    var documentCount = await db.collection("students").countDocuments({email: req.body.email}, {limit: 1})
+      
+    //checks if the email already exists
+    if( documentCount == 0 ){
+        //Mongodb's Insert function
+        let result = await db.collection('students').insertOne(student);
+        
+        if (result) {
+            console.log("User added to the database!");
+            res.redirect("/login");
+        } else {
+            console.log("error");
+            res.redirect("/register");
+        }
+    }
+}
+
+
 // Exported routes
 export = {
     dashboard_page,
     home_page,
     login_page,
     login_form_submit,
+    register_form_submit,
 }
