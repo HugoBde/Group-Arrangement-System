@@ -31,7 +31,7 @@ async function login(req: express.Request, res: express.Response) {
     const valid : boolean = await bcryptjs.compare(req_password, student.password);
 
     // If the password matches, user is logged in
-    // Else return 401: Unauthosized
+    // Else return 401: Unauthorized
     // Do not specify whether the email address or the password was wrong 
     // as this provides useful information for someone trying to hack into a user's account
     if (valid) {

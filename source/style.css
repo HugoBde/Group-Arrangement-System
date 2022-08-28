@@ -1,0 +1,45 @@
+.list-container {
+    width: 330px;
+}
+.groups{
+    float: right;
+}
+.students{
+    float: left;
+}
+p{
+    clear: both;
+    padding-top: 1em;
+}
+.facet-list{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-right: 10px;
+    background: #eee;
+    padding: 5px;
+    width: 143px;
+    min-height: 1.5em;
+    font-size: 0.85em;
+}
+.facet-list li {
+    margin: 5px;
+    padding: 5px;
+    font-size: 1.2em;
+    width: 120px;
+  }
+.facet-list li.placeholder {
+    height: 1.2em
+}
+.facet {
+    border: 1px solid #bbb;
+    background-color: #fafafa;
+    cursor: move;
+}
+.facet.ui-sortable-helper {
+    opacity: 0.5;
+}
+.placeholder {
+    border: 1px solid orange;
+    background-color: #fffffd;
+}
