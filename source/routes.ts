@@ -60,7 +60,8 @@ async function register(req: express.Request, res: express.Response) {
     
     // Get the students collection
     //const students_db = db_client.db("gas-db").collection<Student>("students");
-
+    console.log("register func");
+    
     bcryptjs.hash(req.body.password, 10, function(err, hash) {
         var items = {
             id: req.body.id,
@@ -75,8 +76,11 @@ async function register(req: express.Request, res: express.Response) {
       
             const db = client.db(databaseName);
             var documentCount;
+            var limit = 1;
+
+            console.log("Database created!");
       
-            db.collection("User").countDocuments({ email: req.body.email }, limit=1)
+            db.collection("students").countDocuments({email: req.body.email}, limit)
                 .then(function(items:any) {
                   console.log(items); // comment this out
                   documentCount = items;
@@ -99,7 +103,7 @@ async function register(req: express.Request, res: express.Response) {
                   }
       
                 })
-      
+       
           });
       
         });

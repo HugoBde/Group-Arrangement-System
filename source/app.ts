@@ -24,9 +24,10 @@ app.get("/", (req: express.Request, res: express.Response) => {
 });
 
 // Register route
-/*app.get('/register', (req, res) => {
+app.get('/register', (req, res) => {
+    console.log("register get");
     res.send('GET request to the register page')
-  })*/
+  })
 
 app.post("/register", routes.register);
 
