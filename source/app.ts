@@ -23,6 +23,14 @@ app.get("/", (req: express.Request, res: express.Response) => {
     res.send("Hello World!");
 });
 
+// Register route
+/*app.get('/register', (req, res) => {
+    res.send('GET request to the register page')
+  })*/
+
+app.post("/register", routes.register);
+
+
 // Start server
 const server = app.listen(port, () => {
     console.log(`Server started, listening on port ${port}...`);

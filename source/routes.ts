@@ -5,6 +5,18 @@ import bcryptjs = require("bcryptjs")
 // Local import 
 import db_client = require("./db-client");
 import Student   = require("./student");
+//import { MongoAPIError, MongoClient } from "mongodb";
+//import { assert } from "console";
+
+//My Vars
+var assert = require('assert');
+var url = "mongodb+srv://gas-admin:tXJg2afFSC5GkauF@gas-cluster.smm5ykq.mongodb.net/?retryWrites=true&w=majority";
+
+const MongoClient = require('mongodb').MongoClient;
+const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
+const databaseName = 'gas-db';
+
+
 
 // Login route
 async function login(req: express.Request, res: express.Response) {
@@ -41,5 +53,80 @@ async function login(req: express.Request, res: express.Response) {
     }
 }
 
+var regErrMsg = false;
+
+// Register route
+async function register(req: express.Request, res: express.Response) {
+    
+    // Get the students collection
+    //const students_db = db_client.db("gas-db").collection<Student>("students");
+
+    bcryptjs.hash(req.body.password, 10, function(err, hash) {
+        var items = {
+            id: req.body.id,
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            email: req.body.email,
+            password: hash
+        }
+        //conneting to the database
+        MongoClient.connect(url, function(err:any, client:any){
+            assert.equal(null, err); //Used to compare data and throw exceptions
+      
+            const db = client.db(databaseName);
+            var documentCount;
+      
+            db.collection("User").countDocuments({ email: req.body.email }, limit=1)
+                .then(function(items:any) {
+                  console.log(items); // comment this out
+                  documentCount = items;
+      
+                  //checks if the email already exists
+                  if( documentCount == 0 ){
+                    //Mongodb's Insert function
+                    db.collection('students').insertOne(items, function(err:any, result:any){
+                      assert.equal(null, err);
+                      
+                      client.close(); //close database
+      
+                      res.redirect('/login');
+      
+                    });
+                  }
+                  else{
+                    regErrMsg = true;
+                    res.redirect('/register');
+                  }
+      
+                })
+      
+          });
+      
+        });
+
+}
+
+
+/*Database Functions*/
+/*express.Router.get("get-users", function(req, res, next) {
+    var returnArray = [];
+    MongoClient.connect(url, function(err:any, client:any){
+        assert.equal(null, err); //Used to compare data and throw exceptions
+  
+        const db = client.db(databaseName);
+        var cursor = db.collection('User').find();
+
+        cursor.forEach(function(doc, err) {
+            assert.equal(null, err);
+            returnArray.push(doc); //storing to local array
+          }, function(){
+            client.close(); //closing database
+            res.json(returnArray);
+          });
+    });
+});*/
+
+
 // Exported routes
-export = {login}
+export = {login, register}
+
