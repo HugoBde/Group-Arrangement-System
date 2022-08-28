@@ -12,7 +12,7 @@ Fahad Khan | @ | Front end developer
 Sarah Sindone | @ |Scrum Master / Front end developer
 Jack Tollefsen | @jackUTS | Back end developer
 Hugo Bouderlique | @HugoBde | Back end Developer
-Srujan Kaukuntla | @srujankarthik | Front end/ Back end developer
+Srujan Kaukuntla | @srujankarthik | Front end/ Business Analyst
 Brendon Mai | @brendonmai | Business analyst
 
 ## Help
@@ -31,3 +31,7 @@ You will need to have an SSH key linked to your GitHub account, let me know if y
 Once done, enter the repository's folder and run `npm install` to install the dependencies for the project.
 
 Finally, simply run `npm run dev` to build and run the project. If you haven't made any changes you can simply run `npm run start` to skip the building step.  
+
+To view the `index.html` you can build it using `npm run tailwindBuild which will build you the `style.css` output file which can be found in the stylesheets and can be viewed with [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer). 
+
+To watch the `index.html` you can run it using `npm run tailwindWatch` and view the file using [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
