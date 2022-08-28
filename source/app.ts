@@ -1,3 +1,6 @@
+// Standard library imports
+import path = require("path")
+
 // Third party imports
 import express = require("express");
 
@@ -9,18 +12,22 @@ import routes    = require("./routes");
 const port = 8080;
 
 // Create express app
-const app  = express();
+const app = express();
 
 // Enable POST requests parsers
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+
+// Enable static file serving
+app.use("/stylesheets", express.static("public/stylesheets"));
+app.use("/scripts", express.static("public/scripts"));
 
 // Login route
 app.post("/post", routes.login);
 
 // Dummy main page route
 app.get("/", (req: express.Request, res: express.Response) => {
-    res.send("Hello World!");
+    res.sendFile(path.join(__dirname, "../public/views/index.html"));
 });
 
 // Start server
