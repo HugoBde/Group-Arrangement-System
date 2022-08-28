@@ -5,17 +5,6 @@ import bcryptjs = require("bcryptjs")
 // Local import 
 import db_client = require("./db-client");
 import Student   = require("./student");
-//import { MongoAPIError, MongoClient } from "mongodb";
-//import { assert } from "console";
-
-//My Vars
-var assert = require('assert');
-var url = "mongodb+srv://gas-admin:tXJg2afFSC5GkauF@gas-cluster.smm5ykq.mongodb.net/?retryWrites=true&w=majority";
-
-const MongoClient = require('mongodb').MongoClient;
-const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
-const databaseName = 'gas-db';
-
 
 
 // Login route
@@ -72,15 +61,13 @@ async function register(req: express.Request, res: express.Response) {
         password: hash
     }
         //conneting to the database
-    let client = await MongoClient.connect(url);
-      
-    const db = client.db(databaseName);
+    const db = db_client.db("gas-db");
     var limit = 1;
 
     //console.log("Database created!");
     console.log(student);
       
-    var documentCount = await db.collection("students").countDocuments({email: req.body.email}, limit)
+    var documentCount = await db.collection("students").countDocuments({email: req.body.email}, {limit: 1})
       
     //checks if the email already exists
     if( documentCount == 0 ){
@@ -94,29 +81,8 @@ async function register(req: express.Request, res: express.Response) {
             console.log("error");
             res.redirect("/register");
         }
-        client.close()      
-
     }
 }
-
-/*Database Functions*/
-/*express.Router.get("get-users", function(req, res, next) {
-    var returnArray = [];
-    MongoClient.connect(url, function(err:any, client:any){
-        assert.equal(null, err); //Used to compare data and throw exceptions
-  
-        const db = client.db(databaseName);
-        var cursor = db.collection('User').find();
-
-        cursor.forEach(function(doc, err) {
-            assert.equal(null, err);
-            returnArray.push(doc); //storing to local array
-          }, function(){
-            client.close(); //closing database
-            res.json(returnArray);
-          });
-    });
-});*/
 
 
 // Exported routes
