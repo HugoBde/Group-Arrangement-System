@@ -64,7 +64,7 @@ async function register(req: express.Request, res: express.Response) {
     
     bcryptjs.hash(req.body.password, 10, function(err, hash) {
         var items = {
-            id: req.body.id,
+            id_num: req.body.id_num,
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             email: req.body.email,
@@ -78,7 +78,8 @@ async function register(req: express.Request, res: express.Response) {
             var documentCount;
             var limit = 1;
 
-            console.log("Database created!");
+            //console.log("Database created!");
+            console.log(items);
       
             db.collection("students").countDocuments({email: req.body.email}, limit)
                 .then(function(items:any) {
@@ -92,12 +93,15 @@ async function register(req: express.Request, res: express.Response) {
                       assert.equal(null, err);
                       
                       client.close(); //close database
+
+                      console.log("User added to database!");
       
                       res.redirect('/login');
       
                     });
                   }
                   else{
+                    console.log("there was an error!");
                     regErrMsg = true;
                     res.redirect('/register');
                   }

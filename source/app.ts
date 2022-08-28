@@ -33,8 +33,8 @@ app.get("/", (req: express.Request, res: express.Response) => {
 // Register route
 app.get('/register', (req, res) => {
     console.log("register get");
-    res.send('GET request to the register page')
-  })
+    res.sendFile(path.join(__dirname, "../public/views/register.html"));
+});
 
 app.post("/register", routes.register);
 
