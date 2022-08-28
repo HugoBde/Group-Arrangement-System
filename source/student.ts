@@ -1,6 +1,3 @@
-import e from "express";
-import * as Utils from "./utils";
-
 class Student {
     // Personal details 
     id:            number;
