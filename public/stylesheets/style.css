@@ -1251,3 +1251,21 @@ video {
     margin-bottom: 0px;
   }
 }
+
+.dash-h1{
+  color: darkblue;
+   position: absolute;
+  top: 8px;
+  left: 16px;
+  font-size: 40px;
+}
+
+.dash-pfp{
+  float: right;
+  width: 60px;
+  height: 40px;
+  border-radius: 9999px;
+  position: absolute;
+  top: 14px;
+  right: 16px;
+}
