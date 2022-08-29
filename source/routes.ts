@@ -95,7 +95,7 @@ function dashboard_page(req: express.Request, res: express.Response) {
 async function register_form_submit(req: express.Request, res: express.Response) {
     
     // Get the students collection
-    console.log("register func");
+    //console.log("register func");
     
     let hash = await bcryptjs.hash(req.body.password, 10);
 
