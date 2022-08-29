@@ -95,18 +95,13 @@ function dashboard_page(req: express.Request, res: express.Response) {
 async function register_form_submit(req: express.Request, res: express.Response) {
     
     // Get the students collection
-    console.log("register func");
+    //console.log("register func");
     
     let hash = await bcryptjs.hash(req.body.password, 10);
 
-    let student = {
-        id_num: req.body.id_num,
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        email: req.body.email,
-        password: hash
-    }
-        //conneting to the database
+    let student = new Student(req.body.id_num, req.body.first_name, req.body.last_name, req.body.email, hash);
+
+    //conneting to the database
     const db = db_client.db("gas-db");
     var limit = 1;
 
