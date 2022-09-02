@@ -1269,3 +1269,80 @@ video {
   top: 14px;
   right: 16px;
 }
+
+.dash-NavBar {
+  background-color: gray;
+  overflow: hidden;
+  top: 70px;
+  position: relative;
+}
+
+.dash-NavBar a {
+  color: darkblue;
+  font-weight: bolder;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 17px;
+  padding: 10px;
+}
+
+.dash-NavBar a:hover {
+  background-color: #ddd;
+  color: red;
+}
+
+.dash-NavBar ul {
+  list-style: none;
+  text-align: center;
+}
+
+.dash-NavBar ul li {
+  display: inline-block;
+  padding-right: 50px;
+}
+
+.yourGroupTable{
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  position: relative;
+  top: 120px;
+  border-spacing: 50px 0;
+  text-align: center;
+  border-collapse: collapse;
+  width: 50%;
+  margin: 25px 0;
+  font-size: 0.9em;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  left: 350px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+}
+
+.theader{
+  background-color: gray;
+  color: darkblue;
+  font-weight: bold;
+  height: 70px;
+}
+
+.yourGroupTable .tbody td{
+  padding: 12px 15px;
+  width: 100%;
+}
+
+.yourGroupTable tr{
+  border-bottom: 1px solid #dddddd;
+}
+
+.yourGroupTable tr:nth-of-type(even){
+  background-color: #f3f3f3;
+}
+
+.yourGroupTable tr:last-of-type{
+  border-bottom: 2px solid gray ;
+}
