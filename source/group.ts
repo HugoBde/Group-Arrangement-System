@@ -63,5 +63,3 @@ async function make_groups(target_group_size: number) {
 }
 
 export = Group;
-
-make_groups(5);
