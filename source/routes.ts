@@ -8,7 +8,7 @@ import bcryptjs = require("bcryptjs")
 
 
 // Local import 
-import db_client = require("./db-client");
+import db        = require("./db-client");
 import log       = require("./log");
 import Student   = require("./student");
 import utils     = require("./utils");
@@ -40,15 +40,13 @@ function login_page(req: express.Request, res: express.Response) {
 
 // Login form submission route
 async function login_form_submit(req: express.Request, res: express.Response) {
-    // Get the students collection
-    const students_db = db_client.db("gas-db").collection<Student>("students");
 
     // Get the email and password provided by the user
     let req_email    = req.body.email_address;
     let req_password = req.body.password;
 
     // Look for student with same email address
-    const student = await students_db.findOne<Student>(
+    const student = await db.students_collection.findOne<Student>(
         {"email_address": req_email}     // Search query
     );
     
@@ -103,19 +101,12 @@ async function register_form_submit(req: express.Request, res: express.Response)
 
     let student = new Student(req.body.id_num, req.body.first_name, req.body.last_name, req.body.email, hash);
 
-    //conneting to the database
-    const db = db_client.db("gas-db");
-    var limit = 1;
-
-    //console.log("Database created!");
-    console.log(student);
-      
-    var documentCount = await db.collection<Student>("students").countDocuments({email: req.body.email}, {limit: 1})
+    var documentCount = await db.students_collection.countDocuments({email: req.body.email}, {limit: 1})
       
     //checks if the email already exists
     if( documentCount == 0 ){
         //Mongodb's Insert function
-        let result = await db.collection('students').insertOne(student);
+        let result = await db.students_collection.insertOne(student);
         
         if (result) {
             log.info(`User successfully added [USER: ${student.email_address}]`);

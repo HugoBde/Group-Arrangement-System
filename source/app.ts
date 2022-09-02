@@ -8,9 +8,8 @@ import session = require("express-session");
 
 
 // Local imports
-import db_client = require("./db-client");
-import routes    = require("./routes");
-import { CompleterResult } from "readline";
+import db     = require("./db-client");
+import routes = require("./routes");
 
 
 // constants
@@ -77,7 +76,7 @@ const server = app.listen(port, () => {
 // TODO: ensure all pending requests are handled before shutting down
 function shutdown() {
     console.log("\nSIGTERM received, shutting down...");
-    db_client.close();
+    db.db_client.close();
     server.close(() => {
         console.log("=== Server closed ===");
     });
