@@ -9,6 +9,7 @@ import bcryptjs = require("bcryptjs")
 
 // Local import 
 import db_client = require("./db-client");
+import log       = require("./log");
 import Student   = require("./student");
 import utils     = require("./utils");
 
@@ -66,11 +67,13 @@ async function login_form_submit(req: express.Request, res: express.Response) {
 
     // If the password matches, user is logged in
     if (valid) {
+        log.info(`Successful login attempt [USER: ${student.email_address}]`);
         req.session.regenerate(function() {
             req.session.user = student;
             res.redirect("/dashboard");
         });
     } else {
+        log.warning(`Failed login attempt with incorrect password [USER: ${student.email_address}]`);
         res.redirect("/login");
     }
 }
@@ -78,7 +81,6 @@ async function login_form_submit(req: express.Request, res: express.Response) {
 
 // Get dashboard page
 function dashboard_page(req: express.Request, res: express.Response) {
-    console.log(req.session);
     // If no user object is attached to the session, it means 
     // the user is not logged in, so redirect them to the login page
     if (req.session.user === undefined) {
@@ -108,7 +110,7 @@ async function register_form_submit(req: express.Request, res: express.Response)
     //console.log("Database created!");
     console.log(student);
       
-    var documentCount = await db.collection("students").countDocuments({email: req.body.email}, {limit: 1})
+    var documentCount = await db.collection<Student>("students").countDocuments({email: req.body.email}, {limit: 1})
       
     //checks if the email already exists
     if( documentCount == 0 ){
@@ -116,10 +118,10 @@ async function register_form_submit(req: express.Request, res: express.Response)
         let result = await db.collection('students').insertOne(student);
         
         if (result) {
-            console.log("User added to the database!");
+            log.info(`User successfully added [USER: ${student.email_address}]`);
             res.redirect("/login");
         } else {
-            console.log("error");
+            log.error("Failed to create user");
             res.redirect("/register");
         }
     }
@@ -133,4 +135,4 @@ export = {
     login_page,
     login_form_submit,
     register_form_submit,
-}
+};
