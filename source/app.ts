@@ -42,6 +42,7 @@ app.use(express.json());
 app.use("/stylesheets", express.static("public/stylesheets"));
 app.use("/scripts",     express.static("public/scripts"));
 app.use("/icons",       express.static("public/icons"));
+app.use("/assets",      express.static("public/assets"));
 
 
 // ROUTES
