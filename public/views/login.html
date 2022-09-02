@@ -17,7 +17,7 @@
         class="relative flex flex-col m-6 space-y-10 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0"
       >
         <!-- left -->
-        <div class="p-6 md:p-20">
+        <form class="p-6 md:p-20" method="post" action="login">
           <h4 class="mb-5 text-3xl font-bold">Login to your account</h4>
           <p class="max-w-sm mb-12 font-light">
             Welcome back. <br />
@@ -27,11 +27,13 @@
             type="text"
             class="w-full p-6 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
             placeholder="Enter your email address"
+            name="email_address"
           />
           <input
-            type="text"
+            type="password"
             class="w-full mt-6 p-6 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
             placeholder="Enter your password"
+            name="password"
           />
 
           <!-- register here, login btn -->
@@ -52,7 +54,7 @@
             class="flex items-center justify-center mt-6 hover:text-cyan-600"
             >Back to home</a
           >
-        </div>
+        </form>
         <!-- right -->
         <div class="w-[430px] hidden md:flex items-center justify-center">
           <svg
