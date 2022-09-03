@@ -90,6 +90,44 @@ function dashboard_page(req: express.Request, res: express.Response) {
     res.sendFile(utils.get_views_path("dashboard.html"));
 }
 
+// Get group members for a student
+async function get_group_members(req: express.Request, res: express.Response) {
+    // If the session does not hold a user object deny the request
+    if (req.session.user === undefined) {
+        res.sendStatus(403);
+        return;
+    }
+
+    // Get the group id from the student
+    let group_id = req.session.user.group_id;
+
+    // Get the group matching the id from the database
+    let group = await db.groups_collection.findOne({id: group_id});
+
+    // Mandatory error checking
+    if (group == null) {
+        res.sendStatus(500);
+        return;
+    }
+
+    // Find all students whose id is in the array of id of the group
+    let students = await db.students_collection.find({id: {$in: group.students}}).toArray();
+
+    // Create a string array that will contain the name of the students in the group
+    let output : string[] = [];
+
+    // For each student returned by the previous query, add their name to the list
+    for(let student of students) {
+        output.push(`${student.first_name} ${student.last_name}`);
+    }
+
+    // Set the Content-Type header so that the web browser doesnt throw a hissy fit
+    res.set("Content-Type", "application/json");
+
+    // Send the ouput list as json
+    res.json(output);
+}
+
 
 // Register route
 async function register_form_submit(req: express.Request, res: express.Response) {
@@ -126,4 +164,5 @@ export = {
     login_page,
     login_form_submit,
     register_form_submit,
+    get_group_members
 };

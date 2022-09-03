@@ -55,6 +55,7 @@ app.post("/login", routes.login_form_submit);
 
 // Dashboard page
 app.get("/dashboard", routes.dashboard_page);
+app.get("/group_members", routes.get_group_members);
 
 
 // Register route

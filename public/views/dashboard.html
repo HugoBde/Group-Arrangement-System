@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="../stylesheets/style.css"/>
+    <script src="scripts/dashboard-student.js" defer></script>
 </head>
 <body>
     <h1 class="dash-h1">Allocator</h1>
@@ -21,24 +22,16 @@
         </ul>
     </div>
 
-    <Table class="yourGroupTable">
-        <tr class="theader">
-            <th style="width:400px">Your Group</th>
-            <th style="width:300px"> Role</th>
-        </tr>
+    <table class="yourGroupTable">
+        <thead>
+            <tr class="theader">
+                <th style="width:400px">Your Group</th>
+                <th style="width:300px"> Role</th>
+            </tr>
+        </thead>
+        <tbody id="group_table_body">
 
-        <tr class="tbody">
-            <td>Jerry</td>
-            <td>Front-end</td>
-        </tr>
-        <tr class="tbody">
-            <td>Laquisha</td>
-            <td>Front-end</td>
-        </tr>
-        <tr class="tbody">
-            <td>Larry</td>
-            <td>Back-end</td>
-        </tr>
-    </Table>
+        </tbody>
+    </table>
 </body>
 </html>
