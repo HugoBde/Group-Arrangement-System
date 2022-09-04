@@ -13,6 +13,7 @@ import log       = require("./log");
 import Student   = require("./student");
 import utils     = require("./utils");
 
+import Class = require("./class");
 
 // Home page
 function home_page(req: express.Request, res: express.Response) {
@@ -88,7 +89,7 @@ function dashboard_page(req: express.Request, res: express.Response) {
 
     // Otherwise, just display the dashboard
     res.sendFile(utils.get_views_path("dashboard.html"));
-}
+} 
 
 // Get group members for a student
 async function get_group_members(req: express.Request, res: express.Response) {
@@ -110,45 +111,50 @@ async function get_group_members(req: express.Request, res: express.Response) {
         return;
     }
 
-    // Find all students whose id is in the array of id of the group
-    let students = await db.students_collection.find({id: {$in: group.students}}).toArray();
-
-    // Create a string array that will contain the name of the students in the group
-    let output : string[] = [];
-
-    // For each student returned by the previous query, add their name to the list
-    for(let student of students) {
-        output.push(`${student.first_name} ${student.last_name}`);
-    }
-
-    // Set the Content-Type header so that the web browser doesnt throw a hissy fit
-    res.set("Content-Type", "application/json");
-
-    // Send the ouput list as json
-    res.json(output);
+          
 }
 
-// Get all student users
-async function get_all_users(req: express.Request, res: express.Response){
+// Get all student users that are not allocated a group
+async function get_all_not_grouped(req: express.Request, res: express.Response){
     
     // If the session does not hold a user object deny the request
     if (req.session.user === undefined) {
         res.sendStatus(403);
         return;
     }
-
     // Get the group id from the student
-    let group_id = req.session.user.group_id;
+    //let group_id = req.session.user.group_id;
 
-    // Get the group matching the id from the database
-    let group = await db.groups_collection.findOne({id: group_id});
+    // Get the group matching the -1 id from the database which means they are not grouped yet
+    let group = await db.groups_collection.findOne({id: -1});
 
     // Mandatory error checking
     if (group == null) {
         res.sendStatus(500);
         return;
     }
+} 
 
+//insert a class (subject) into class collection
+async function insert_class(req: express.Request, res: express.Response) {
+    console.log("creating a new class...");
+
+    let subject = new Class(req.body.name, req.body.subject);
+    
+    var documentCount = await db.groups_collection.countDocuments({name: req.body.subject}, {limit: 1})
+
+    //check if class already exists
+    if(documentCount == 0){
+        let result = await db.class_collection.insertOne(subject);
+        
+        if (result) {
+            log.info(`Class successfully added [CLASS: ${subject.subject}]`);
+            res.redirect("/dashboard");
+        } else {
+            log.error("Failed to add class");
+            res.redirect("/dashboard");
+        }
+    }
 }
 
 // Register route

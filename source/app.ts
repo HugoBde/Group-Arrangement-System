@@ -61,6 +61,7 @@ app.get("/group_members", routes.get_group_members);
 app.get("/preference", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/views/preference.html"));
 });
+//app.get("/")
 
 // Register route
 app.get('/register', (req, res) => {
