@@ -1,78 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../stylesheets/style.css" />
-    <link rel="icon" type="image/x-icon" href="/icons/favicon.ico" />
-    <script src="../scripts/login.js"></script>
-    <title>Register</title>
-  </head>
-  <body class="bg-bgcharcoal text-bgcharcoal1">
-    <body class="bg-bgcharcoal text-bgcharcoal1">
-    <!-- register container -->
-    <div class="flex items-center justify-center min-h-screen">
-      <!-- card container -->
 
-      <div
-        class="relative flex flex-col m-6 space-y-10 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0"
-      >
-        <!-- left -->
-        <div class="p-6 md:p-20">
-          <h4 class="mb-5 text-3xl font-bold">Login to your account</h4>
-          <p class="max-w-sm mb-12 font-light">
-            Hi there, <br />
-            A few more steps and you're ready.
-          </p>
-          <input
-            type="text"
-            class="w-full mb-6 p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300 md:w-3/4"
-            placeholder="Enter your University Student ID"
-          />
-          <input
-            type="text"
-            class="w-full mb-6 p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300 md:w-3/4"
-            placeholder="Enter your First Name"
-          />
-          <input
-            type="text"
-            class="w-full mb-6 p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300 md:w-3/4"
-            placeholder="Enter your Last Name"
-          />
-          <input
-            type="email"
-            class="w-full p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300 md:w-3/4"
-            placeholder="Enter your email address"
-          />
-          <input
-            type="password"
-            class="w-full mt-6 p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300 md:w-3/4"
-            placeholder="Enter your password"
-          />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../stylesheets/style.css" />
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico" />
+  <script src="../scripts/login.js"></script>
+  <title>Register</title>
+</head>
 
-          <!-- register here, login btn -->
-          <div
-            class="w-full flex flex-col items-center justify-between mt-8 space-y-6 md:flex-row md:space-y-0 md:w-3/4"
-          >
-            <a href="#" class="text-cyan-700">Already a user? <b>Login here</b></a>
-            <button
-              class="w-1/4 md:width-auto flex justify-center items-center p-2.5 space-x-4 font-bold rounded-md shadow-xl px-9 bg-pink-400 hover:bg-opacity-80 hover:shadow-2xl transition duration-500"
-              type="submit"
-              >
-              Register
-            </button>
-          </div>
-          <!-- border to seperate -->
-          <div class="w-full mt-8 border-b border-b-gray-300 md:w-3/4"></div>
-          <a
-            href="/"
-            class="w-full flex items-center justify-center mt-6 hover:text-cyan-600 md:w-3/4"
-            >Back to home</a
-          >
+<body class="bg-bgcharcoal text-bgcharcoal1">
+  <!-- register container -->
+  <div class="flex items-center justify-center min-h-screen">
+    <!-- card container -->
+
+    <div class="flex flex-col m-6 space-y-10 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0 md:w-2/3">
+      <!-- left -->
+      <div class="p-6 md:p-20">
+        <h4 class="mb-5 text-3xl font-bold">Register your account</h4>
+        <p class="max-w-sm mb-12 font-light">
+          Hi there, <br />
+          A few more steps and you're ready.
+        </p>
+        <input type="text"
+          class="w-full mb-6 p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
+          placeholder="Enter your University Student ID" />
+        <input type="text"
+          class="w-full mb-6 p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
+          placeholder="Enter your First Name" />
+        <input type="text"
+          class="w-full mb-6 p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
+          placeholder="Enter your Last Name" />
+        <input type="email"
+          class="w-full p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
+          placeholder="Enter your email address" />
+        <input type="password"
+          class="w-full mt-6 p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
+          placeholder="Enter your password" />
+
+        <!-- register here, login btn -->
+        <div class="w-full flex flex-col items-center justify-between mt-8 space-y-6 md:flex-row md:space-y-0">
+          <a href="#" class="text-cyan-700">Already a user? <b>Login here</b></a>
+          <button
+            class="w-1/4 md:width-auto flex justify-center items-center p-2.5 space-x-4 font-bold rounded-md shadow-xl px-9 bg-pink-400 hover:bg-opacity-80 hover:shadow-2xl transition duration-500"
+            type="submit">
+            Register
+          </button>
         </div>
-        <!-- right -->
+        <!-- border to seperate -->
+        <div class="w-full mt-8 border-b border-b-gray-300"></div>
+        <a href="/" class="w-full flex items-center justify-center mt-6 hover:text-cyan-600">Back to home</a>
+      </div>
+      <!-- right -->
+      <div class="w-[430px] hidden md:w-fit md:flex md:rounded-r-2xl"
+        style="background: linear-gradient(to right, #ffafbd, #ffc3a0)">
+        <!-- col 1 -->
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#E24A8A">
+            <circle cx="50" cy="50" r="50"></circle>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#C6DE5A">
+            <path d="M50 50v50H0V50h50zm50-50v50H50V0h50z"></path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#9970D7">
+            <path
+              d="M100 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 31c10.49341 0 19 8.50659 19 19S10.49341 69 0 69s-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0-19c10.49341 0 19 8.50659 19 19S10.49341 19 0 19s-19-8.50659-19-19 8.50659-19 19-19z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#DD6E3B">
+            <path
+              d="M50 0c27.614238 0 50 22.385762 50 50s-22.385762 50-50 50S0 77.614238 0 50 22.385762 0 50 0zm0 24c-14.359403 0-26 11.640597-26 26s11.640597 26 26 26 26-11.640597 26-26-11.640597-26-26-26z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#E24A8A">
+            <circle cx="50" cy="50" r="50"></circle>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#C6DE5A">
+            <path d="M50 50v50H0V50h50zm50-50v50H50V0h50z"></path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#9970D7">
+            <path
+              d="M100 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 31c10.49341 0 19 8.50659 19 19S10.49341 69 0 69s-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0-19c10.49341 0 19 8.50659 19 19S10.49341 19 0 19s-19-8.50659-19-19 8.50659-19 19-19z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#DD6E3B">
+            <path
+              d="M50 0c27.614238 0 50 22.385762 50 50s-22.385762 50-50 50S0 77.614238 0 50 22.385762 0 50 0zm0 24c-14.359403 0-26 11.640597-26 26s11.640597 26 26 26 26-11.640597 26-26-11.640597-26-26-26z">
+            </path>
+          </svg>
+        </div>
+        <!-- col 2 -->
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#DD6E3B">
+            <path
+              d="M50 0c27.614238 0 50 22.385762 50 50s-22.385762 50-50 50S0 77.614238 0 50 22.385762 0 50 0zm0 24c-14.359403 0-26 11.640597-26 26s11.640597 26 26 26 26-11.640597 26-26-11.640597-26-26-26z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#9970D7">
+            <path
+              d="M100 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 31c10.49341 0 19 8.50659 19 19S10.49341 69 0 69s-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0-19c10.49341 0 19 8.50659 19 19S10.49341 19 0 19s-19-8.50659-19-19 8.50659-19 19-19z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#C6DE5A">
+            <path d="M50 50v50H0V50h50zm50-50v50H50V0h50z"></path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#E24A8A">
+            <circle cx="50" cy="50" r="50"></circle>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#DD6E3B">
+            <path
+              d="M50 0c27.614238 0 50 22.385762 50 50s-22.385762 50-50 50S0 77.614238 0 50 22.385762 0 50 0zm0 24c-14.359403 0-26 11.640597-26 26s11.640597 26 26 26 26-11.640597 26-26-11.640597-26-26-26z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#9970D7">
+            <path
+              d="M100 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 31c10.49341 0 19 8.50659 19 19S10.49341 69 0 69s-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0-19c10.49341 0 19 8.50659 19 19S10.49341 19 0 19s-19-8.50659-19-19 8.50659-19 19-19z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#C6DE5A">
+            <path d="M50 50v50H0V50h50zm50-50v50H50V0h50z"></path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#E24A8A">
+            <circle cx="50" cy="50" r="50"></circle>
+          </svg>
+        </div>
+        <!-- col 3 -->
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#E24A8A">
+            <circle cx="50" cy="50" r="50"></circle>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#C6DE5A">
+            <path d="M50 50v50H0V50h50zm50-50v50H50V0h50z"></path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#9970D7">
+            <path
+              d="M100 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 31c10.49341 0 19 8.50659 19 19S10.49341 69 0 69s-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0-19c10.49341 0 19 8.50659 19 19S10.49341 19 0 19s-19-8.50659-19-19 8.50659-19 19-19z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#DD6E3B">
+            <path
+              d="M50 0c27.614238 0 50 22.385762 50 50s-22.385762 50-50 50S0 77.614238 0 50 22.385762 0 50 0zm0 24c-14.359403 0-26 11.640597-26 26s11.640597 26 26 26 26-11.640597 26-26-11.640597-26-26-26z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#E24A8A">
+            <circle cx="50" cy="50" r="50"></circle>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#C6DE5A">
+            <path d="M50 50v50H0V50h50zm50-50v50H50V0h50z"></path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#9970D7">
+            <path
+              d="M100 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 31c10.49341 0 19 8.50659 19 19S10.49341 69 0 69s-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0-19c10.49341 0 19 8.50659 19 19S10.49341 19 0 19s-19-8.50659-19-19 8.50659-19 19-19z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#DD6E3B">
+            <path
+              d="M50 0c27.614238 0 50 22.385762 50 50s-22.385762 50-50 50S0 77.614238 0 50 22.385762 0 50 0zm0 24c-14.359403 0-26 11.640597-26 26s11.640597 26 26 26 26-11.640597 26-26-11.640597-26-26-26z">
+            </path>
+          </svg>
+        </div>
+        <!-- col 4 -->
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#DD6E3B">
+            <path
+              d="M50 0c27.614238 0 50 22.385762 50 50s-22.385762 50-50 50S0 77.614238 0 50 22.385762 0 50 0zm0 24c-14.359403 0-26 11.640597-26 26s11.640597 26 26 26 26-11.640597 26-26-11.640597-26-26-26z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#9970D7">
+            <path
+              d="M100 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 31c10.49341 0 19 8.50659 19 19S10.49341 69 0 69s-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0-19c10.49341 0 19 8.50659 19 19S10.49341 19 0 19s-19-8.50659-19-19 8.50659-19 19-19z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#C6DE5A">
+            <path d="M50 50v50H0V50h50zm50-50v50H50V0h50z"></path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#E24A8A">
+            <circle cx="50" cy="50" r="50"></circle>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#DD6E3B">
+            <path
+              d="M50 0c27.614238 0 50 22.385762 50 50s-22.385762 50-50 50S0 77.614238 0 50 22.385762 0 50 0zm0 24c-14.359403 0-26 11.640597-26 26s11.640597 26 26 26 26-11.640597 26-26-11.640597-26-26-26z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#9970D7">
+            <path
+              d="M100 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 31c10.49341 0 19 8.50659 19 19S10.49341 69 0 69s-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0-19c10.49341 0 19 8.50659 19 19S10.49341 19 0 19s-19-8.50659-19-19 8.50659-19 19-19z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#C6DE5A">
+            <path d="M50 50v50H0V50h50zm50-50v50H50V0h50z"></path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#E24A8A">
+            <circle cx="50" cy="50" r="50"></circle>
+          </svg>
+        </div>
+        <!-- col 5 -->
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#E24A8A">
+            <circle cx="50" cy="50" r="50"></circle>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#C6DE5A">
+            <path d="M50 50v50H0V50h50zm50-50v50H50V0h50z"></path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#9970D7">
+            <path
+              d="M100 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 31c10.49341 0 19 8.50659 19 19S10.49341 69 0 69s-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0-19c10.49341 0 19 8.50659 19 19S10.49341 19 0 19s-19-8.50659-19-19 8.50659-19 19-19z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#DD6E3B">
+            <path
+              d="M50 0c27.614238 0 50 22.385762 50 50s-22.385762 50-50 50S0 77.614238 0 50 22.385762 0 50 0zm0 24c-14.359403 0-26 11.640597-26 26s11.640597 26 26 26 26-11.640597 26-26-11.640597-26-26-26z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#E24A8A">
+            <circle cx="50" cy="50" r="50"></circle>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#C6DE5A">
+            <path d="M50 50v50H0V50h50zm50-50v50H50V0h50z"></path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#9970D7">
+            <path
+              d="M100 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 81c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0 31c10.49341 0 19 8.50659 19 19S10.49341 69 0 69s-19-8.50659-19-19 8.50659-19 19-19zm100-50c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zm-50 0c10.49341 0 19 8.50659 19 19s-8.50659 19-19 19-19-8.50659-19-19 8.50659-19 19-19zM0-19c10.49341 0 19 8.50659 19 19S10.49341 19 0 19s-19-8.50659-19-19 8.50659-19 19-19z">
+            </path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#DD6E3B">
+            <path
+              d="M50 0c27.614238 0 50 22.385762 50 50s-22.385762 50-50 50S0 77.614238 0 50 22.385762 0 50 0zm0 24c-14.359403 0-26 11.640597-26 26s11.640597 26 26 26 26-11.640597 26-26-11.640597-26-26-26z">
+            </path>
+          </svg>
+        </div>
       </div>
     </div>
-  </body>
+</body>
+
 </html>
