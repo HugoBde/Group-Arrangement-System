@@ -57,13 +57,15 @@ app.post("/login", routes.login_form_submit);
 app.get("/dashboard", routes.dashboard_page);
 app.get("/group_members", routes.get_group_members);
 
+// Preferences page
+app.get("/preference", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/views/preference.html"));
+});
 
 // Register route
 app.get('/register', (req, res) => {
-    console.log("register get");
     res.sendFile(path.join(__dirname, "../public/views/register.html"));
 });
-
 app.post("/register", routes.register_form_submit);
 
 

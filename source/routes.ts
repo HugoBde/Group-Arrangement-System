@@ -128,12 +128,34 @@ async function get_group_members(req: express.Request, res: express.Response) {
     res.json(output);
 }
 
+// Get all student users
+async function get_all_users(req: express.Request, res: express.Response){
+    
+    // If the session does not hold a user object deny the request
+    if (req.session.user === undefined) {
+        res.sendStatus(403);
+        return;
+    }
+
+    // Get the group id from the student
+    let group_id = req.session.user.group_id;
+
+    // Get the group matching the id from the database
+    let group = await db.groups_collection.findOne({id: group_id});
+
+    // Mandatory error checking
+    if (group == null) {
+        res.sendStatus(500);
+        return;
+    }
+
+}
 
 // Register route
 async function register_form_submit(req: express.Request, res: express.Response) {
     
     // Get the students collection
-    //console.log("register func");
+    console.log("registering user...");
     
     let hash = await bcryptjs.hash(req.body.password, 10);
 
@@ -155,7 +177,6 @@ async function register_form_submit(req: express.Request, res: express.Response)
         }
     }
 }
-
 
 // Exported routes
 export = {
