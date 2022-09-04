@@ -8,7 +8,7 @@ PROJECT: TO BE DEFINED
 Name | Github Profile | Role
 -----|----------------|------
 Huynh Phuong Anh Nguyen | @SnowGuun | Front end/ Back end developer
-Fahad Khan | @ | Front end developer
+Fahad Khan | @FahadK07 | Back end developer
 Sarah Sindone | @ |Scrum Master / Front end developer
 Jack Tollefsen | @jackUTS | Back end developer
 Hugo Bouderlique | @HugoBde | Back end Developer
