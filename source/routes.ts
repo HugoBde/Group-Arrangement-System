@@ -128,6 +128,11 @@ async function get_group_members(req: express.Request, res: express.Response) {
     res.json(output);
 }
 
+// Logout
+	async function logout(req: express.Request, res: express.Response) {
+        req.session.user = undefined;
+        res.redirect("/");
+}
 
 // Register route
 async function register_form_submit(req: express.Request, res: express.Response) {
@@ -164,5 +169,6 @@ export = {
     login_page,
     login_form_submit,
     register_form_submit,
-    get_group_members
+    get_group_members,
+    logout,
 };

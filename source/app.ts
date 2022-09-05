@@ -57,6 +57,8 @@ app.post("/login", routes.login_form_submit);
 app.get("/dashboard", routes.dashboard_page);
 app.get("/group_members", routes.get_group_members);
 
+// logout route
+app.get('/logout', routes.logout);
 
 // Register route
 app.get('/register', (req, res) => {
