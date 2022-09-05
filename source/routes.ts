@@ -43,6 +43,7 @@ function login_page(req: express.Request, res: express.Response) {
 async function login_form_submit(req: express.Request, res: express.Response) {
     // Get the students collection
     const students_db = db_client.db("gas-db").collection<Student>("students");
+    const teacher_db = db_client.db("gas-db").collection<Student>("teacher");
 
     // Get the email and password provided by the user
     let req_email    = req.body.email_address;
@@ -52,7 +53,11 @@ async function login_form_submit(req: express.Request, res: express.Response) {
     const student = await students_db.findOne<Student>(
         {"email_address": req_email}     // Search query
     );
-    
+    // Look for teacher with same email address
+    const teacher = await teacher_db.findOne<Student>(
+        {"email_address": req_email}     // Search query
+    );
+
     
     // If no match was found, return 401: Unauthorized
     // Do not specify whether the email address or the password was wrong 
@@ -61,16 +66,29 @@ async function login_form_submit(req: express.Request, res: express.Response) {
         res.redirect("/login");
         return;
     }
+    if (teacher === null) {
+        res.redirect("/login");
+        return;
+    }
 
 
     // Compare the stored hash password with the password provided by the user
     const valid : boolean = await bcryptjs.compare(req_password, student.password);
+    const valid2 : boolean = await bcryptjs.compare(req_password, teacher.password);
 
     // If the password matches, user is logged in
     if (valid) {
         req.session.regenerate(function() {
             req.session.user = student;
             res.redirect("/dashboard");
+        });
+    } else {
+        res.redirect("/login");
+    }
+    if (valid2) {
+        req.session.regenerate(function() {
+            req.session.user = teacher;
+            res.redirect("/admin");
         });
     } else {
         res.redirect("/login");
@@ -92,11 +110,27 @@ function dashboard_page(req: express.Request, res: express.Response) {
     res.sendFile(utils.get_views_path("dashboard.html"));
 }
 
+// Get dashboard page
+function teacher_dashboard(req: express.Request, res: express.Response) {
+    console.log(req.session);
+    // If no user object is attached to the session, it means 
+    // the user is not logged in, so redirect them to the login page
+    if (req.session.user === undefined) {
+        res.redirect("/login");
+        return;
+    }
+
+    // Otherwise, just display the dashboard
+    res.sendFile(utils.get_views_path("dashboard.html"));
+}
+
 // Logout
 async function logout(req: express.Request, res: express.Response) {
         req.session.user = undefined;
         res.redirect("/");
 }
+
+
 
 
 // Register route
@@ -142,4 +176,5 @@ export = {
     login_form_submit,
     register_form_submit,
     logout,
+    teacher_dashboard,
 }

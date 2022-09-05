@@ -57,6 +57,9 @@ app.post("/login", routes.login_form_submit);
 // Dashboard page
 app.get("/dashboard", routes.dashboard_page);
 
+//teacher dashboard
+app.get("/teacher", routes.teacher_dashboard);
+
 // logout route
 app.get('/logout', routes.logout);
 
