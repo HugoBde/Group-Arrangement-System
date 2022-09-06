@@ -49,6 +49,8 @@ async function login_form_submit(req: express.Request, res: express.Response) {
     const student = await db.students_collection.findOne<Student>(
         {"email_address": req_email}     // Search query
     );
+
+    
     
     
     // If no match was found, return 401: Unauthorized
