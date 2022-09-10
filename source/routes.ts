@@ -50,9 +50,9 @@ async function login_form_submit(req: express.Request, res: express.Response) {
     const student = await db.students_collection.findOne<Student>(
         {"email_address": req_email}     // Search query
     );
-    const teacher = await db.students_collection.findOne<Teacher>(
-        {"email_address": req_email}     // Search query
-    );
+    // const teacher = await db.students_collection.findOne<Teacher>(
+    //     {"email_address": req_email}     // Search query
+    // );
 
     
     
@@ -64,15 +64,15 @@ async function login_form_submit(req: express.Request, res: express.Response) {
         res.redirect("/login");
         return;
     }
-    if (teacher === null) {
-        res.redirect("/login");
-        return;
-    }
+    // if (teacher === null) {
+    //     res.redirect("/login");
+    //     return;
+    // }
 
 
     // Compare the stored hash password with the password provided by the user
     const valid : boolean = await bcryptjs.compare(req_password, student.password);
-    const valid2 : boolean = await bcryptjs.compare(req_password, teacher.password);
+    // const valid2 : boolean = await bcryptjs.compare(req_password, teacher.password);
 
     // If the password matches, user is logged in
     if (valid) {
@@ -85,16 +85,16 @@ async function login_form_submit(req: express.Request, res: express.Response) {
         log.warning(`Failed login attempt with incorrect password [USER: ${student.email_address}]`);
         res.redirect("/login");
     }
-    if (valid2) {
-        log.info(`Successful login attempt [USER: ${teacher.email_address}]`);
-        req.session.regenerate(function() {
-            req.session.user = teacher;
-            res.redirect("/dashboard");
-        });
-    } else {
-        log.warning(`Failed login attempt with incorrect password [USER: ${teacher.email_address}]`);
-        res.redirect("/login");
-    }
+    // if (valid2) {
+    //     log.info(`Successful login attempt [USER: ${teacher.email_address}]`);
+    //     req.session.regenerate(function() {
+    //         req.session.user = teacher;
+    //         res.redirect("/dashboard");
+    //     });
+    // } else {
+    //     log.warning(`Failed login attempt with incorrect password [USER: ${teacher.email_address}]`);
+    //     res.redirect("/login");
+    // }
 }
 
 
