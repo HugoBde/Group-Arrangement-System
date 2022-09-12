@@ -13,6 +13,7 @@ import log       = require("./log");
 import Student   = require("./student");
 import utils     = require("./utils");
 import Teacher   = require("./teacher");
+import Group     = require("./group");
 
 
 // Home page
@@ -199,6 +200,55 @@ async function register_form_submit(req: express.Request, res: express.Response)
     }
 }
 
+// Create a group
+async function make_groups(req: express.Request, res: express.Response) {
+    try {
+        
+        let class_id          : number = Number.parseInt(req.params.class_id);
+        let target_group_size : number = Number.parseInt(req.params.size);
+        
+        let class_of_students_not_the_keyword_class_leave_me_alone_javascript = await db.class_collection.findOne({id: class_id});
+        
+        if (class_of_students_not_the_keyword_class_leave_me_alone_javascript === null) {
+            log.error("class not found");
+            return;
+        }
+    
+        let students = await db.students_collection.find({class_id: class_of_students_not_the_keyword_class_leave_me_alone_javascript.students}}).toArray();
+
+        let target_group_number = Math.round(students.length / target_group_size);
+    
+        let groups = [];
+    
+        for(let i = 0; i < target_group_number; i++) {
+            groups.push(new Group(i));
+        }
+    
+        for(let i = 0; i < students.length; i++) {
+            groups[i % target_group_number].students.push(students[i].id);
+        }
+    
+        let result = await db.groups_collection.insertMany(groups);
+        
+        if (result.acknowledged) {
+            log.info(`Groups successfully created for class ${class_of_students_not_the_keyword_class_leave_me_alone_javascript.name}`);
+            for(let group of groups) {
+                for(let student_id of group.students) {
+                    await db.students_collection.updateOne({id: student_id}, {$set: {group_id: group.id}});
+                }
+            }
+        } else {
+            log.error(`Failed to add groups for class ${class_of_students_not_the_keyword_class_leave_me_alone_javascript.name}`);
+        }
+
+    } catch (err) {
+        log.error(`Failed building group: ${err}`)
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+
+}
 
 // Exported routes
 export = {
