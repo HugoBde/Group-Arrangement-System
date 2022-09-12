@@ -12,6 +12,7 @@ import db        = require("./db-client");
 import log       = require("./log");
 import Student   = require("./student");
 import utils     = require("./utils");
+import Teacher   = require("./teacher");
 
 
 // Home page
@@ -40,39 +41,61 @@ function login_page(req: express.Request, res: express.Response) {
 
 // Login form submission route
 async function login_form_submit(req: express.Request, res: express.Response) {
-
-    // Get the email and password provided by the user
-    let req_email    = req.body.email_address;
-    let req_password = req.body.password;
-
-    // Look for student with same email address
-    const student = await db.students_collection.findOne<Student>(
-        {"email_address": req_email}     // Search query
-    );
-    
-    
-    // If no match was found, return 401: Unauthorized
-    // Do not specify whether the email address or the password was wrong 
-    // as this provides useful information for someone trying to hack into a user's account
-    if (student === null) {
-        res.redirect("/login");
-        return;
-    }
-
-
-    // Compare the stored hash password with the password provided by the user
-    const valid : boolean = await bcryptjs.compare(req_password, student.password);
-
-    // If the password matches, user is logged in
-    if (valid) {
-        log.info(`Successful login attempt [USER: ${student.email_address}]`);
-        req.session.regenerate(function() {
-            req.session.user = student;
-            res.redirect("/dashboard");
-        });
-    } else {
-        log.warning(`Failed login attempt with incorrect password [USER: ${student.email_address}]`);
-        res.redirect("/login");
+    try {
+        // Get the email and password provided by the user
+        let req_email    = req.body.email_address;
+        let req_password = req.body.password;
+        
+        // Look for student with same email address
+        const student = await db.students_collection.findOne<Student>(
+            {"email_address": req_email}     // Search query
+        );
+        // const teacher = await db.students_collection.findOne<Teacher>(
+        //     {"email_address": req_email}     // Search query
+        // );
+                
+        // If no match was found, return 401: Unauthorized
+        // Do not specify whether the email address or the password was wrong 
+        // as this provides useful information for someone trying to hack into a user's account
+        if (student === null) {
+            res.redirect("/login");
+            return;
+        }
+        // if (teacher === null) {
+        //     res.redirect("/login");
+        //     return;
+        // }  
+                    
+        // Compare the stored hash password with the password provided by the user
+        const valid : boolean = await bcryptjs.compare(req_password, student.password);
+        // const valid2 : boolean = await bcryptjs.compare(req_password, teacher.password);
+            
+        // If the password matches, user is logged in
+        if (valid) {
+            log.info(`Successful login attempt [USER: ${student.email_address}]`);
+            req.session.regenerate(function() {
+                req.session.user = student;
+                res.redirect("/dashboard");
+            });
+        } else {
+            log.warning(`Failed login attempt with incorrect password [USER: ${student.email_address}]`);
+            res.redirect("/login");
+        }
+        // if (valid2) {
+        //     log.info(`Successful login attempt [USER: ${teacher.email_address}]`);
+        //     req.session.regenerate(function() {
+        //         req.session.user = teacher;
+        //         res.redirect("/dashboard");
+        //     });
+        // } else {
+        //     log.warning(`Failed login attempt with incorrect password [USER: ${teacher.email_address}]`);
+        //     res.redirect("/login");
+        // }
+    } catch (err) {
+        log.error(`Failed login due to internal error: ${err}`)
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
     }
 }
 
@@ -92,72 +115,86 @@ function dashboard_page(req: express.Request, res: express.Response) {
 
 // Get group members for a student
 async function get_group_members(req: express.Request, res: express.Response) {
-    // If the session does not hold a user object deny the request
-    if (req.session.user === undefined) {
-        res.sendStatus(403);
-        return;
+    try {
+
+        // If the session does not hold a user object deny the request
+        if (req.session.user === undefined) {
+            res.sendStatus(403);
+            return;
+        }
+        
+        // Get the group id from the student
+        let group_id = req.session.user.group_id;
+        
+        // Get the group matching the id from the database
+        let group = await db.groups_collection.findOne({id: group_id});
+        
+        // Mandatory error checking
+        if (group == null) {
+            res.sendStatus(500);
+            return;
+        }
+        
+        // Find all students whose id is in the array of id of the group
+        let students = await db.students_collection.find({id: {$in: group.students}}).toArray();
+        
+        // Create a string array that will contain the name of the students in the group
+        let output : string[] = [];
+        
+        // For each student returned by the previous query, add their name to the list
+        for(let student of students) {
+            output.push(`${student.first_name} ${student.last_name}`);
+        }
+        
+        // Set the Content-Type header so that the web browser doesnt throw a hissy fit
+        res.set("Content-Type", "application/json");
+        
+        // Send the ouput list as json
+        res.json(output);
+    } catch (err) {
+        log.error(`Failed fetching members due to internal error: ${err}`)
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
     }
-
-    // Get the group id from the student
-    let group_id = req.session.user.group_id;
-
-    // Get the group matching the id from the database
-    let group = await db.groups_collection.findOne({id: group_id});
-
-    // Mandatory error checking
-    if (group == null) {
-        res.sendStatus(500);
-        return;
-    }
-
-    // Find all students whose id is in the array of id of the group
-    let students = await db.students_collection.find({id: {$in: group.students}}).toArray();
-
-    // Create a string array that will contain the name of the students in the group
-    let output : string[] = [];
-
-    // For each student returned by the previous query, add their name to the list
-    for(let student of students) {
-        output.push(`${student.first_name} ${student.last_name}`);
-    }
-
-    // Set the Content-Type header so that the web browser doesnt throw a hissy fit
-    res.set("Content-Type", "application/json");
-
-    // Send the ouput list as json
-    res.json(output);
 }
 
 
 // Logout
-async function logout(req: express.Request, res: express.Response) {
-        req.session.user = undefined;
-        res.redirect("/");
+function logout(req: express.Request, res: express.Response) {
+    req.session.destroy(function () {})
+    res.redirect("/");
 }
 
 // Register route
 async function register_form_submit(req: express.Request, res: express.Response) {
-    
-    // Get the students collection
-    //console.log("register func");
-    
-    let hash = await bcryptjs.hash(req.body.password, 10);
+    try {
 
-    let student = new Student(req.body.id_num, req.body.first_name, req.body.last_name, req.body.email, hash);
-
-    var documentCount = await db.students_collection.countDocuments({email: req.body.email}, {limit: 1})
-      
-    //checks if the email already exists
-    if( documentCount == 0 ){
-        //Mongodb's Insert function
-        let result = await db.students_collection.insertOne(student);
+        // Get the students collection
         
-        if (result) {
-            log.info(`User successfully added [USER: ${student.email_address}]`);
-            res.redirect("/login");
-        } else {
-            log.error("Failed to create user");
-            res.redirect("/register");
+        let hash = await bcryptjs.hash(req.body.password, 10);
+        
+        let student = new Student(req.body.id_num, req.body.first_name, req.body.last_name, req.body.email, hash);
+        
+        var documentCount = await db.students_collection.countDocuments({email: req.body.email}, {limit: 1})
+        
+        //checks if the email already exists
+        if( documentCount == 0 ){
+            //Mongodb's Insert function
+            let result = await db.students_collection.insertOne(student);
+            
+            if (result) {
+                log.info(`User successfully added [USER: ${student.email_address}]`);
+                res.redirect("/login");
+            } else {
+                log.error("Failed to create user");
+                res.redirect("/register");
+            }
+        }
+    } catch (err) {
+        log.error(`Failed registering due to internal error: ${err}`)
+        if (!res.writableEnded) {
+            res.sendStatus(500);
         }
     }
 }

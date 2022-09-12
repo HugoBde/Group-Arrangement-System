@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class',
+  // darkMode: 'class',
   content: ['./public/views/*.html'],
   theme: {
     extend: {
@@ -12,6 +12,7 @@ module.exports = {
         bglavender: 'hsl(245, 44%, 90%)',
         bglavendertext: 'hsl(243, 43%, 93%)',
         bglavenderhover: 'hsl(243, 24%, 83%)',
+        bgxiketic: 'hsl(274, 17%, 12%)',
       },
     },
   },
