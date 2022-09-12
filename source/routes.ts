@@ -158,45 +158,57 @@ async function get_group_members(req: express.Request, res: express.Response) {
             res.sendStatus(500);
         }
     }
-<<<<<<< HEAD
-
-    // Get the group id from the student
-    let group_id = req.session.user.group_id;
-
-    // Get the group matching the id from the database
-    let group = await db.groups_collection.findOne({id: group_id});
-
-    // Mandatory error checking
-    if (group == null) {
-        res.sendStatus(500);
-        return;
-    }
-
-          
-=======
->>>>>>> f3a762fd3792d39f864bd40b1f8e9682e18c8c0a
 }
+
 
 // Get all student users that are not allocated a group
 async function get_all_not_grouped(req: express.Request, res: express.Response){
-    
-    // If the session does not hold a user object deny the request
-    if (req.session.user === undefined) {
-        res.sendStatus(403);
-        return;
-    }
-    // Get the group id from the student
-    //let group_id = req.session.user.group_id;
+    try {        
+        // If the session does not hold a user object deny the request
+        if (req.session.user === undefined) {
+            res.sendStatus(403);
+            return;
+        }
+        // Get the group id from the student
+        //let group_id = req.session.user.group_id;
 
-    // Get the group matching the -1 id from the database which means they are not grouped yet
-    let group = await db.groups_collection.findOne({id: -1});
+        // Get the group matching the -1 id from the database which means they are not grouped yet
+        let group = await db.groups_collection.findOne({id: 0}); //change this to -1.
 
-    // Mandatory error checking
-    if (group == null) {
-        res.sendStatus(500);
-        return;
+        // Mandatory error checking
+        if (group == null) {
+            res.sendStatus(500);
+            return;
+        }
+
+        // Find all students whose id is in the array of id of the group
+        let students = await db.students_collection.find({id: {$in: group.students}}).toArray();
+        
+        // Create a string array that will contain the name of the students in the group
+        let output : string[] = [];
+
+        // For each student returned by the previous query, add their name to the list
+        for(let student of students) {
+            output.push(`${student.first_name} ${student.last_name}`);
+        }
+
+        // Set the Content-Type header so that the web browser doesnt throw a hissy fit
+        res.set("Content-Type", "application/json");
+        
+        // Send the ouput list as json
+        res.json(output);
+        
+        console.log(output); //delete this line
+
+
+        //always produces error because there is no students that do not have a group.
+    } catch (err) {
+        log.error(`Failed fetching members due to internal error: ${err}`)
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
     }
-} 
+}
 
 //insert a class (subject) into class collection
 async function insert_class(req: express.Request, res: express.Response) {
@@ -228,15 +240,7 @@ function logout(req: express.Request, res: express.Response) {
 
 // Register route
 async function register_form_submit(req: express.Request, res: express.Response) {
-<<<<<<< HEAD
-    
-    // Get the students collection
-    console.log("registering user...");
-    
-    let hash = await bcryptjs.hash(req.body.password, 10);
-=======
     try {
->>>>>>> f3a762fd3792d39f864bd40b1f8e9682e18c8c0a
 
         // Get the students collection
         
@@ -275,5 +279,6 @@ export = {
     login_form_submit,
     register_form_submit,
     get_group_members,
+    get_all_not_grouped,
     logout,
 };

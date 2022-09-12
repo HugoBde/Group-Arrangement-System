@@ -1,11 +1,11 @@
 // Get the table body element
-const group_table_body = document.getElementById("group_table_body");
+const group_table_body = document.getElementById("preference_table_body");
 
 // Function is async so we can use await keyword
-async function get__available_group_members() {
+async function get_all_not_grouped() {
 
     // Make a get request for the list of group members
-    let response = await fetch("/group_members");
+    let response = await fetch("/not_grouped");
 
     // The backend should return an array of strings containing the names
     let student_names = await response.json();
@@ -19,9 +19,9 @@ async function get__available_group_members() {
         role_cell.textContent = "TBD";
         new_row.appendChild(name_cell);
         new_row.appendChild(role_cell);
-        group_table_body.appendChild(new_row);
+        preference_table_body.appendChild(new_row);
     }
 }
 
 // Call the function above
-get_available_members();
+get_all_not_grouped();
