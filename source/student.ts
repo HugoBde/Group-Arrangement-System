@@ -1,6 +1,3 @@
-// Local import 
-import mongodb = require("mongodb");
-
 class Student {
     // Personal details 
     id:            number;
