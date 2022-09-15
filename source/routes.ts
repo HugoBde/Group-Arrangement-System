@@ -166,6 +166,17 @@ function logout(req: express.Request, res: express.Response) {
     res.redirect("/");
 }
 
+// Register page
+function register_page(req: express.Request, res: express.Response){
+    if (req.session.user !== undefined) {
+        res.redirect("/dashboard");
+        return;
+    }
+
+    // Otherwise, just display the dashboard
+    res.sendFile(utils.get_views_path("register.html"));
+}
+
 // Register route
 async function register_form_submit(req: express.Request, res: express.Response) {
     try {
@@ -206,6 +217,7 @@ export = {
     home_page,
     login_page,
     login_form_submit,
+    register_page,
     register_form_submit,
     get_group_members,
     logout,

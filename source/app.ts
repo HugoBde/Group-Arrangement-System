@@ -61,11 +61,9 @@ app.get("/group_members", routes.get_group_members);
 app.get('/logout', routes.logout);
 
 // Register route
-app.get('/register', (req, res) => {
-    console.log("register get");
-    res.sendFile(path.join(__dirname, "../public/views/register.html"));
-});
+app.get('/register', routes.register_page);
 
+// Register form submission
 app.post("/register", routes.register_form_submit);
 
 
