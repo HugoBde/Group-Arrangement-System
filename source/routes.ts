@@ -173,7 +173,7 @@ async function get_all_not_grouped(req: express.Request, res: express.Response){
         //let group_id = req.session.user.group_id;
 
         // Get the group matching the -1 id from the database which means they are not grouped yet
-        let group = await db.groups_collection.findOne({id: 0}); //change this to -1.
+        let group = await db.groups_collection.findOne({id: -1}); //change this to -1.
 
         // Mandatory error checking
         if (group == null) {
@@ -200,7 +200,6 @@ async function get_all_not_grouped(req: express.Request, res: express.Response){
         
         console.log(output); //delete this line
 
-
         //always produces error because there is no students that do not have a group.
     } catch (err) {
         log.error(`Failed fetching members due to internal error: ${err}`)
@@ -210,24 +209,81 @@ async function get_all_not_grouped(req: express.Request, res: express.Response){
     }
 }
 
-//insert a class (subject) into class collection
-async function insert_class(req: express.Request, res: express.Response) {
-    console.log("creating a new class...");
+//insert interest into the class document - interests array
+async function insert_interest(req: express.Request, res: express.Response) {
+    try {
+        // If the session does not hold a user object deny the request
+        if (req.session.user === undefined) {
+            res.sendStatus(403);
+            return;
+        }
 
-    let subject = new Class(req.body.name, req.body.subject);
-    
-    var documentCount = await db.groups_collection.countDocuments({name: req.body.subject}, {limit: 1})
+        let class_of_students_not_the_keyword_class_leave_me_alone_javascript = await db.class_collection.findOne({name: "Test class 2"}); //test class 2 cause this document has an interests list
 
-    //check if class already exists
-    if(documentCount == 0){
-        let result = await db.class_collection.insertOne(subject);
+        //error check
+        if (class_of_students_not_the_keyword_class_leave_me_alone_javascript === null) {
+            log.error("class not found");
+            return;
+        }
+
+        var documentCount = await db.class_collection.countDocuments({interests: req.body.interest_name});
+
+        //checks if the interest already exists
+        if( documentCount == 0 ){
+            //Mongodb's Insert function
+            let result = await db.class_collection.updateOne({_id: class_of_students_not_the_keyword_class_leave_me_alone_javascript._id},
+                                                                { $push: {interests: req.body.interest_name}});
+
+            if (result) {
+                log.info(`Interest successfully added [Interest: ${req.body.interest_name}]`);
+                res.redirect("/preference");
+            } else {
+                log.error("Failed to add interest");
+                res.redirect("/preference");
+            }
+        }
+
+    } catch (err) {
+        log.error(`Failed to add interest due to internal error: ${err}`)
+        if (res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+}
+
+//getting all the available interests/topics that a student can opt themselves into.
+async function get_interests(req: express.Request, res: express.Response) {
+    try {        
+        // If the session does not hold a user object deny the request
+        if (req.session.user === undefined) {
+            res.sendStatus(403);
+            return;
+        }
+
+        let classStudent = await db.class_collection.findOne({name: "Test class 2"}); //test class 2 cause this document has an interests list
+
+        //error check
+        if (classStudent === null) {
+            log.error("class not found");
+            return;
+        }
+
+        //let interests1 = await db.class_collection.find({interests: {}});
+        //let intersts1 = await db.class_collection.find({classStudent:{interests: []}});
+        //let interests1 = db.class_collection.find();
+
+        let output = classStudent.interests;
+
+        res.set("Content-Type", "application/json");
         
-        if (result) {
-            log.info(`Class successfully added [CLASS: ${subject.subject}]`);
-            res.redirect("/dashboard");
-        } else {
-            log.error("Failed to add class");
-            res.redirect("/dashboard");
+        // Sends the list as Json
+        res.json(output);
+
+
+    } catch (err) {
+        log.error(`Failed fetching members due to internal error: ${err}`)
+        if (!res.writableEnded) {
+            res.sendStatus(500);
         }
     }
 }
@@ -280,5 +336,7 @@ export = {
     register_form_submit,
     get_group_members,
     get_all_not_grouped,
+    insert_interest,
+    get_interests,
     logout,
 };
