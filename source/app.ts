@@ -57,8 +57,14 @@ app.post("/login", routes.login_form_submit);
 app.get("/dashboard", routes.dashboard_page);
 app.get("/group_members", routes.get_group_members);
 
-// logout route
-app.get('/logout', routes.logout);
+// Preferences page
+app.get("/preference", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/views/preference.html"));
+});
+//app.get("/not_grouped", routes.get_all_not_grouped);
+app.get("/get_interests", routes.get_interests);
+app.post("/insert_interest", routes.insert_interest);
+app.post("/remove_interest", routes.remove_interest);
 
 // Register route
 app.get('/register', routes.register_page);
