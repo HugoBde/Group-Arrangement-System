@@ -64,6 +64,7 @@ app.get("/preference", (req, res) => {
 //app.get("/not_grouped", routes.get_all_not_grouped);
 app.get("/get_interests", routes.get_interests);
 app.post("/insert_interest", routes.insert_interest);
+app.post("/remove_interest", routes.remove_interest);
 
 // Register route
 app.get('/register', routes.register_page);

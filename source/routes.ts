@@ -263,6 +263,50 @@ async function insert_interest(req: express.Request, res: express.Response) {
     }
 }
 
+//remove interest from the class document - interests array
+async function remove_interest(req: express.Request, res: express.Response) {
+    try {
+        console.log("Hello");
+        // If the session does not hold a user object deny the request
+        if (req.session.user === undefined) {
+            res.sendStatus(403);
+            return;
+        }
+
+        let class_of_students_not_the_keyword_class_leave_me_alone_javascript = await db.class_collection.findOne({name: "Test class 2"}); //test class 2 cause this document has an interests list
+
+        //error check
+        if (class_of_students_not_the_keyword_class_leave_me_alone_javascript === null) {
+            log.error("class not found");
+            return;
+        }
+
+        var documentCount = await db.class_collection.countDocuments({interests: req.body.interest_name});
+
+        //checks if the interest exists
+        if( documentCount == 1 ){
+
+            //Mongodb's remove function
+            let result = await db.class_collection.updateOne({_id: class_of_students_not_the_keyword_class_leave_me_alone_javascript._id},
+                                                                { $pull: {interests: req.body.interest_name}});
+
+            if (result) {
+                log.info(`Interest successfully removed [Interest: ${req.body.interest_name}]`);
+                res.redirect("/preference");
+            } else {
+                log.error("Failed to remove interest");
+                res.redirect("/preference");
+            }
+        }
+
+    } catch (err) {
+        log.error(`Failed to remove interest due to internal error: ${err}`)
+        if (res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+}
+
 //getting all the available interests/topics that a student can opt themselves into.
 async function get_interests(req: express.Request, res: express.Response) {
     try {        
@@ -361,6 +405,7 @@ export = {
     get_group_members,
     get_all_not_grouped,
     insert_interest,
+    remove_interest,
     get_interests,
     logout,
 };
