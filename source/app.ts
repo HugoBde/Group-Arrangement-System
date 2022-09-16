@@ -66,9 +66,9 @@ app.get("/get_interests", routes.get_interests);
 app.post("/insert_interest", routes.insert_interest);
 
 // Register route
-app.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/views/register.html"));
-});
+app.get('/register', routes.register_page);
+
+// Register form submission
 app.post("/register", routes.register_form_submit);
 
 

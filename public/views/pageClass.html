@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="../stylesheets/style.css" />
-    <script src="scripts/dashboard-student.js" defer></script>
-</head>
+    <script src="" defer></script>
+</head> -->
 
 <body class="bg-bglavender text-bgcharcoal dark:bg-bgcharcoal dark:text-bglavendertext">
     <header class="container mx-auto mt-10 px-6 text-center h-28">
@@ -31,27 +31,25 @@
     <!-- dashboard heading -->
     <h1 class="mt-16 mx-16  text-3xl text-center md:text-left">
         <span class="underline decoration-yellow-200">
-            My Dashboard
+            My Admin Dashboard
         </span>
     </h1>
     <!-- dashboard content -->
     <div class="mt-16 mx-16 md:mt-28">
-        <!-- card container -->
-        <div class="grid gap-8 md:gap-48 md:grid-cols-3 ">
-            <a href="#" class="bg-fuchsia-50 text-black p-24 space-y-10 shadow-2xl rounded-3xl md:p-40 flex items-center
-                justify-center duration-300 hover:bg-fuchsia-200 hover:underline decoration-indigo-500">
-                <h1 class="text-xl tracking-wider">
-                    Groups</h1>
-            </a>
-            <a href="#" class="bg-fuchsia-50 text-black p-24 space-y-10 shadow-2xl rounded-3xl md:p-40 flex items-center
-                justify-center duration-300 hover:bg-fuchsia-200 hover:underline decoration-indigo-500">
-                <h1 class="text-xl tracking-wider">Preferences </h1>
-            </a>
-            <a href="#" class="bg-fuchsia-50 text-black p-24 space-y-10 shadow-2xl rounded-3xl md:p-40 flex items-center
-                justify-center duration-300 hover:bg-fuchsia-200 hover:underline decoration-indigo-500">
-                <h1 class="text-xl tracking-wider">idk</h1>
-            </a>
-        </div>
+        
+        <!-- This is what I have changed thus far from line 40 and below 
+        I want to create a grid for each student -->
+        <div class="grid grid-rows-4 grid-flow-col gap-4">
+            <div>01</div>
+            <!-- ... -->
+            <div>09</div>
+          </div>
+          <div class="grid grid-rows-2 hover:grid-rows-6">
+            <!-- ... -->
+          </div>
+          
+        
+        
     </div>
 </body>
 

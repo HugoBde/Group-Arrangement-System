@@ -13,6 +13,7 @@ import log       = require("./log");
 import Student   = require("./student");
 import utils     = require("./utils");
 import Teacher   = require("./teacher");
+import { assert } from "console";
 
 import Class = require("./class");
 
@@ -46,52 +47,53 @@ async function login_form_submit(req: express.Request, res: express.Response) {
         // Get the email and password provided by the user
         let req_email    = req.body.email_address;
         let req_password = req.body.password;
-        
-        // Look for student with same email address
-        const student = await db.students_collection.findOne<Student>(
-            {"email_address": req_email}     // Search query
-        );
-        // const teacher = await db.students_collection.findOne<Teacher>(
-        //     {"email_address": req_email}     // Search query
-        // );
-                
-        // If no match was found, return 401: Unauthorized
-        // Do not specify whether the email address or the password was wrong 
-        // as this provides useful information for someone trying to hack into a user's account
-        if (student === null) {
+
+        let is_admin= false;
+
+        let user : Student | Teacher | null ;
+
+        // Do not touch this unless you know regex 
+        if (req_email.match(/[A-Z][a-z]+\.[A-Z][a-z]+@student.uni.edu.au/)) {
+            user = await db.students_collection.findOne<Student>(
+                {"email_address": req_email}
+            );
+        } else if (req_email.match(/[A-Z][a-z]+\.[A-Z][a-z]+@uni.edu.au/)) {
+            user = await db.teacher_collection.findOne<Teacher>(
+                {"email_address": req_email}
+            );
+            is_admin = true;
+        } else {
             res.redirect("/login");
             return;
         }
-        // if (teacher === null) {
-        //     res.redirect("/login");
-        //     return;
-        // }  
-                    
+        
+        // If no match was found, return 401: Unauthorized
+        // Do not specify whether the email address or the password was wrong 
+        // as this provides useful information for someone trying to hack into a user's account
+        if (user === null) {
+            res.redirect("/login");
+            return;
+        }
+
         // Compare the stored hash password with the password provided by the user
-        const valid : boolean = await bcryptjs.compare(req_password, student.password);
-        // const valid2 : boolean = await bcryptjs.compare(req_password, teacher.password);
+        const valid : boolean = await bcryptjs.compare(req_password, user.password);
             
         // If the password matches, user is logged in
         if (valid) {
-            log.info(`Successful login attempt [USER: ${student.email_address}]`);
+            log.info(`Successful login attempt [USER: ${user.email_address}]`);
             req.session.regenerate(function() {
-                req.session.user = student;
+                // For some reason typescript believes user could be null at this point,
+                // yet we should have returned if it was null
+                // Stupid computer
+                // Anyway, adding a '!' after user makes it stop whining 
+                req.session.user     = user!; 
+                req.session.is_admin = is_admin;
                 res.redirect("/dashboard");
             });
         } else {
-            log.warning(`Failed login attempt with incorrect password [USER: ${student.email_address}]`);
+            log.warning(`Failed login attempt with incorrect password [USER: ${user.email_address}]`);
             res.redirect("/login");
         }
-        // if (valid2) {
-        //     log.info(`Successful login attempt [USER: ${teacher.email_address}]`);
-        //     req.session.regenerate(function() {
-        //         req.session.user = teacher;
-        //         res.redirect("/dashboard");
-        //     });
-        // } else {
-        //     log.warning(`Failed login attempt with incorrect password [USER: ${teacher.email_address}]`);
-        //     res.redirect("/login");
-        // }
     } catch (err) {
         log.error(`Failed login due to internal error: ${err}`)
         if (!res.writableEnded) {
@@ -109,10 +111,15 @@ function dashboard_page(req: express.Request, res: express.Response) {
         res.redirect("/login");
         return;
     }
+    
+    // Otherwise, just display the right dashboard based on the user type
+    if (req.session.is_admin) {
+        res.sendFile(utils.get_views_path("dashboard-admin.html"));
+    } else {
+        res.sendFile(utils.get_views_path("dashboard.html"));
+    }
 
-    // Otherwise, just display the dashboard
-    res.sendFile(utils.get_views_path("dashboard.html"));
-} 
+}
 
 // Get group members for a student
 async function get_group_members(req: express.Request, res: express.Response) {
@@ -120,6 +127,11 @@ async function get_group_members(req: express.Request, res: express.Response) {
 
         // If the session does not hold a user object deny the request
         if (req.session.user === undefined) {
+            res.sendStatus(403);
+            return;
+        }
+
+        if (req.session.is_admin) {
             res.sendStatus(403);
             return;
         }
@@ -294,6 +306,17 @@ function logout(req: express.Request, res: express.Response) {
     res.redirect("/");
 }
 
+// Register page
+function register_page(req: express.Request, res: express.Response){
+    if (req.session.user !== undefined) {
+        res.redirect("/dashboard");
+        return;
+    }
+
+    // Otherwise, just display the dashboard
+    res.sendFile(utils.get_views_path("register.html"));
+}
+
 // Register route
 async function register_form_submit(req: express.Request, res: express.Response) {
     try {
@@ -333,6 +356,7 @@ export = {
     home_page,
     login_page,
     login_form_submit,
+    register_page,
     register_form_submit,
     get_group_members,
     get_all_not_grouped,
