@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groups</title>
+    <link rel="stylesheet" href="../stylesheets/style.css" />
+    <script src="../scripts/dashboard-student.js" defer></script>
+</head>
+
+<body class="bg-bglavender text-bgcharcoal dark:bg-bgcharcoal dark:text-bglavendertext">
+    <header class="container mx-auto mt-10 px-6 text-center h-28">
+        <a href="javascript:window.location.href=window.location.href"
+            class="text-4xl h-20 w-48 mx-auto md:x-0 md:absolute top-10 left-10 underline decoration-pink-400/90">
+            Allocator
+        </a>
+        <!-- logout button -->
+        <div class="flex items-center justify-center space-x-4 mt-7 md:space-x-10 md:absolute top-12 right-10 md:mt-0">
+            <a href="/logout" onclick="alert('You will be logged out. Are you sure?')"
+                class="text-lg rounded-md cursor-pointer outline outline-offset-4 outline-2 outline-pink-400 hover:-translate-y-0.5 transition-all duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 3H6a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h4M16 17l5-5-5-5M19.8 12H9" /></svg>
+            </a>
+        </div>
+    </header>
+    <!-- border to seperate -->
+    <div class="w-full mt-4 border-b border-b-gray-100 md:mt-0"></div>
+    <!-- dashboard heading -->
+    <h1 class="mt-16 mx-16  text-3xl text-center md:text-left">
+        <span class="underline decoration-yellow-200">
+            My Groups
+        </span>
+    </h1>
+    <!-- tables for displaying groups -->
+    <div class="mt-16 mx-16 flex flex-col">
+        <table class="min-w-full border-2 bg-gray-500 text-center">
+            <thead class="border-b">
+                <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody id="group_table_body">
+
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
