@@ -35,8 +35,8 @@
         </span>
     </h1>
     <!-- tables for displaying groups -->
-    <div class="mt-16 mx-16 flex flex-col">
-        <table class="min-w-full border-2 bg-gray-500 text-center">
+    <div class="mt-16 mx-16 flex flex-col" style="align-items: center;">
+        <table hidden id="group_table" class="min-w-full border-2 bg-gray-500 text-center">
             <thead class="border-b">
                 <tr>
                     <th>Name</th>
@@ -47,6 +47,10 @@
 
             </tbody>
         </table>
+        <div hidden id="no_group_msg" style="align-items: center; flex-direction: column;">
+            <image src="assets/nothing.svg" width="400px"></image>
+            <p class="text-3xl">You are not part of a group yet ...</p>
+        </div>
     </div>
 </body>
 

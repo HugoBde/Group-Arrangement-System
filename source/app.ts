@@ -55,7 +55,8 @@ app.post("/login", routes.login_form_submit);
 
 // Dashboard page
 app.get("/dashboard", routes.dashboard_page);
-app.get("/group_members", routes.get_group_members);
+app.get("/groups", routes.groups_page);                 // Group page
+app.get("/group_members", routes.get_group_members);    // Fetch group members for AJAX
 
 // logout route
 app.get('/logout', routes.logout);

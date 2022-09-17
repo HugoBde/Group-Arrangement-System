@@ -1,5 +1,7 @@
 // Get the table body element
 const group_table_body = document.getElementById("group_table_body");
+const group_table      = document.getElementById("group_table");
+const no_group_msg     = document.getElementById("no_group_msg");
 
 // Function is async so we can use await keyword
 async function get_group_members() {
@@ -9,7 +11,13 @@ async function get_group_members() {
 
     // The backend should return an array of strings containing the names
     let student_names = await response.json();
-    
+
+    if (student_names.length === 0) {
+        no_group_msg.style.display = "flex";
+        return;
+    } else {
+        group_table.style.display = "block";
+    }
     // Loop through the names and create a row for each student
     for(let student_name of student_names) {
         let new_row = document.createElement("tr");

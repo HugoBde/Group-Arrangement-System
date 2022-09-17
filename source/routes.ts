@@ -120,6 +120,23 @@ function dashboard_page(req: express.Request, res: express.Response) {
 
 }
 
+function groups_page(req: express.Request, res: express.Response) {
+    // If no user object is attached to the session, it means 
+    // the user is not logged in, so redirect them to the login page
+    if (req.session.user === undefined) {
+        res.redirect("/login");
+        return;
+    }
+
+    // THis page is not for admins
+    if (req.session.is_admin) {
+        res.redirect("/dashboard");
+        return;
+    }
+
+    res.sendFile(utils.get_views_path("groups.html"));
+}
+
 // Get group members for a student
 async function get_group_members(req: express.Request, res: express.Response) {
     try {
@@ -141,9 +158,13 @@ async function get_group_members(req: express.Request, res: express.Response) {
         // Get the group matching the id from the database
         let group = await db.groups_collection.findOne({id: group_id});
         
+        // Set the Content-Type header so that the web browser doesnt throw a hissy fit
+        res.set("Content-Type", "application/json");
+
         // Mandatory error checking
+        // Send an empty array if they have no group
         if (group == null) {
-            res.sendStatus(500);
+            res.json([]);
             return;
         }
         
@@ -157,9 +178,6 @@ async function get_group_members(req: express.Request, res: express.Response) {
         for(let student of students) {
             output.push(`${student.first_name} ${student.last_name}`);
         }
-        
-        // Set the Content-Type header so that the web browser doesnt throw a hissy fit
-        res.set("Content-Type", "application/json");
         
         // Send the ouput list as json
         res.json(output);
@@ -233,4 +251,5 @@ export = {
     register_form_submit,
     get_group_members,
     logout,
+    groups_page,
 };
