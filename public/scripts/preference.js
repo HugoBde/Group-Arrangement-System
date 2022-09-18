@@ -1,5 +1,6 @@
 // Get the table body element
-const group_table_body = document.getElementById("preference_table_body");
+const preference_table_body = document.getElementById("preference_table_body");
+const preference_table = document.getElementById("preference_table");
 
 // Function is async so we can use await keyword
 /*async function get_all_not_grouped() {
@@ -27,11 +28,17 @@ async function get_interests() {
     let response = await fetch("/interests");
     let preference_names = await response.json();
     for(let preference_name of preference_names) {
+        
         let new_row = document.createElement("tr");
         let name_cell = document.createElement("td");
+        
         name_cell.textContent = preference_name;
+        name_cell.classList.add('text-xl', 'border-r', 'py-2');
+        
         new_row.append(name_cell);
-        group_table_body.appendChild(new_row);
+        name_cell.classList.add('text-xl', 'border-r', 'py-2');
+        
+        preference_table_body.appendChild(new_row);
     }
 }
 
