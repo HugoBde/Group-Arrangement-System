@@ -284,7 +284,6 @@ async function insert_interest(req: express.Request, res: express.Response) {
 //remove interest from the class document - interests array
 async function remove_interest(req: express.Request, res: express.Response) {
     try {
-        console.log("Hello");
         // If the session does not hold a user object deny the request
         if (req.session.user === undefined) {
             res.sendStatus(403);
