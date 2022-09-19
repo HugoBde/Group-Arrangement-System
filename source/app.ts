@@ -55,17 +55,16 @@ app.post("/login", routes.login_form_submit);
 
 // Dashboard page
 app.get("/dashboard", routes.dashboard_page);
-app.get("/group_members", routes.get_group_members);
+app.get("/groups", routes.groups_page);                 // Group page
+app.get("/group_members", routes.get_group_members);    // Fetch group members for AJAX
 
 // logout route
 app.get('/logout', routes.logout);
 
 // Register route
-app.get('/register', (req, res) => {
-    console.log("register get");
-    res.sendFile(path.join(__dirname, "../public/views/register.html"));
-});
+app.get('/register', routes.register_page);
 
+// Register form submission
 app.post("/register", routes.register_form_submit);
 
 
