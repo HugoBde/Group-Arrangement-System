@@ -1,7 +1,20 @@
 // Get the table body element
-const preference_table_body = document.getElementById("preference_table_body");
-const preference_table = document.getElementById("preference_table");
+//const preference_table_body = document.getElementById("preference_table_body");
+//const preference_table = document.getElementById("preference_table");
 //const selection = document.getElementById("checkbox");
+
+const interest_selection = document.getElementById("interest_selection");
+
+async function get_interests() {
+    let response = await fetch("/interests");
+    let preference_names = await response.json();
+    for(let preference_name of preference_names) {
+        
+        let new_option = document.createElement("option");
+        new_option.text = preference_name;
+        interest_selection.options.add(new_option);
+    }
+}
 
 // Function is async so we can use await keyword
 /*async function get_all_not_grouped() {
@@ -23,7 +36,7 @@ const preference_table = document.getElementById("preference_table");
         new_row.appendChild(role_cell);
         preference_table_body.appendChild(new_row);
     }
-}*/
+}
 
 async function get_interests() {
     let response = await fetch("/interests");
@@ -47,7 +60,7 @@ async function get_interests() {
         new_row.classList.add('border', 'hover:bg-gray-700', 'hover:cursor-text', 'py-2');
         preference_table_body.appendChild(new_row);
     }
-}
+}*/
 
 // Call the function above
 //get_all_not_grouped();
