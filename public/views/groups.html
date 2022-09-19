@@ -5,9 +5,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student Dashboard</title>
+    <title>Groups</title>
     <link rel="stylesheet" href="../stylesheets/style.css" />
-    <script src="scripts/dashboard-student.js" defer></script>
+    <script src="../scripts/dashboard-student.js" defer></script>
 </head>
 
 <body class="bg-bglavender text-bgcharcoal dark:bg-bgcharcoal dark:text-bglavendertext">
@@ -18,7 +18,7 @@
         </a>
         <!-- logout button -->
         <div class="flex items-center justify-center space-x-4 mt-7 md:space-x-10 md:absolute top-12 right-10 md:mt-0">
-            <a href="/logout"
+            <a href="/logout" onclick="alert('You will be logged out. Are you sure?')"
                 class="text-lg rounded-md cursor-pointer outline outline-offset-4 outline-2 outline-pink-400 hover:-translate-y-0.5 transition-all duration-150">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
@@ -31,27 +31,37 @@
     <!-- dashboard heading -->
     <h1 class="mt-16 mx-16  text-3xl text-center md:text-left">
         <span class="underline decoration-yellow-200">
-            My Dashboard
+            My Groups
         </span>
     </h1>
-    <!-- dashboard content -->
-    <div class="mt-16 mx-16 md:mt-28">
-        <!-- card container -->
-        <div class="grid gap-8 md:gap-48 md:grid-cols-3 ">
-            <a href="/groups" class="bg-fuchsia-50 text-black p-24 space-y-10 shadow-2xl rounded-3xl md:p-40 flex items-center
-                justify-center duration-300 hover:bg-fuchsia-200 hover:underline decoration-indigo-500">
-                <h1 class="text-xl tracking-wider">
-                    Groups</h1>
-            </a>
-            <a href="/preference" class="bg-fuchsia-50 text-black p-24 space-y-10 shadow-2xl rounded-3xl md:p-40 flex items-center
-                justify-center duration-300 hover:bg-fuchsia-200 hover:underline decoration-indigo-500">
-                <h1 class="text-xl tracking-wider">Preferences</h1>
-            </a>
-            <a href="#" class="bg-fuchsia-50 text-black p-24 space-y-10 shadow-2xl rounded-3xl md:p-40 flex items-center
-                justify-center duration-300 hover:bg-fuchsia-200 hover:underline decoration-indigo-500">
-                <h1 class="text-xl tracking-wider">idk</h1>
-            </a>
+    <!-- tables for displaying groups -->
+    <div class="mt-16 mx-16 flex flex-col">
+        <table id="group_table"
+            class="min-w-full border-2 bg-gray-500 text-center outline outline-offset-4 outline-pink-400 hover:cursor-text">
+            <thead class="border-b">
+                <tr>
+                    <th class="text-2xl border py-3">Name</th>
+                    <th class="text-2xl border py-3">Role</th>
+                </tr>
+            </thead>
+            <tbody id="group_table_body">
+
+            </tbody>
+        </table>
+        <!-- display text when a user is not assigned or has not joined a group yet -->
+        <div hidden id="no_group_msg" style="align-items: center; flex-direction: column;">
+            <image src="assets/nothing.svg" width="400px"></image>
+            <p class="text-3xl">You are not part of a group yet ...</p>
         </div>
+    </div>
+    <!-- Return to Dashboard menu -->
+    <div class="fixed bottom-7 mx-16">
+        <a href="/" class="flex items-center text-pink-400 hover:text-opacity-80">
+            <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H6M12 5l-7 7 7 7" /></svg>
+            Back to Dashboard
+        </a>
     </div>
 </body>
 
