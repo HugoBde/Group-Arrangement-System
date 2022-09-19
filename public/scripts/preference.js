@@ -16,7 +16,7 @@ async function get_interests() {
     }
 }
 
-// Function is async so we can use await keyword
+//Getting students for a table...
 /*async function get_all_not_grouped() {
 
     // Make a get request for the list of group members
@@ -36,8 +36,9 @@ async function get_interests() {
         new_row.appendChild(role_cell);
         preference_table_body.appendChild(new_row);
     }
-}
-
+}*/
+/*
+//Getting interests for a table...
 async function get_interests() {
     let response = await fetch("/interests");
     let preference_names = await response.json();
