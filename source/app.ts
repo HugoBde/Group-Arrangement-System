@@ -68,6 +68,12 @@ app.get("/interests", routes.get_interests);
 app.post("/insert_interest", routes.insert_interest);
 app.post("/remove_interest", routes.remove_interest);
 
+//DUMMY TEST PAGE
+app.get("/prefDummy", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/views/prefDummy.html"));
+});
+
+
 // Register route
 app.get('/register', routes.register_page);
 
