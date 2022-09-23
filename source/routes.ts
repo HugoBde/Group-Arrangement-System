@@ -361,6 +361,50 @@ async function get_interests(req: express.Request, res: express.Response) {
     }
 }
 
+// Add student preferences to student
+async function pref_form_submit(req: express.Request, res: express.Response) {
+    try {
+        //console.log(req.body);
+        
+        // If the session does not hold a user object deny the request
+        if (req.session.user === undefined) {
+            res.sendStatus(403);
+            return;
+        }
+
+        if (req.session.is_admin) {
+            res.sendStatus(403);
+            return;
+        }
+
+        let student_id = req.session.user.id;
+
+        await db.students_collection.findOne()
+
+        var documentCount = await db.students_collection.countDocuments({"id":student_id});
+        
+        //checks the student exists
+        if( documentCount == 1 ){
+            //updating the student document using mongo's updateOne()
+            let result = await db.students_collection.updateOne({"id": student_id}, [{ $set: {"degree": req.body.degree, "year": req.body.year, "interest": req.body.interest} }] );
+
+            if (result) {
+                log.info(`User successfully added to User preferences [Degree: ${req.body.degree}] [Year: ${req.body.year}] [Interest: ${req.body.interest}]`);
+                res.redirect("/preference");
+            } else {
+                log.error("Failed to update user preferences");
+                res.redirect("/preference");
+            }   
+        }
+    
+    } catch (err) {
+        log.error(`Failed registering due to internal error: ${err}`)
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+}
+
 // Logout
 function logout(req: express.Request, res: express.Response) {
     req.session.destroy(function () {})
@@ -424,6 +468,7 @@ export = {
     insert_interest,
     remove_interest,
     get_interests,
+    pref_form_submit,
     logout,
     groups_page,
 };

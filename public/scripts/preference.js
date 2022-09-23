@@ -12,6 +12,10 @@ async function get_interests() {
         
         let new_option = document.createElement("option");
         new_option.text = preference_name;
+        
+        //new_option.value = preference_name;
+        new_option.setAttribute("name", preference_name);
+        
         interest_selection.options.add(new_option);
     }
 }

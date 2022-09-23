@@ -68,6 +68,9 @@ app.get("/interests", routes.get_interests);
 app.post("/insert_interest", routes.insert_interest);
 app.post("/remove_interest", routes.remove_interest);
 
+// Add preference route
+app.post('/pref_form_submit', routes.pref_form_submit);
+
 // Register route
 app.get('/register', routes.register_page);
 
