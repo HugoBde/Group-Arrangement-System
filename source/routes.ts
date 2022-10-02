@@ -455,6 +455,22 @@ async function register_form_submit(req: express.Request, res: express.Response)
     }
 }
 
+function preferences_page(req: express.Request, res: express.Response) {
+    // If no user object is attached to the session, it means 
+    // the user is not logged in, so redirect them to the login page
+    if (req.session.user === undefined) {
+        res.redirect("/login");
+        return;
+    }
+    
+    // Otherwise, just display the right dashboard based on the user type
+    if (req.session.is_admin) {
+        res.sendFile(utils.get_views_path("preferences-admin.html"));
+    } else {
+        res.sendFile(utils.get_views_path("preferences-student.html"));
+    }
+}
+
 // Exported routes
 export = {
     dashboard_page,
@@ -471,4 +487,5 @@ export = {
     pref_form_submit,
     logout,
     groups_page,
+    preferences_page
 };

@@ -59,9 +59,8 @@ app.get("/groups", routes.groups_page);                 // Group page
 app.get("/group_members", routes.get_group_members);    // Fetch group members for AJAX
 
 // Preferences page
-app.get("/preference", (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/views/preference.html"));
-});
+app.get("/preferences", routes.preferences_page);
+
 //app.get("/not_grouped", routes.get_all_not_grouped);
 //app.get("/get_interests", routes.get_interests);
 app.get("/interests", routes.get_interests);
