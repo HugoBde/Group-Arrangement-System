@@ -15,6 +15,7 @@ import utils     = require("./utils");
 import Teacher   = require("./teacher");
 import { assert } from "console";
 
+import Class = require("./class");
 
 // Home page
 function home_page(req: express.Request, res: express.Response) {
@@ -190,6 +191,220 @@ async function get_group_members(req: express.Request, res: express.Response) {
 }
 
 
+// Get all student users that are not allocated a group
+async function get_all_not_grouped(req: express.Request, res: express.Response){
+    try {        
+        // If the session does not hold a user object deny the request
+        if (req.session.user === undefined) {
+            res.sendStatus(403);
+            return;
+        }
+        // Get the group id from the student
+        //let group_id = req.session.user.group_id;
+
+        // Get the group matching the -1 id from the database which means they are not grouped yet
+        let group = await db.groups_collection.findOne({id: -1}); //change this to -1.
+
+        // Mandatory error checking
+        if (group == null) {
+            res.sendStatus(500);
+            return;
+        }
+
+        // Find all students whose id is in the array of id of the group
+        let students = await db.students_collection.find({id: {$in: group.students}}).toArray();
+        
+        // Create a string array that will contain the name of the students in the group
+        let output : string[] = [];
+
+        // For each student returned by the previous query, add their name to the list
+        for(let student of students) {
+            output.push(`${student.first_name} ${student.last_name}`);
+        }
+
+        // Set the Content-Type header so that the web browser doesnt throw a hissy fit
+        res.set("Content-Type", "application/json");
+        
+        // Send the ouput list as json
+        res.json(output);
+        
+        console.log(output); //delete this line
+
+        //always produces error because there is no students that do not have a group.
+    } catch (err) {
+        log.error(`Failed fetching members due to internal error: ${err}`)
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+}
+
+//insert interest into the class document - interests array
+async function insert_interest(req: express.Request, res: express.Response) {
+    try {
+        // If the session does not hold a user object deny the request
+        if (req.session.user === undefined) {
+            res.sendStatus(403);
+            return;
+        }
+
+        let class_of_students_not_the_keyword_class_leave_me_alone_javascript = await db.class_collection.findOne({name: "Test class 2"}); //test class 2 cause this document has an interests list
+
+        //error check
+        if (class_of_students_not_the_keyword_class_leave_me_alone_javascript === null) {
+            log.error("class not found");
+            return;
+        }
+
+        var documentCount = await db.class_collection.countDocuments({interests: req.body.interest_name});
+
+        //checks if the interest already exists
+        if( documentCount == 0 ){
+            //Mongodb's Insert function
+            let result = await db.class_collection.updateOne({_id: class_of_students_not_the_keyword_class_leave_me_alone_javascript._id},
+                                                                { $push: {interests: req.body.interest_name}});
+
+            if (result) {
+                log.info(`Interest successfully added [Interest: ${req.body.interest_name}]`);
+                res.redirect("/preference");
+            } else {
+                log.error("Failed to add interest");
+                res.redirect("/preference");
+            }
+        }
+
+    } catch (err) {
+        log.error(`Failed to add interest due to internal error: ${err}`)
+        if (res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+}
+
+//remove interest from the class document - interests array
+async function remove_interest(req: express.Request, res: express.Response) {
+    try {
+        // If the session does not hold a user object deny the request
+        if (req.session.user === undefined) {
+            res.sendStatus(403);
+            return;
+        }
+
+        let class_of_students_not_the_keyword_class_leave_me_alone_javascript = await db.class_collection.findOne({name: "Test class 2"}); //test class 2 cause this document has an interests list
+
+        //error check
+        if (class_of_students_not_the_keyword_class_leave_me_alone_javascript === null) {
+            log.error("class not found");
+            return;
+        }
+
+        var documentCount = await db.class_collection.countDocuments({interests: req.body.interest_name});
+
+        //checks if the interest exists
+        if( documentCount == 1 ){
+
+            //Mongodb's remove function
+            let result = await db.class_collection.updateOne({_id: class_of_students_not_the_keyword_class_leave_me_alone_javascript._id},
+                                                                { $pull: {interests: req.body.interest_name}});
+
+            if (result) {
+                log.info(`Interest successfully removed [Interest: ${req.body.interest_name}]`);
+                res.redirect("/preference");
+            } else {
+                log.error("Failed to remove interest");
+                res.redirect("/preference");
+            }
+        }
+
+    } catch (err) {
+        log.error(`Failed to remove interest due to internal error: ${err}`)
+        if (res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+}
+
+//getting all the available interests/topics that a student can opt themselves into.
+async function get_interests(req: express.Request, res: express.Response) {
+    try {        
+        // If the session does not hold a user object deny the request
+        if (req.session.user === undefined) {
+            res.sendStatus(403);
+            return;
+        }
+
+        let classStudent = await db.class_collection.findOne({name: "Test class 2"}); //test class 2 cause this document has an interests list
+
+        //error check
+        if (classStudent === null) {
+            log.error("class not found");
+            return;
+        }
+
+        //let interests1 = await db.class_collection.find({interests: {}});
+        //let intersts1 = await db.class_collection.find({classStudent:{interests: []}});
+        //let interests1 = db.class_collection.find();
+
+        let output = classStudent.interests;
+
+        res.set("Content-Type", "application/json");
+        
+        // Sends the list as Json
+        res.json(output);
+
+
+    } catch (err) {
+        log.error(`Failed fetching members due to internal error: ${err}`)
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+}
+
+// Add student preferences to student
+async function pref_form_submit(req: express.Request, res: express.Response) {
+    try {
+        //console.log(req.body);
+        
+        // If the session does not hold a user object deny the request
+        if (req.session.user === undefined) {
+            res.sendStatus(403);
+            return;
+        }
+
+        if (req.session.is_admin) {
+            res.sendStatus(403);
+            return;
+        }
+
+        let student_id = req.session.user.id;
+
+        await db.students_collection.findOne()
+
+        var documentCount = await db.students_collection.countDocuments({"id":student_id});
+        
+        //checks the student exists
+        if( documentCount == 1 ){
+            //updating the student document using mongo's updateOne()
+            let result = await db.students_collection.updateOne({"id": student_id}, [{ $set: {"degree": req.body.degree, "year": req.body.year, "interest": req.body.interest} }] );
+
+            if (result) {
+                log.info(`User successfully added to User preferences [Degree: ${req.body.degree}] [Year: ${req.body.year}] [Interest: ${req.body.interest}]`);
+                res.redirect("/preference");
+            } else {
+                log.error("Failed to update user preferences");
+                res.redirect("/preference");
+            }   
+        }
+    
+    } catch (err) {
+        log.error(`Failed registering due to internal error: ${err}`)
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+}
+
 // Logout
 function logout(req: express.Request, res: express.Response) {
     req.session.destroy(function () {})
@@ -240,7 +455,6 @@ async function register_form_submit(req: express.Request, res: express.Response)
     }
 }
 
-
 // Exported routes
 export = {
     dashboard_page,
@@ -250,6 +464,11 @@ export = {
     register_page,
     register_form_submit,
     get_group_members,
+    get_all_not_grouped,
+    insert_interest,
+    remove_interest,
+    get_interests,
+    pref_form_submit,
     logout,
     groups_page,
 };

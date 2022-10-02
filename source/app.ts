@@ -58,8 +58,18 @@ app.get("/dashboard", routes.dashboard_page);
 app.get("/groups", routes.groups_page);                 // Group page
 app.get("/group_members", routes.get_group_members);    // Fetch group members for AJAX
 
-// logout route
-app.get('/logout', routes.logout);
+// Preferences page
+app.get("/preference", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/views/preference.html"));
+});
+//app.get("/not_grouped", routes.get_all_not_grouped);
+//app.get("/get_interests", routes.get_interests);
+app.get("/interests", routes.get_interests);
+app.post("/insert_interest", routes.insert_interest);
+app.post("/remove_interest", routes.remove_interest);
+
+// Add preference route
+app.post('/pref_form_submit', routes.pref_form_submit);
 
 // Register route
 app.get('/register', routes.register_page);
