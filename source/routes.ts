@@ -154,6 +154,7 @@ async function get_group_members(req: express.Request, res: express.Response) {
         }
         
         // Get the group id from the student
+        // @ts-ignore
         let group_id = req.session.user.group_id;
         
         // Get the group matching the id from the database
@@ -471,6 +472,54 @@ function preferences_page(req: express.Request, res: express.Response) {
     }
 }
 
+function class_page(req: express.Request, res: express.Response) {
+    // If no user object is attached to the session, it means 
+    // the user is not logged in, so redirect them to the login page
+    if (req.session.user === undefined) {
+        res.redirect("/login");
+        return;
+    }
+    
+    // Otherwise, just display the right dashboard based on the user type
+    if (req.session.is_admin) {
+        res.sendFile(utils.get_views_path("class.html"));
+    } else {
+        res.redirect("/dashboard");
+    }
+}
+
+async function get_class_info(req: express.Request, res: express.Response) {
+    try {
+        if (req.session.user === undefined || req.session.is_admin == false) {
+           res.sendStatus(403);
+           return;
+        }
+        
+        // If the teacher does not have a class associated with them, reject the request
+        if (req.session.user.class_id == -1) {
+            res.sendStatus(404);
+            return;
+        }
+        
+        let student_info : any[] = [];
+        await db.students_collection.find<Student>({class_id: req.session.user.class_id}).forEach(student => {
+            student_info.push({
+                first_name : student.first_name,
+                last_name  : student.last_name,
+                group_id   : student.group_id,
+            })
+        });
+        res.json(student_info);
+    } catch (err) {
+        log.error(`Failed login due to internal error: ${err}`)
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+    
+}
+
+
 // Exported routes
 export = {
     dashboard_page,
@@ -487,5 +536,7 @@ export = {
     pref_form_submit,
     logout,
     groups_page,
-    preferences_page
+    preferences_page,
+    class_page,
+    get_class_info
 };

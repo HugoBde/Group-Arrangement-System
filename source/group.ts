@@ -58,8 +58,8 @@ async function make_groups(target_group_size: number) {
     } else {
         log.error(`Failed to add groups for class ${class_of_students_not_the_keyword_class_leave_me_alone_javascript.name}`);
     }
-
-    db.db_client.close();
+    
+    db.class_collection.updateOne({_id: class_of_students_not_the_keyword_class_leave_me_alone_javascript._id}, {$set : {groups_made : true }});
 }
 
 export = Group;

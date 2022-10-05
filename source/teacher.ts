@@ -8,8 +8,7 @@ class Teacher {
     last_name:     string;
     email_address: string;
     password:      string;
-    group_id:      number;
-
+    class_id:      number;
 
     constructor(id: number, first_name: string, last_name: string, email_address: string, password: string) {
         this.id            = id; 
@@ -17,7 +16,7 @@ class Teacher {
         this.last_name     = last_name;
         this.email_address = email_address;
         this.password      = password;
-        this.group_id      = -1; // -1 means no group assigned
+        this.class_id      = -1; // -1 means no group assigned
 
     }
 }

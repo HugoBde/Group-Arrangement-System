@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="../stylesheets/style.css" />
-    <script src="" defer></script>
-</head> -->
+    <script src="../scripts/class.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+</head> 
 
 <body class="bg-bglavender text-bgcharcoal dark:bg-bgcharcoal dark:text-bglavendertext">
     <header class="container mx-auto mt-10 px-6 text-center h-28">
@@ -36,20 +37,18 @@
     </h1>
     <!-- dashboard content -->
     <div class="mt-16 mx-16 md:mt-28">
-        
-        <!-- This is what I have changed thus far from line 40 and below 
-        I want to create a grid for each student -->
-        <div class="grid grid-rows-4 grid-flow-col gap-4">
-            <div>01</div>
-            <!-- ... -->
-            <div>09</div>
-          </div>
-          <div class="grid grid-rows-2 hover:grid-rows-6">
-            <!-- ... -->
-          </div>
-          
-        
-        
+        <table id="class_table"
+            class="min-w-full border-2 bg-gray-500 text-center outline outline-offset-4 outline-pink-400 hover:cursor-text">
+            <thead class="border-b">
+                <tr>
+                    <th class="text-2xl border py-3">Name</th>
+                    <th class="text-2xl border py-3">Group</th>
+                </tr>
+            </thead>
+            <tbody id="class_table_body">
+
+            </tbody>
+        </table>
     </div>
 </body>
 
