@@ -7,6 +7,7 @@ class Student {
     password:      string;
     group_id:      number;
     class_id:      number;
+
     //degree:        string;
     //year:          string;
     //interest:      string;
