@@ -10,7 +10,7 @@
     <script src="../scripts/preference.js" defer></script>
 </head>
 
-<body class="bg-bglavender text-bgcharcoal dark:bg-bgcharcoal dark:text-bglavendertext">
+<body class="bg-bglavender text-bgcharcoal">
     <header class="container mx-auto mt-10 px-6 text-center h-28">
         <a href="javascript:window.location.href=window.location.href"
             class="text-4xl h-20 w-48 mx-auto md:x-0 md:absolute top-10 left-10 underline decoration-pink-400/90">
@@ -35,10 +35,11 @@
         </span>
     </h1>
     <!-- preference form -->
-    <form class="mx-auto py-8 grid" action="/pref_form_submit" method="post">     <!-- add flex to center it  -->
+    <form class="mx-auto py-8 grid" action="/pref_form_submit" method="post">
+        <!-- add flex to center it  -->
 
         <div class="inline-flex mx-auto w-1/2 mt-4">
-            <select  class=" mx-auto px-6 py-3 shadow w-4/5" placeholder="Degree" id="degree" name="degree" required>
+            <select class=" mx-auto px-6 py-3 shadow w-4/5" placeholder="Degree" id="degree" name="degree" required>
                 <option value="" disabled selected hidden>Degree</option>
                 <option value="Computer Science">Computer Science</option>
                 <option value="Information Systems">Information Systems</option>
@@ -51,7 +52,7 @@
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
-            </select> 
+            </select>
         </div>
         <div class="flex flex-col w-full ">
             <select class=" mt-5 w-1/2 mx-auto px-6 py-3 shadow" id="interest_selection" name="interest" required>
@@ -67,20 +68,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
