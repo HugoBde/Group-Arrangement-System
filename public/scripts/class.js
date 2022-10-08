@@ -19,6 +19,12 @@ async function random_groups() {
     fill_table(students);
 }
 
+function clear_table() {
+    while(class_table_body.rows.length != 0) {
+      class_table_body.deleteRow(0)
+    }
+}
+
 // Fill the class table with the students array
 function fill_table(students) {
     // Sort the student array based on their group id so
@@ -34,6 +40,8 @@ function fill_table(students) {
         }
         return a.group_id - b.group_id;
     });
+
+    clear_table();
 
     // Loop through the names and create a row for each student
     for (let student of students) {
