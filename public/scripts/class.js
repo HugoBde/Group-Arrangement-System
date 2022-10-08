@@ -19,6 +19,14 @@ async function random_groups() {
     fill_table(students);
 }
 
+async function clear_groups() {
+    let response = await fetch("/clear_groups");
+
+    let students = await response.json();
+
+    fill_table(students);
+}
+
 function clear_table() {
     while(class_table_body.rows.length != 0) {
       class_table_body.deleteRow(0)

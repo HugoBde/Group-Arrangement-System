@@ -12,17 +12,18 @@ const maxvalue : number = 5;
 
 class Group {
     // We only refer to students via their id number
-    id:       number;
+    class_id   : number;
+    id         : number;
     student_ids: number[];
 
-    static make_groups_random(students: Student[], target_group_size: number = 5) : Group[] {
+    static make_groups_random(class_id: number, students: Student[], target_group_size: number = 5) : Group[] {
         
         let target_group_number = Math.round(students.length / target_group_size);
 
         let groups = [];
 
         for(let i = 0; i < target_group_number; i++) {
-            groups.push(new Group(i));
+            groups.push(new Group(class_id, i));
         }
 
         for(let [i, student] of students.entries()) {
@@ -32,7 +33,8 @@ class Group {
         
         return groups;
     }
-    constructor(id: number) {
+    constructor(class_id: number, id: number) {
+        this.class_id    = class_id;
         this.id          = id
         this.student_ids = [];
     }

@@ -82,6 +82,7 @@ app.get('/register', routes.register_page);
 app.post("/register", routes.register_form_submit);
 
 // Group generation endpoints
+app.get("/clear_groups", routes.clear_groups);
 app.get("/make_groups_random", routes.make_groups_random);
 
 // Start server

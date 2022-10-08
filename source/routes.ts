@@ -520,6 +520,45 @@ async function get_class_info(req: express.Request, res: express.Response) {
     
 }
 
+async function clear_groups(req: express.Request, res: express.Response) {
+    try {
+        // Ensure the user is allowed to make such request
+        if (req.session.user === undefined || req.session.is_admin == false) {
+            res.sendStatus(403);
+            return;
+        }
+       
+        // If the teacher does not have a class associated with them, reject the request
+        if (req.session.user.class_id == -1) {
+            res.sendStatus(404);
+            return;
+        }
+        
+        // DElete groups for the teacher's class
+        await db.groups_collection.deleteMany({class_id: req.session.user.class_id});
+        
+        // Delete group id from students
+        await db.students_collection.updateMany({class_id: req.session.user.class_id}, {$set: {group_id: -1}});
+
+        // Fetch updated students to send it to the front end so that the table can be updated 
+        let student_info : any[] = [];
+        await db.students_collection.find<Student>({class_id: req.session.user.class_id}).forEach(student => {
+            student_info.push({
+                first_name : student.first_name,
+                last_name  : student.last_name,
+                group_id   : student.group_id,
+            })
+        });
+        res.json(student_info);
+    } catch (err) {
+        log.error(`Failed to clear groups due to internal error: ${err}`);
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+}
+
+
 // Generate groups randomly
 async function make_groups_random(req: express.Request, res: express.Response) {
     try {
@@ -542,7 +581,7 @@ async function make_groups_random(req: express.Request, res: express.Response) {
         });
 
         // Put students in random groups
-        let groups = Group.make_groups_random(students);
+        let groups = Group.make_groups_random(req.session.user.class_id, students);
 
         // Let's do all database requests asynchronously 
         // (i.e.: don't wait for the first one to complete to send the second one)
@@ -600,5 +639,6 @@ export = {
     preferences_page,
     class_page,
     get_class_info,
+    clear_groups,
     make_groups_random
 };
