@@ -36,9 +36,9 @@
         </span>
     </h1>
     <!-- dashboard content -->
-    <div class="mt-16 mx-16 md:mt-28">
+    <div class="mt-16 mx-16 md:mt-28 flex p-16 items-start justify-evenly">
         <table id="class_table"
-            class="min-w-full border-2 bg-gray-500 text-center outline outline-offset-4 outline-pink-400 hover:cursor-text">
+            class="min-w-[50%] border-2 bg-gray-500 text-center outline outline-offset-4 outline-pink-400 hover:cursor-text">
             <thead class="border-b">
                 <tr>
                     <th class="text-2xl border py-3">Name</th>
@@ -49,6 +49,11 @@
 
             </tbody>
         </table>
+        <button id="make_groups_random_btn"
+            onclick="random_groups()"
+            class="mx-16 bg-gray-500 text-center outline p-12 rounded-3xl duration-300" >
+            Randomly generate groups
+        </button>
     </div>
 </body>
 

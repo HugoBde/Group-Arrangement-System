@@ -81,6 +81,8 @@ app.get('/register', routes.register_page);
 // Register form submission
 app.post("/register", routes.register_form_submit);
 
+// Group generation endpoints
+app.get("/make_groups_random", routes.make_groups_random);
 
 // Start server
 const server = app.listen(port, () => {
