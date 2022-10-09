@@ -407,6 +407,65 @@ async function pref_form_submit(req: express.Request, res: express.Response) {
     }
 }
 
+// Filter by Prefernces
+function filterByPreferences (req: express.Request, res: express.Response){
+
+    function filterByDegree(){
+        const filter = {"degree": req.body.degree};
+        db.students_collection.find(filter);
+    }
+    function filterByYear(){
+        const filter = {"year": req.body.year};
+        db.students_collection.find(filter);
+    }
+    function filterbyInterest(){
+        const filter = {"interest": req.body.interest};
+        db.students_collection.find(filter);
+    }
+
+}
+
+// Sort by Preferences
+function sortByPreferences(req: express.Request, res: express.Response){
+    var i;
+    function sortByDegree(){
+        const sort = {"degree": req.body.degree};
+        for (i = 0; i < req.body.degree.size; i++){
+            
+        }
+    }
+    function sortByYear(){
+        const sort = {"year": req.body.year};
+        for (i = 0; i < req.body.year.size; i++){
+           
+        }
+    }
+    function sortByInterest(){
+        const sort = {"interest": req.body.interest};
+        for (i = 0; i < req.body.interest.size; i++){
+
+        }
+    }
+
+}
+
+// Assign by Preferences
+function assignByPreferences(req: express.Request, res: express.Response){
+
+    let students = get_all_not_grouped;
+    
+    function assignByDegree(){
+
+        function assignByYear(){
+
+            function assignByInterest(){
+
+            }
+        }
+    }
+
+}
+
 // Logout
 function logout(req: express.Request, res: express.Response) {
     req.session.destroy(function () {})
