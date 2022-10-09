@@ -27,25 +27,27 @@
         </div>
     </header>
     <!-- border to seperate -->
-    <div class="w-full mt-4 border-b border-b-gray-100 md:mt-0"></div>
+    <div class="w-full mt-4 border-b border-b-gray-500 md:mt-0"></div>
     <!-- dashboard heading -->
     <h1 class="mt-16 mx-16  text-3xl text-center md:text-left">
-        <span class="underline decoration-yellow-200">
+        <span class="underline decoration-purple-500">
             Preferences
         </span>
     </h1>
     <!-- preference form -->
-    <form class="mx-auto py-8 grid" action="/pref_form_submit" method="post">
+    <form class="mx-auto mt-16 py-8 grid" action="/pref_form_submit" method="post">
         <!-- add flex to center it  -->
 
         <div class="inline-flex mx-auto w-1/2 mt-4">
-            <select class=" mx-auto px-6 py-3 shadow w-4/5" placeholder="Degree" id="degree" name="degree" required>
+            <select class=" mx-auto space-y-4 px-6 py-3 font-light text-lg shadow w-4/5 bg-slate-400"
+                placeholder="Degree" id="degree" name="degree" required>
                 <option value="" disabled selected hidden>Degree</option>
-                <option value="Computer Science">Computer Science</option>
+                <option class="accent-red-500" value="Computer Science">Computer Science</option>
                 <option value="Information Systems">Information Systems</option>
                 <option value="Business">Business</option>
             </select>
-            <select class=" mx-auto px-6 py-3 shadow w-1/5" id="year" name="year" required>
+            <select class=" mx-auto px-6 py-3 font-light text-lg shadow w-1/5 bg-slate-300" id="year" name="year"
+                required>
                 <option value="" disabled selected hidden>Year</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -55,16 +57,27 @@
             </select>
         </div>
         <div class="flex flex-col w-full ">
-            <select class=" mt-5 w-1/2 mx-auto px-6 py-3 shadow" id="interest_selection" name="interest" required>
-                <option value="" disabled selected hidden>Interest</option>
+            <select class=" mt-5 w-1/2 mx-auto px-6 py-3 font-light text-lg shadow bg-slate-200" id="interest_selection"
+                name="interest" required>
+                <option value="" disabled selected hidden>Interest (Pick your choice of interest based on your study)
+                </option>
             </select>
         </div>
-        <div class="flex flex-col items-center">
-            <button type="submit" class="w-1/4 px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg
-             active:bg-blue-800 active:shadow-lg transition duration-150 mt-5">Submit</button>
+        <div class="flex flex-col mt-4 items-center">
+            <button type="submit" class="w-1/4 px-6 py-2.5 bg-pink-400 text-bgcharcoal1 font-medium text-md leading-tight uppercase rounded shadow-md hover:bg-opacity-80 hover:shadow-lg
+             active:bg-pink-500 active:shadow-lg transition duration-150 mt-5">Submit</button>
         </div>
     </form>
 
+    <!-- Return to dashboard -->
+    <div class="fixed bottom-7 mx-16">
+        <a href="/dashboard" class="flex items-center text-pink-400 hover:text-opacity-80">
+            <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H6M12 5l-7 7 7 7" /></svg>
+            Back to Dashboard
+        </a>
+    </div>
 </body>
 
 </html>

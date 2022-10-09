@@ -1,4 +1,4 @@
-const class_table_body = document.getElementById("class_table_body"); 
+const class_table_body = document.getElementById("class_table_body");
 
 async function get_class() {
 
@@ -23,7 +23,7 @@ async function get_class() {
         group_cell.classList.add('text-xl');
         new_row.appendChild(name_cell);
         new_row.appendChild(group_cell);
-        new_row.classList.add('border', 'hover:bg-gray-700', 'hover:cursor-text', 'py-2');
+        new_row.classList.add('border', 'hover:bg-gray-300', 'hover:cursor-text', 'py-2');
         class_table_body.appendChild(new_row);
     }
 }
