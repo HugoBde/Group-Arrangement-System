@@ -408,39 +408,40 @@ async function pref_form_submit(req: express.Request, res: express.Response) {
 }
 
 // Filter by Prefernces
-function filterByPreferences (req: express.Request, res: express.Response){
-
-    function filterByDegree(){
-        const filter = {"degree": req.body.degree};
-        db.students_collection.find(filter);
-    }
-    function filterByYear(){
-        const filter = {"year": req.body.year};
-        db.students_collection.find(filter);
-    }
-    function filterbyInterest(){
-        const filter = {"interest": req.body.interest};
-        db.students_collection.find(filter);
-    }
-
+function filterByDegree(req: express.Request, res: express.Response){
+    const filter = {"degree": req.body.degree};
+    db.students_collection.find(filter);
 }
+function filterByYear(req: express.Request, res: express.Response){
+    const filter = {"year": req.body.year};
+    db.students_collection.find(filter);
+}
+function filterbyInterest(req: express.Request, res: express.Response){
+    const filter = {"interest": req.body.interest};
+    db.students_collection.find(filter);
+}
+
+
 
 // Sort by Preferences
 function sortByPreferences(req: express.Request, res: express.Response){
     var i;
     function sortByDegree(){
+        filterByDegree;
         const sort = {"degree": req.body.degree};
         for (i = 0; i < req.body.degree.size; i++){
             
         }
     }
     function sortByYear(){
+        filterByYear;
         const sort = {"year": req.body.year};
         for (i = 0; i < req.body.year.size; i++){
            
         }
     }
     function sortByInterest(){
+        filterbyInterest
         const sort = {"interest": req.body.interest};
         for (i = 0; i < req.body.interest.size; i++){
 
