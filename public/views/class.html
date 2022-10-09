@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="../stylesheets/style.css" />
     <script src="../scripts/class.js" defer></script>
     <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
-</head> 
+</head>
 
-<body class="bg-bglavender text-bgcharcoal dark:bg-bgcharcoal dark:text-bglavendertext">
+<body class="bg-bglavender text-bgcharcoal">
     <header class="container mx-auto mt-10 px-6 text-center h-28">
         <a href="javascript:window.location.href=window.location.href"
             class="text-4xl h-20 w-48 mx-auto md:x-0 md:absolute top-10 left-10 underline decoration-pink-400/90">
@@ -31,14 +31,14 @@
     <div class="w-full mt-4 border-b border-b-gray-100 md:mt-0"></div>
     <!-- dashboard heading -->
     <h1 class="mt-16 mx-16  text-3xl text-center md:text-left">
-        <span class="underline decoration-yellow-200">
+        <span class="underline decoration-emerald-500">
             My Admin Dashboard
         </span>
     </h1>
     <!-- dashboard content -->
-    <div class="mt-16 mx-16 md:mt-28 flex p-16 items-start justify-evenly">
+    <div class="mt-16 mx-16 flex items-start justify-evenly md:mt-24">
         <table id="class_table"
-            class="min-w-[50%] border-2 bg-gray-500 text-center outline outline-offset-4 outline-pink-400 hover:cursor-text">
+            class="min-w-[50%] border-2 bg-gray-400 text-center outline outline-offset-4 outline-pink-400 hover:cursor-text">
             <thead class="border-b">
                 <tr>
                     <th class="text-2xl border py-3">Name</th>
@@ -59,6 +59,15 @@
             class="mx-16 bg-gray-500 text-center outline p-12 rounded-3xl duration-300" >
             Clear groups
         </button>
+    </div>
+    <!-- Return to dashboard -->
+    <div class="mt-16 mb-8 mx-16">
+        <a href="/dashboard" class="flex items-center text-pink-400 hover:text-opacity-80">
+            <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H6M12 5l-7 7 7 7" /></svg>
+            Back to Dashboard
+        </a>
     </div>
 </body>
 

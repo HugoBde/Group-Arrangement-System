@@ -30,7 +30,7 @@ async function get_group_members() {
         role_cell.classList.add('text-xl');
         new_row.appendChild(name_cell);
         new_row.appendChild(role_cell);
-        new_row.classList.add('border', 'hover:bg-gray-700', 'hover:cursor-text', 'py-2');
+        new_row.classList.add('border', 'hover:bg-gray-300', 'hover:cursor-text', 'py-2');
         group_table_body.appendChild(new_row);
     }
 }
