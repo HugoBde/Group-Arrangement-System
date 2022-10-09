@@ -8,14 +8,15 @@ import bcryptjs = require("bcryptjs")
 
 
 // Local import 
-import db        = require("./db-client");
-import log       = require("./log");
-import Student   = require("./student");
-import utils     = require("./utils");
-import Teacher   = require("./teacher");
+import Class   = require("./class");
+import db      = require("./db-client");
+import Group   = require("./group");
+import log     = require("./log");
+import Student = require("./student");
+import utils   = require("./utils");
+import Teacher = require("./teacher");
 import { assert } from "console";
 
-import Class = require("./class");
 
 // Home page
 function home_page(req: express.Request, res: express.Response) {
@@ -171,7 +172,7 @@ async function get_group_members(req: express.Request, res: express.Response) {
         }
         
         // Find all students whose id is in the array of id of the group
-        let students = await db.students_collection.find({id: {$in: group.students}}).toArray();
+        let students = await db.students_collection.find({id: {$in: group.student_ids}}).toArray();
         
         // Create a string array that will contain the name of the students in the group
         let output : string[] = [];
@@ -213,7 +214,7 @@ async function get_all_not_grouped(req: express.Request, res: express.Response){
         }
 
         // Find all students whose id is in the array of id of the group
-        let students = await db.students_collection.find({id: {$in: group.students}}).toArray();
+        let students = await db.students_collection.find({id: {$in: group.student_ids}}).toArray();
         
         // Create a string array that will contain the name of the students in the group
         let output : string[] = [];
@@ -406,6 +407,66 @@ async function pref_form_submit(req: express.Request, res: express.Response) {
     }
 }
 
+// Filter by Prefernces
+function filterByDegree(req: express.Request, res: express.Response){
+    const filter = {"degree": req.body.degree};
+    db.students_collection.find(filter);
+}
+function filterByYear(req: express.Request, res: express.Response){
+    const filter = {"year": req.body.year};
+    db.students_collection.find(filter);
+}
+function filterbyInterest(req: express.Request, res: express.Response){
+    const filter = {"interest": req.body.interest};
+    db.students_collection.find(filter);
+}
+
+
+
+// Sort by Preferences
+function sortByPreferences(req: express.Request, res: express.Response){
+    var i;
+    function sortByDegree(){
+        filterByDegree;
+        const sort = {"degree": req.body.degree};
+        for (i = 0; i < req.body.degree.size; i++){
+            
+        }
+    }
+    function sortByYear(){
+        filterByYear;
+        const sort = {"year": req.body.year};
+        for (i = 0; i < req.body.year.size; i++){
+           
+        }
+    }
+    function sortByInterest(){
+        filterbyInterest
+        const sort = {"interest": req.body.interest};
+        for (i = 0; i < req.body.interest.size; i++){
+
+        }
+    }
+
+}
+
+// Assign by Preferences
+function assignByPreferences(req: express.Request, res: express.Response){
+
+    let students = get_all_not_grouped;
+    
+    function assignByDegree(){
+
+        function assignByYear(){
+
+            function assignByInterest(){
+
+            }
+        }
+    }
+
+}
+
 // Logout
 function logout(req: express.Request, res: express.Response) {
     req.session.destroy(function () {})
@@ -519,6 +580,105 @@ async function get_class_info(req: express.Request, res: express.Response) {
     
 }
 
+async function clear_groups(req: express.Request, res: express.Response) {
+    try {
+        // Ensure the user is allowed to make such request
+        if (req.session.user === undefined || req.session.is_admin == false) {
+            res.sendStatus(403);
+            return;
+        }
+       
+        // If the teacher does not have a class associated with them, reject the request
+        if (req.session.user.class_id == -1) {
+            res.sendStatus(404);
+            return;
+        }
+        
+        // DElete groups for the teacher's class
+        await db.groups_collection.deleteMany({class_id: req.session.user.class_id});
+        
+        // Delete group id from students
+        await db.students_collection.updateMany({class_id: req.session.user.class_id}, {$set: {group_id: -1}});
+
+        // Fetch updated students to send it to the front end so that the table can be updated 
+        let student_info : any[] = [];
+        await db.students_collection.find<Student>({class_id: req.session.user.class_id}).forEach(student => {
+            student_info.push({
+                first_name : student.first_name,
+                last_name  : student.last_name,
+                group_id   : student.group_id,
+            })
+        });
+        res.json(student_info);
+    } catch (err) {
+        log.error(`Failed to clear groups due to internal error: ${err}`);
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+}
+
+
+// Generate groups randomly
+async function make_groups_random(req: express.Request, res: express.Response) {
+    try {
+        // Ensure the user is allowed to make such request
+        if (req.session.user === undefined || req.session.is_admin == false) {
+            res.sendStatus(403);
+            return;
+        }
+
+        // If the teacher does not have a class associated with them, reject the request
+        if (req.session.user.class_id == -1) {
+            res.sendStatus(404);
+            return;
+        }
+       
+        // Fetch students from the teachers class
+        let students : Student[] = [];
+        await db.students_collection.find<Student>({class_id: req.session.user.class_id}).forEach(student => {
+            students.push(student);
+        });
+
+        // Put students in random groups
+        let groups = Group.make_groups_random(req.session.user.class_id, students);
+
+        // Let's do all database requests asynchronously 
+        // (i.e.: don't wait for the first one to complete to send the second one)
+        // Then use Promise.all([promises]) to wait for all of them to complete before
+        // sending our reponse
+        let database_rqs = [];
+
+        // Update the groups database
+        database_rqs.push(db.groups_collection.insertMany(groups));
+
+        // Update students' group id
+        for(let group of groups) {
+            database_rqs.push(db.students_collection.updateMany({id: {$in: group.student_ids}}, {$set: {group_id: group.id}}));
+        }
+        
+        // Here we wait for all the promises to complete
+        await Promise.all(database_rqs);
+
+        let student_info = [];
+
+        for(let student of students) {
+            student_info.push({
+                first_name: student.first_name,
+                last_name : student.last_name,
+                group_id  : student.group_id,
+            })
+        }
+
+        res.json(student_info);
+    } catch (err) {
+        log.error(`Failed to generate groups due to internal error: ${err}`);
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+}
+
 
 // Exported routes
 export = {
@@ -538,5 +698,7 @@ export = {
     groups_page,
     preferences_page,
     class_page,
-    get_class_info
+    get_class_info,
+    clear_groups,
+    make_groups_random
 };

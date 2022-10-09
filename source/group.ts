@@ -12,54 +12,34 @@ const maxvalue : number = 5;
 
 class Group {
     // We only refer to students via their id number
-    id:       number;
-    students: number[];
+    class_id   : number;
+    id         : number;
+    student_ids: number[];
 
-    constructor(id: number) {
-        this.id       = id
-        this.students = [];
-    }
+    static make_groups_random(class_id: number, students: Student[], target_group_size: number = 5) : Group[] {
+        
+        let target_group_number = Math.round(students.length / target_group_size);
 
-}
+        let groups = [];
 
-async function make_groups(target_group_size: number) {
-    
-    let class_of_students_not_the_keyword_class_leave_me_alone_javascript = await db.class_collection.findOne({});
-
-    if (class_of_students_not_the_keyword_class_leave_me_alone_javascript === null) {
-        log.error("class not found");
-        return;
-    }
-
-    let students = await db.students_collection.find({_id:{$in: class_of_students_not_the_keyword_class_leave_me_alone_javascript.students}}).toArray();
-
-    let target_group_number = Math.round(students.length / target_group_size);
-
-    let groups = [];
-
-    for(let i = 0; i < target_group_number; i++) {
-        groups.push(new Group(i));
-    }
-
-    for(let i = 0; i < students.length; i++) {
-        groups[i % target_group_number].students.push(students[i].id);
-    }
-
-    let result = await db.groups_collection.insertMany(groups);
-
-    if (result.acknowledged) {
-        log.info(`Groups successfully created for class ${class_of_students_not_the_keyword_class_leave_me_alone_javascript.name}`);
-        assert(result.insertedCount === target_group_number);
-        for(let group of groups) {
-            for(let student_id of group.students) {
-                await db.students_collection.updateOne({id: student_id}, {$set: {group_id: group.id}});
-            }
+        for(let i = 0; i < target_group_number; i++) {
+            groups.push(new Group(class_id, i));
         }
-    } else {
-        log.error(`Failed to add groups for class ${class_of_students_not_the_keyword_class_leave_me_alone_javascript.name}`);
+
+        for(let [i, student] of students.entries()) {
+            groups[i % target_group_number].student_ids.push(student.id);
+            student.group_id = i % target_group_number;
+        }
+        
+        return groups;
     }
-    
-    db.class_collection.updateOne({_id: class_of_students_not_the_keyword_class_leave_me_alone_javascript._id}, {$set : {groups_made : true }});
+    constructor(class_id: number, id: number) {
+        this.class_id    = class_id;
+        this.id          = id
+        this.student_ids = [];
+    }
+
 }
+
 
 export = Group;
