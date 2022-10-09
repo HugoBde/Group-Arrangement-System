@@ -679,6 +679,38 @@ async function make_groups_random(req: express.Request, res: express.Response) {
     }
 }
 
+async function make_groups_on_year(req: express.Request, res: express.Response) {
+    try {
+        // Ensure the user is allowed to make such request
+        if (req.session.user === undefined || req.session.is_admin == false) {
+            res.sendStatus(403);
+            return;
+        }
+
+        // If the teacher does not have a class associated with them, reject the request
+        if (req.session.user.class_id == -1) {
+            res.sendStatus(404);
+            return;
+        }
+
+        // Fetch students from the teachers class
+        let students : Student[] = [];
+        await db.students_collection.find<Student>({class_id: req.session.user.class_id}).forEach(student => {
+            students.push(student);
+        });
+        
+        // Put students in preffered groups
+        let groups = Group.make_groups_on_year(req.session.user.class_id, students);
+        
+    
+    } catch (err) {
+        log.error(`Failed to generate groups due to internal error: ${err}`);
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+}
+
 
 // Exported routes
 export = {
@@ -700,5 +732,6 @@ export = {
     class_page,
     get_class_info,
     clear_groups,
-    make_groups_random
+    make_groups_random,
+    make_groups_on_year
 };
