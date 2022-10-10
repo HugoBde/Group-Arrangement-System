@@ -728,10 +728,6 @@ video {
   height: 10rem;
 }
 
-.h-32 {
-  height: 8rem;
-}
-
 .max-h-0 {
   max-height: 0px;
 }
@@ -768,22 +764,6 @@ video {
   width: 25%;
 }
 
-.w-16 {
-  width: 4rem;
-}
-
-.w-36 {
-  width: 9rem;
-}
-
-.w-32 {
-  width: 8rem;
-}
-
-.w-60 {
-  width: 15rem;
-}
-
 .min-w-\[50\%\] {
   min-width: 50%;
 }
@@ -806,6 +786,10 @@ video {
 
 .max-w-sm {
   max-width: 24rem;
+}
+
+.max-w-lg {
+  max-width: 32rem;
 }
 
 .cursor-pointer {
@@ -1098,6 +1082,11 @@ video {
   line-height: 1.75rem;
 }
 
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
+
 .font-semibold {
   font-weight: 600;
 }
@@ -1128,6 +1117,22 @@ video {
 
 .tracking-wider {
   letter-spacing: 0.05em;
+}
+
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+
+.tracking-tighter {
+  letter-spacing: -0.05em;
 }
 
 .text-bgcharcoal {
@@ -1193,6 +1198,16 @@ video {
 .decoration-purple-500 {
   -webkit-text-decoration-color: #a855f7;
           text-decoration-color: #a855f7;
+}
+
+.decoration-pink-400 {
+  -webkit-text-decoration-color: #f472b6;
+          text-decoration-color: #f472b6;
+}
+
+.decoration-pink-500 {
+  -webkit-text-decoration-color: #ec4899;
+          text-decoration-color: #ec4899;
 }
 
 .accent-red-500 {

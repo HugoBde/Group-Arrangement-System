@@ -679,6 +679,22 @@ async function make_groups_random(req: express.Request, res: express.Response) {
     }
 }
 
+function help_page(req: express.Request, res: express.Response) {
+    // If no user object is attached to the session, it means
+    // the user is not logged in, so redirect them to the login page
+    if (req.session.user === undefined) {
+        res.redirect("/login");
+        return;
+    }
+
+    // This page is not for admins
+    if (req.session.is_admin) {
+        res.redirect("/dashboard");
+        return;
+    }
+
+    res.sendFile(utils.get_views_path("help.html"));
+}
 
 // Exported routes
 export = {
@@ -700,5 +716,6 @@ export = {
     class_page,
     get_class_info,
     clear_groups,
-    make_groups_random
+    make_groups_random,
+    help_page
 };
