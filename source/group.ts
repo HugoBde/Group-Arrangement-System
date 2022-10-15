@@ -36,7 +36,7 @@ class Group {
     }
 
 
-    static make_groups_on_year(class_id: number, students: Student[], target_group_size: number = 5) : Group[] {
+    /*static make_groups_on_year(class_id: number, students: Student[], target_group_size: number = 5) : Group[] {
         
         //stable marriage alg
         let groupMap = new Map();
@@ -50,7 +50,7 @@ class Group {
         }
 
         
-        /*
+        
             Preference Rankings
             1. Interest
             2. Degree
@@ -108,12 +108,12 @@ class Group {
         3. Day 3 of Algorithm
             - repeat until
 
-        */
+        
 
         
 
         return groups;
-    }
+    }*/
 
 
     

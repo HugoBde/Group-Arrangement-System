@@ -19,6 +19,14 @@ async function random_groups() {
     fill_table(students);
 }
 
+async function preference_groups() {
+    let response = await fetch("/make_groups_on_preference");
+    
+    let students = await response.json();
+    
+    fill_table(students);
+}
+
 async function clear_groups() {
     let response = await fetch("/clear_groups");
 

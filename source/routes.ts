@@ -381,7 +381,7 @@ async function pref_form_submit(req: express.Request, res: express.Response) {
 
         let student_id = req.session.user.id;
 
-        await db.students_collection.findOne()
+        await db.students_collection.findOne();
 
         var documentCount = await db.students_collection.countDocuments({"id":student_id});
         
@@ -679,8 +679,11 @@ async function make_groups_random(req: express.Request, res: express.Response) {
     }
 }
 
-async function make_groups_on_year(req: express.Request, res: express.Response) {
+async function make_groups_on_preference(req: express.Request, res: express.Response) {
     try {
+        
+        console.log("begin preference group function...");
+        
         // Ensure the user is allowed to make such request
         if (req.session.user === undefined || req.session.is_admin == false) {
             res.sendStatus(403);
@@ -698,9 +701,46 @@ async function make_groups_on_year(req: express.Request, res: express.Response) 
         await db.students_collection.find<Student>({class_id: req.session.user.class_id}).forEach(student => {
             students.push(student);
         });
+
+
+        let class_id = req.session.user.class_id;
+        let classStudent = await db.class_collection.findOne({id: class_id});
+
+        //error check
+        if (classStudent === null) {
+            log.error("class not found");
+            return;
+        }
+
+        let interestList = classStudent.interests;
+        let degreeList = classStudent.degree;
+        let yearList = classStudent.year;
         
-        // Put students in preffered groups
-        let groups = Group.make_groups_on_year(req.session.user.class_id, students);
+        console.log(students.length);
+        
+        //GROUPING ALGO - PSEUDO CODE
+        //target_group_size = req.body.group_size
+        //target_group_number = Math.round(students.length / target_group_size);
+        
+        //for all student in students array
+            //let student interest = student.interest
+            
+            //for all interests in students
+
+
+
+
+
+            //IGNORE FOR NOW -----------------------------------------------------------------
+        /*let target_group_size = 5;
+        let target_group_number = Math.round(students.length / target_group_size);
+        let groups = [];
+
+        for(let i = 0; i < target_group_number; i++) {
+            groups.push(new Group(class_id, i));
+        }*/
+
+        //for(let student of students){}
         
     
     } catch (err) {
@@ -733,5 +773,5 @@ export = {
     get_class_info,
     clear_groups,
     make_groups_random,
-    make_groups_on_year
+    make_groups_on_preference
 };
