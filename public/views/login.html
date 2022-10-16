@@ -1,80 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../stylesheets/style.css" />
-    <link rel="icon" type="image/x-icon" href="/icons/favicon.ico" />
-    <title>Login</title>
-  </head>
-  <body class="bg-bgcharcoal text-bgcharcoal1">
-    <!-- login container -->
-    <div class="flex items-center justify-center min-h-screen">
-      <!-- card container -->
 
-      <div
-        class="relative flex flex-col m-6 space-y-10 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0"
-      >
-        <!-- left -->
-        <form class="p-6 md:p-20" method="post" action="login">
-          <h4 class="mb-5 text-3xl font-bold">Login to your account</h4>
-          <p class="max-w-sm mb-12 font-light">
-            Welcome back. <br />
-            We're excited to see you again.
-          </p>
-          <input
-            type="text"
-            class="w-full p-6 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
-            placeholder="Enter your email address"
-            name="email_address"
-          />
-          <input
-            type="password"
-            class="w-full mt-6 p-6 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
-            placeholder="Enter your password"
-            name="password"
-          />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../stylesheets/style.css" />
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico" />
+  <title>Login</title>
+</head>
 
-          <!-- register here, login btn -->
-          <div
-            class="flex flex-col items-center justify-between mt-8 space-y-6 md:flex-row md:space-y-0"
-          >
-            <a href="#" class="text-cyan-700">Register here</a>
-            <a href="/dashboard">
+<body class="bg-bgcharcoal text-bgcharcoal1">
+  <!-- login container -->
+  <div class="flex items-center justify-center min-h-screen">
+    <!-- card container -->
+
+    <div class="relative flex flex-col m-6 space-y-10 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
+      <!-- left -->
+      <form class="p-6 md:p-20" method="post" action="login">
+        <h4 class="mb-5 text-3xl font-bold">Login to your account</h4>
+        <p class="max-w-sm mb-12 font-light">
+          Welcome back. <br />
+          We're excited to see you again.
+        </p>
+        <input type="text"
+          class="w-full p-6 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
+          placeholder="Enter your email address" name="email_address" />
+        <input type="password"
+          class="w-full mt-6 p-6 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
+          placeholder="Enter your password" name="password" />
+
+        <!-- register here, login btn -->
+        <div class="flex flex-col items-center justify-between mt-8 space-y-6 md:flex-row md:space-y-0">
+          <a href="/register" class="text-cyan-700">Register here</a>
+          <a href="/dashboard">
             <button
-              class="w-1/2 md:width-auto flex justify-center items-center p-4 space-x-4 font-bold rounded-md shadow-xl px-9 bg-pink-400 hover:bg-opacity-80 hover:shadow-2xl transition duration-500"
-            >
+              class="w-1/2 md:width-auto flex justify-center items-center p-4 space-x-4 font-bold rounded-md shadow-xl px-9 bg-pink-400 hover:bg-opacity-80 hover:shadow-2xl transition duration-500">
               Login
             </button>
-            </a>
-          </div>
-          <!-- border to seperate -->
-          <div class="mt-8 border-b border-b-gray-300"></div>
-          <a
-            href="/"
-            class="flex items-center justify-center mt-6 hover:text-cyan-600"
-            >Back to home</a
-          >
-        </form>
-        <!-- right -->
-        <div class="w-[430px] hidden md:flex items-center justify-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="62"
-            height="62"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
+          </a>
         </div>
+        <!-- border to seperate -->
+        <div class="mt-8 border-b border-b-gray-300"></div>
+        <a href="/" class="flex items-center justify-center mt-6 hover:text-cyan-600">Back to home</a>
+      </form>
+      <!-- right -->
+      <div class="w-[430px] hidden md:flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="62" height="62" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
       </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
