@@ -492,7 +492,7 @@ async function register_form_submit(req: express.Request, res: express.Response)
         
         let hash = await bcryptjs.hash(req.body.password, 10);
         
-        let student = new Student(req.body.id_num, req.body.first_name, req.body.last_name, req.body.email, hash);
+        let student = new Student(req.body.id_num, req.body.first_name, req.body.last_name, req.body.email, hash, req.body.interest);
         
         var documentCount = await db.students_collection.countDocuments({email: req.body.email}, {limit: 1})
         
@@ -698,13 +698,15 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
 
         // Fetch students from the teachers class
         let students : Student[] = [];
-        await db.students_collection.find<Student>({class_id: req.session.user.class_id}).forEach(student => {
+        let groups = [];
+        await db.students_collection.find<Student>({class_id: req.session.user.class_id, id: req.session.user.id}).forEach(student => {
             students.push(student);
         });
 
 
         let class_id = req.session.user.class_id;
         let classStudent = await db.class_collection.findOne({id: class_id});
+        let id = db.students_collection.findOne(req.body.id);
 
         //error check
         if (classStudent === null) {
@@ -717,6 +719,58 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
         let yearList = classStudent.year;
         
         console.log(students.length);
+
+        //sort student interests alphabetically
+        interestList.sort((a,b) => a.localeCompare(b));
+
+
+        let target_group_size = 5;
+        let target_group_number = Math.round(students.length / target_group_size);
+
+        for (var i = 0; i < target_group_number; i++){
+            groups.push(new Group(class_id, i));
+            for( var i = 0; i < target_group_size; i++){
+                for(var i = 0; students[i]; i++){
+                    students.push(students[i]);
+                    for(var i = 0; i <students.length-2; i++){
+                        if (students[i].interest == students[i+1].interest){
+                            groups.push(students.id);
+                        }
+                    }
+                }
+            }
+        }
+
+        
+        
+
+        // Let's do all database requests asynchronously 
+        // (i.e.: don't wait for the first one to complete to send the second one)
+        // Then use Promise.all([promises]) to wait for all of them to complete before
+        // sending our reponse
+        //let database_rqs = [];
+
+        // Update the groups database
+        //database_rqs.push(db.groups_collection.insertMany(groups));
+
+        // Update students' group id
+        //for(let group of groups) {
+        //    database_rqs.push(db.students_collection.updateMany({id: {$in: group.student_ids}}, {$set: {group_id: group.id}}));
+        //}
+        
+        // Here we wait for all the promises to complete
+        //await Promise.all(database_rqs);
+
+        //let student_info = [];
+
+        //for(let student of students) {
+        //    student_info.push({
+        //        first_name: student.first_name,
+        //        last_name : student.last_name,
+        //        group_id  : student.group_id,
+        //    })
+        //}
+
         
         //GROUPING ALGO - PSEUDO CODE
         //target_group_size = req.body.group_size

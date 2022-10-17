@@ -66,6 +66,7 @@ app.get('/logout', routes.logout);
 // Preferences page
 app.get("/preferences", routes.preferences_page);
 
+
 //app.get("/not_grouped", routes.get_all_not_grouped);
 //app.get("/get_interests", routes.get_interests);
 app.get("/interests", routes.get_interests);

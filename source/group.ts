@@ -12,6 +12,9 @@ import { fileURLToPath } from "url";
 const maxvalue : number = 5;
 
 class Group {
+    static make_groups_on_preference(class_id: number, students: Student[]) {
+        throw new Error("Method not implemented.");
+    }
     // We only refer to students via their id number
     class_id   : number;
     id         : number;
