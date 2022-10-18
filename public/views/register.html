@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../stylesheets/style.css" />
   <link rel="icon" type="image/x-icon" href="/icons/favicon.ico" />
-  <script src="../scripts/login.js"></script>
   <title>Register</title>
 </head>
 
@@ -17,31 +16,31 @@
     <!-- card container -->
     <div class="flex flex-col m-6 space-y-10 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0 md:w-2/3">
       <!-- left -->
-      <div class="p-6 md:p-20">
+      <form action="/register" method="post" class="p-6 md:p-20">
         <h4 class="mb-5 text-3xl font-bold">Register your account</h4>
         <p class="max-w-sm mb-12 font-light">
           Hi there, <br />
           A few more steps and you're ready.
         </p>
-        <input type="text"
+        <input type="text" name="id_num"
           class="w-full mb-6 p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
           placeholder="Enter your University Student ID" />
-        <input type="text"
+        <input type="text" name="first_name"
           class="w-full mb-6 p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
           placeholder="Enter your First Name" />
-        <input type="text"
+        <input type="text" name="last_name"
           class="w-full mb-6 p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
           placeholder="Enter your Last Name" />
-        <input type="email"
+        <input type="email" name="email"
           class="w-full p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
           placeholder="Enter your email address" />
-        <input type="password"
+        <input type="password" name="password"
           class="w-full mt-6 p-2.5 border border-gray-300 rounded-md placeholder:font-light hover:border-pink-300"
           placeholder="Enter your password" />
 
         <!-- register here, login btn -->
         <div class="w-full flex flex-col items-center justify-between mt-8 space-y-6 md:flex-row md:space-y-0">
-          <a href="/login" class="text-cyan-700">Already a user? <b>Login here</b></a>
+          <a href="/register" class="text-cyan-700">Already a user? <b>Login here</b></a>
           <button
             class="w-1/4 md:width-auto flex justify-center items-center p-2.5 space-x-4 font-bold rounded-md shadow-xl px-9 bg-pink-400 hover:bg-opacity-80 hover:shadow-2xl transition duration-500"
             type="submit">
@@ -51,7 +50,7 @@
         <!-- border to seperate -->
         <div class="w-full mt-8 border-b border-b-gray-300"></div>
         <a href="/" class="w-full flex items-center justify-center mt-6 hover:text-cyan-600">Back to home</a>
-      </div>
+      </form>
       <!-- right -->
       <div class="w-[430px] hidden md:w-fit md:flex md:rounded-r-2xl"
         style="background: linear-gradient(to right, #ffafbd, #ffc3a0)">
