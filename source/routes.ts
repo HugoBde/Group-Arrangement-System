@@ -16,6 +16,7 @@ import Student = require("./student");
 import utils   = require("./utils");
 import Teacher = require("./teacher");
 import { assert } from "console";
+import student = require("./student");
 
 
 // Home page
@@ -721,12 +722,12 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
 
         let student_id = req.session.user.id;
         let interestList = classStudent.interests;
+
         //sort student interests alphabetically
         interestList.sort((a,b) => a.localeCompare(b));
 
         let target_group_size = 5;
         let target_group_number = Math.round(students.length / target_group_size);
-
         for (let i = 0; i < target_group_number; i++){
 
             groups.push(new Group(class_id, i));
@@ -736,12 +737,11 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
                 while(students.length != 0){
 
                     for(let i = 0; i <students.length-2; i++){
-                        groups.push(student_id);
-                        let interest = students[i].interest;
-                        students.splice(i, 1);
-                        if (students[i].interest == students[i+1].interest){
-                            groups.push(student_id);
-                        }
+
+                        groups.push(students[i]);
+                        const items = students.filter(item => item.interest.indexOf(students[i].interest) !== -1);
+                        groups.push(items);
+                        
                     }
                 }
             }
@@ -759,6 +759,7 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
 
         res.json(student_info);
         
+        console.log("Group Generation Complete");
 
         // Let's do all database requests asynchronously 
         // (i.e.: don't wait for the first one to complete to send the second one)

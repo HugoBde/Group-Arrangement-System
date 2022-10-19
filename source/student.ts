@@ -16,9 +16,9 @@ class Student {
     preferences:   string[] = ["degree", "year", "interest"];
     //degree:        string[];
     //year:          string[];
-    interest:      string[];
+    interest:      string;
 
-    constructor(id: number, first_name: string, last_name: string, email_address: string, password: string, interest: string[]) {
+    constructor(id: number, first_name: string, last_name: string, email_address: string, password: string, interest: string) {
         this.id            = id;
         this.first_name    = first_name;
         this.last_name     = last_name;
