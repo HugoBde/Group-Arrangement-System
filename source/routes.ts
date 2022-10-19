@@ -699,14 +699,13 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
         // Fetch students from the teachers class
         let students : Student[] = [];
         let groups = [];
-        await db.students_collection.find<Student>({class_id: req.session.user.class_id, id: req.session.user.id}).forEach(student => {
+        await db.students_collection.find<Student>({class_id: req.session.user.class_id}).forEach(student => {
             students.push(student);
         });
 
 
         let class_id = req.session.user.class_id;
         let classStudent = await db.class_collection.findOne({id: class_id});
-        let id = db.students_collection.findOne(req.body.id);
 
         //error check
         if (classStudent === null) {
@@ -714,34 +713,51 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
             return;
         }
 
-        let interestList = classStudent.interests;
-        let degreeList = classStudent.degree;
-        let yearList = classStudent.year;
         
-        console.log(students.length);
+        //let degreeList = classStudent.degree;
+        //let yearList = classStudent.year;
+        
+        //console.log(students.length);
 
+        let student_id = req.session.user.id;
+        let interestList = classStudent.interests;
         //sort student interests alphabetically
         interestList.sort((a,b) => a.localeCompare(b));
-
 
         let target_group_size = 5;
         let target_group_number = Math.round(students.length / target_group_size);
 
-        for (var i = 0; i < target_group_number; i++){
+        for (let i = 0; i < target_group_number; i++){
+
             groups.push(new Group(class_id, i));
-            for( var i = 0; i < target_group_size; i++){
-                for(var i = 0; students[i]; i++){
-                    students.push(students[i]);
-                    for(var i = 0; i <students.length-2; i++){
+
+            for( let i = 0; i < target_group_size; i++){
+
+                while(students.length != 0){
+
+                    for(let i = 0; i <students.length-2; i++){
+                        groups.push(student_id);
+                        let interest = students[i].interest;
+                        students.splice(i, 1);
                         if (students[i].interest == students[i+1].interest){
-                            groups.push(students.id);
+                            groups.push(student_id);
                         }
                     }
                 }
             }
         }
 
-        
+        let student_info = [];
+
+        for(let student of students) {
+            student_info.push({
+                first_name: student.first_name,
+                last_name : student.last_name,
+                group_id  : student.group_id,
+            })
+        }
+
+        res.json(student_info);
         
 
         // Let's do all database requests asynchronously 
