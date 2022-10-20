@@ -54,7 +54,7 @@ async function login_form_submit(req: express.Request, res: express.Response) {
         let user : Student | Teacher | null ;
 
         // Do not touch this unless you know regex 
-        if (req_email.match(/[A-Z][a-z]+\.[A-Z][a-z]+@student.uni.edu.au/)) {
+        if (req_email.match(/[A-Z][a-z]+\.[A-Z][a-z]\+@student.uni.edu.au/)) {
             user = await db.students_collection.findOne<Student>(
                 {"email_address": req_email}
             );
@@ -517,7 +517,7 @@ async function register_form_submit(req: express.Request, res: express.Response)
         
         let hash = await bcryptjs.hash(req.body.password, 10);
         
-        let student = new Student(req.body.id_num, req.body.first_name.toLowerCase(), req.body.last_name.toLowerCase(), req.body.email.toLowerCase(), hash);
+        let student = new Student(req.body.id_num, req.body.first_name.toLowerCase(), req.body.last_name.toLowerCase(), req.body.email, hash);
         
         var documentCount = await db.students_collection.countDocuments({email: req.body.email}, {limit: 1})
 
