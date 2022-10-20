@@ -245,13 +245,22 @@ async function get_all_not_grouped(req: express.Request, res: express.Response){
 //insert interest into the class document - interests array
 async function insert_interest(req: express.Request, res: express.Response) {
     try {
-        // If the session does not hold a user object deny the request
-        if (req.session.user === undefined) {
+        
+        // Ensure the user is allowed to make such request
+        if (req.session.user === undefined || req.session.is_admin == false) {
             res.sendStatus(403);
             return;
         }
 
-        let class_of_students_not_the_keyword_class_leave_me_alone_javascript = await db.class_collection.findOne({name: "Test class 2"}); //test class 2 cause this document has an interests list
+        // If the teacher does not have a class associated with them, reject the request
+        if (req.session.user.class_id == -1) {
+            res.sendStatus(404);
+            return;
+        }
+
+        let userClassID = req.session.user.class_id;
+
+        let class_of_students_not_the_keyword_class_leave_me_alone_javascript = await db.class_collection.findOne({id: userClassID});
 
         //error check
         if (class_of_students_not_the_keyword_class_leave_me_alone_javascript === null) {
@@ -287,13 +296,21 @@ async function insert_interest(req: express.Request, res: express.Response) {
 //remove interest from the class document - interests array
 async function remove_interest(req: express.Request, res: express.Response) {
     try {
-        // If the session does not hold a user object deny the request
-        if (req.session.user === undefined) {
+        // Ensure the user is allowed to make such request
+        if (req.session.user === undefined || req.session.is_admin == false) {
             res.sendStatus(403);
             return;
         }
 
-        let class_of_students_not_the_keyword_class_leave_me_alone_javascript = await db.class_collection.findOne({name: "Test class 2"}); //test class 2 cause this document has an interests list
+        // If the teacher does not have a class associated with them, reject the request
+        if (req.session.user.class_id == -1) {
+            res.sendStatus(404);
+            return;
+        }
+
+        let userClassID = req.session.user.class_id;
+
+        let class_of_students_not_the_keyword_class_leave_me_alone_javascript = await db.class_collection.findOne({id: userClassID});
 
         //error check
         if (class_of_students_not_the_keyword_class_leave_me_alone_javascript === null) {
@@ -330,13 +347,21 @@ async function remove_interest(req: express.Request, res: express.Response) {
 //getting all the available interests/topics that a student can opt themselves into.
 async function get_interests(req: express.Request, res: express.Response) {
     try {        
-        // If the session does not hold a user object deny the request
-        if (req.session.user === undefined) {
+        // Ensure the user is allowed to make such request
+        if (req.session.user === undefined || req.session.is_admin == false) {
             res.sendStatus(403);
             return;
         }
 
-        let classStudent = await db.class_collection.findOne({name: "Test class 2"}); //test class 2 cause this document has an interests list
+        // If the teacher does not have a class associated with them, reject the request
+        if (req.session.user.class_id == -1) {
+            res.sendStatus(404);
+            return;
+        }
+
+        let userClassID = req.session.user.class_id;
+
+        let classStudent = await db.class_collection.findOne({id: userClassID}); 
 
         //error check
         if (classStudent === null) {
@@ -733,6 +758,22 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
     }
 }
 
+function help_page(req: express.Request, res: express.Response) {
+    // If no user object is attached to the session, it means
+    // the user is not logged in, so redirect them to the login page
+    if (req.session.user === undefined) {
+        res.redirect("/login");
+        return;
+    }
+
+    // This page is not for admins
+    if (req.session.is_admin) {
+        res.redirect("/dashboard");
+        return;
+    }
+
+    res.sendFile(utils.get_views_path("help.html"));
+}
 
 // Exported routes
 export = {
@@ -755,5 +796,6 @@ export = {
     get_class_info,
     clear_groups,
     make_groups_random,
-    make_groups_on_preference
+    make_groups_on_preference,
+    help_page
 };

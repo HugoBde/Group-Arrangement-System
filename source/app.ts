@@ -59,6 +59,7 @@ app.get("/groups", routes.groups_page);                 // Group page
 app.get("/group_members", routes.get_group_members);    // Fetch group members for AJAX
 app.get("/class", routes.class_page);
 app.get("/class_info", routes.get_class_info);
+app.get("/help", routes.help_page);
 
 // logout route
 app.get('/logout', routes.logout);
