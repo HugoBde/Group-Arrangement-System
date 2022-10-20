@@ -682,9 +682,6 @@ async function make_groups_random(req: express.Request, res: express.Response) {
 
 async function make_groups_on_preference(req: express.Request, res: express.Response) {
     try {
-        
-        console.log("begin preference group function...");
-        
         // Ensure the user is allowed to make such request
         if (req.session.user === undefined || req.session.is_admin == false) {
             res.sendStatus(403);
@@ -697,123 +694,37 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
             return;
         }
 
+        let class_id = req.session.user.class_id;
+
         // Fetch students from the teachers class
         let students : Student[] = [];
-        let groups = [];
-        await db.students_collection.find<Student>({class_id: req.session.user.class_id}).forEach(student => {
+        await db.students_collection.find<Student>({class_id: class_id}).forEach(student => {
             students.push(student);
         });
 
+        // Let's make a copy of the students array since the first one is consummed 
+        let students_copy = [...students];
 
-        let class_id = req.session.user.class_id;
-        let classStudent = await db.class_collection.findOne({id: class_id});
+        let groups = Group.make_groups_on_preference(class_id, students);
 
-        //error check
-        if (classStudent === null) {
-            log.error("class not found");
-            return;
-        }
+        let groups_info = [];
 
-        
-        //let degreeList = classStudent.degree;
-        //let yearList = classStudent.year;
-        
-        //console.log(students.length);
-
-        let student_id = req.session.user.id;
-        let interestList = classStudent.interests;
-
-        //sort student interests alphabetically
-        interestList.sort((a,b) => a.localeCompare(b));
-
-        let target_group_size = 5;
-        let target_group_number = Math.round(students.length / target_group_size);
-        for (let i = 0; i < target_group_number; i++){
-
-            groups.push(new Group(class_id, i));
-
-            for( let i = 0; i < target_group_size; i++){
-
-                while(students.length != 0){
-
-                    for(let i = 0; i <students.length-2; i++){
-
-                        groups.push(students[i]);
-                        const items = students.filter(item => item.interest.indexOf(students[i].interest) !== -1);
-                        groups.push(items);
-                        
-                    }
+        for (let group of groups) {
+            let group_info = [];
+            for (let student of students_copy) {
+                if (group.student_ids.includes(student.id)) {
+                    group_info.push({
+                        first_name : student.first_name,
+                        last_name  : student.last_name,
+                        interest   : student.interest,
+                        id         : student.id
+                    });
                 }
             }
+            groups_info.push(group_info);
         }
 
-        let student_info = [];
-
-        for(let student of students) {
-            student_info.push({
-                first_name: student.first_name,
-                last_name : student.last_name,
-                group_id  : student.group_id,
-            })
-        }
-
-        res.json(student_info);
-        
-        console.log("Group Generation Complete");
-
-        // Let's do all database requests asynchronously 
-        // (i.e.: don't wait for the first one to complete to send the second one)
-        // Then use Promise.all([promises]) to wait for all of them to complete before
-        // sending our reponse
-        //let database_rqs = [];
-
-        // Update the groups database
-        //database_rqs.push(db.groups_collection.insertMany(groups));
-
-        // Update students' group id
-        //for(let group of groups) {
-        //    database_rqs.push(db.students_collection.updateMany({id: {$in: group.student_ids}}, {$set: {group_id: group.id}}));
-        //}
-        
-        // Here we wait for all the promises to complete
-        //await Promise.all(database_rqs);
-
-        //let student_info = [];
-
-        //for(let student of students) {
-        //    student_info.push({
-        //        first_name: student.first_name,
-        //        last_name : student.last_name,
-        //        group_id  : student.group_id,
-        //    })
-        //}
-
-        
-        //GROUPING ALGO - PSEUDO CODE
-        //target_group_size = req.body.group_size
-        //target_group_number = Math.round(students.length / target_group_size);
-        
-        //for all student in students array
-            //let student interest = student.interest
-            
-            //for all interests in students
-
-
-
-
-
-            //IGNORE FOR NOW -----------------------------------------------------------------
-        /*let target_group_size = 5;
-        let target_group_number = Math.round(students.length / target_group_size);
-        let groups = [];
-
-        for(let i = 0; i < target_group_number; i++) {
-            groups.push(new Group(class_id, i));
-        }*/
-
-        //for(let student of students){}
-        
-    
+        res.json(groups_info)
     } catch (err) {
         log.error(`Failed to generate groups due to internal error: ${err}`);
         if (!res.writableEnded) {
