@@ -659,7 +659,9 @@ async function make_groups_random(req: express.Request, res: express.Response) {
             res.sendStatus(404);
             return;
         }
-       
+      
+        let target_group_size = Number(req.params.target_group_size) || 5;
+           
         // Fetch students from the teachers class
         let students : Student[] = [];
         await db.students_collection.find<Student>({class_id: req.session.user.class_id}).forEach(student => {
@@ -667,7 +669,7 @@ async function make_groups_random(req: express.Request, res: express.Response) {
         });
 
         // Put students in random groups
-        let groups = Group.make_groups_random(req.session.user.class_id, students);
+        let groups = Group.make_groups_random(req.session.user.class_id, students, target_group_size);
 
         // Let's do all database requests asynchronously 
         // (i.e.: don't wait for the first one to complete to send the second one)
@@ -719,6 +721,7 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
             return;
         }
 
+        let target_group_size = Number(req.params.target_group_size) || 5;
         let class_id = req.session.user.class_id;
 
         // Fetch students from the teachers class
@@ -730,7 +733,7 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
         // Let's make a copy of the students array since the first one is consummed 
         let students_copy = [...students];
 
-        let groups = Group.make_groups_on_preference(class_id, students);
+        let groups = Group.make_groups_on_preference(class_id, students, target_group_size);
 
         let groups_info = [];
 

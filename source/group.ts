@@ -37,9 +37,8 @@ class Group {
         return groups;
     }
 
-    static make_groups_on_preference(class_id: number, students: Student[]) : Group[] {
+    static make_groups_on_preference(class_id: number, students: Student[], target_group_size: number = 5) : Group[] {
         let groups : Group[] = [];
-        let target_group_size = 5;
         let target_group_number = Math.round(students.length / target_group_size);
 
         // First pass: Take a student, and match him with people
