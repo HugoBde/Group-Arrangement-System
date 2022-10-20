@@ -16,6 +16,7 @@ import Student = require("./student");
 import utils   = require("./utils");
 import Teacher = require("./teacher");
 import { assert } from "console";
+import student = require("./student");
 
 
 // Home page
@@ -406,7 +407,7 @@ async function pref_form_submit(req: express.Request, res: express.Response) {
 
         let student_id = req.session.user.id;
 
-        await db.students_collection.findOne()
+        await db.students_collection.findOne();
 
         var documentCount = await db.students_collection.countDocuments({"id":student_id});
         
@@ -517,7 +518,7 @@ async function register_form_submit(req: express.Request, res: express.Response)
         
         let hash = await bcryptjs.hash(req.body.password, 10);
         
-        let student = new Student(req.body.id_num, req.body.first_name, req.body.last_name, req.body.email, hash);
+        let student = new Student(req.body.id_num, req.body.first_name, req.body.last_name, req.body.email, hash, req.body.interest);
         
         var documentCount = await db.students_collection.countDocuments({email: req.body.email}, {limit: 1})
         
@@ -658,7 +659,9 @@ async function make_groups_random(req: express.Request, res: express.Response) {
             res.sendStatus(404);
             return;
         }
-       
+      
+        let target_group_size = Number(req.params.target_group_size) || 5;
+           
         // Fetch students from the teachers class
         let students : Student[] = [];
         await db.students_collection.find<Student>({class_id: req.session.user.class_id}).forEach(student => {
@@ -666,7 +669,7 @@ async function make_groups_random(req: express.Request, res: express.Response) {
         });
 
         // Put students in random groups
-        let groups = Group.make_groups_random(req.session.user.class_id, students);
+        let groups = Group.make_groups_random(req.session.user.class_id, students, target_group_size);
 
         // Let's do all database requests asynchronously 
         // (i.e.: don't wait for the first one to complete to send the second one)
@@ -696,6 +699,60 @@ async function make_groups_random(req: express.Request, res: express.Response) {
         }
 
         res.json(student_info);
+    } catch (err) {
+        log.error(`Failed to generate groups due to internal error: ${err}`);
+        if (!res.writableEnded) {
+            res.sendStatus(500);
+        }
+    }
+}
+
+async function make_groups_on_preference(req: express.Request, res: express.Response) {
+    try {
+        // Ensure the user is allowed to make such request
+        if (req.session.user === undefined || req.session.is_admin == false) {
+            res.sendStatus(403);
+            return;
+        }
+
+        // If the teacher does not have a class associated with them, reject the request
+        if (req.session.user.class_id == -1) {
+            res.sendStatus(404);
+            return;
+        }
+
+        let target_group_size = Number(req.params.target_group_size) || 5;
+        let class_id = req.session.user.class_id;
+
+        // Fetch students from the teachers class
+        let students : Student[] = [];
+        await db.students_collection.find<Student>({class_id: class_id}).forEach(student => {
+            students.push(student);
+        });
+
+        // Let's make a copy of the students array since the first one is consummed 
+        let students_copy = [...students];
+
+        let groups = Group.make_groups_on_preference(class_id, students, target_group_size);
+
+        let groups_info = [];
+
+        for (let group of groups) {
+            let group_info = [];
+            for (let student of students_copy) {
+                if (group.student_ids.includes(student.id)) {
+                    group_info.push({
+                        first_name : student.first_name,
+                        last_name  : student.last_name,
+                        interest   : student.interest,
+                        id         : student.id
+                    });
+                }
+            }
+            groups_info.push(group_info);
+        }
+
+        res.json(groups_info)
     } catch (err) {
         log.error(`Failed to generate groups due to internal error: ${err}`);
         if (!res.writableEnded) {
@@ -742,5 +799,6 @@ export = {
     get_class_info,
     clear_groups,
     make_groups_random,
+    make_groups_on_preference,
     help_page
 };

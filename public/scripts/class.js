@@ -1,5 +1,5 @@
 const class_table_body = document.getElementById("class_table_body");
-
+const group_size_slider = document.getElementById("group_size_slider");
 async function get_class() {
     // Make a get request for the list of group members
     let response = await fetch("/class_info");
@@ -12,10 +12,18 @@ async function get_class() {
 
 async function random_groups() {
     // Ask the backend to generate groups randomly
-    let response = await fetch("/make_groups_random");
+    let response = await fetch(`/make_groups_random/${group_size_slider.value}`);
 
     let students = await response.json();
 
+    fill_table(students);
+}
+
+async function preference_groups() {
+    let response = await fetch(`/make_groups_on_preference/${group_size_slider.value}`);
+    
+    let students = await response.json();
+    
     fill_table(students);
 }
 

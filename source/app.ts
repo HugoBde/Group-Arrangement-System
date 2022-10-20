@@ -67,6 +67,7 @@ app.get('/logout', routes.logout);
 // Preferences page
 app.get("/preferences", routes.preferences_page);
 
+
 //app.get("/not_grouped", routes.get_all_not_grouped);
 //app.get("/get_interests", routes.get_interests);
 app.get("/interests", routes.get_interests);
@@ -84,7 +85,8 @@ app.post("/register", routes.register_form_submit);
 
 // Group generation endpoints
 app.get("/clear_groups", routes.clear_groups);
-app.get("/make_groups_random", routes.make_groups_random);
+app.get("/make_groups_random/:target_group_size", routes.make_groups_random);
+app.get("/make_groups_on_preference/:target_group_size", routes.make_groups_on_preference);
 
 // Start server
 const server = app.listen(port, () => {

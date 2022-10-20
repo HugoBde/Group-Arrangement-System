@@ -55,6 +55,11 @@
             class="mx-16 bg-gray-500 text-center outline p-12 rounded-3xl duration-300" >
             Randomly generate groups
         </button>
+        <button id="make_groups_random_btn"
+            onclick="preference_groups()"
+            class="mx-16 bg-gray-500 text-center outline p-12 rounded-3xl duration-300" >
+            Preference generate groups
+        </button>
         <button id="clear_groups"
             onclick="clear_groups()"
             class="mx-16 bg-gray-500 text-center outline p-12 rounded-3xl duration-300" >
@@ -63,8 +68,8 @@
     </div
         class="=mx-auto py-6 mt-6 ml-64 flex items-start justify-evenly">
         Custom groups
-        <input type="range" min="0" max="10" value="5" oninput="rangeValue.innerText = this.value">
-        <p id="rangeValue">10</p>
+        <input id="group_size_slider" name="target_group_size" type="range" min="3" max="7" value="5" oninput="rangeValue.innerText = this.value">
+        <p id="rangeValue">5</p>
         </div>
 
     
