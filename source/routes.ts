@@ -517,10 +517,11 @@ async function register_form_submit(req: express.Request, res: express.Response)
         
         let hash = await bcryptjs.hash(req.body.password, 10);
         
-        let student = new Student(req.body.id_num, req.body.first_name, req.body.last_name, req.body.email, hash);
+        let student = new Student(req.body.id_num, req.body.first_name.toLowerCase(), req.body.last_name.toLowerCase(), req.body.email.toLowerCase(), hash);
         
         var documentCount = await db.students_collection.countDocuments({email: req.body.email}, {limit: 1})
-        
+
+
         //checks if the email already exists
         if( documentCount == 0 ){
             //Mongodb's Insert function
