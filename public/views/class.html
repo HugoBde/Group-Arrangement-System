@@ -32,11 +32,11 @@
     <!-- dashboard heading -->
     <h1 class="mt-16 mx-16  text-3xl text-center md:text-left">
         <span class="underline decoration-emerald-500">
-            My Group Mananger
+            My Group Manager
         </span>
     </h1>
     <!-- dashboard content -->
-    <div class="mt-16 mx-16 md:mt-24 flex items-start justify-around">
+    <div class="mt-16 mx-16 md:mt-24 flex items-start justify-start">
         <table id="class_table"
             class="min-w-[50%] border-2 bg-gray-400 text-center outline outline-offset-4 outline-pink-400 hover:cursor-text">
             <thead class="border-b">
@@ -49,24 +49,38 @@
 
             </tbody>
         </table>
-        <div class="flex items-start justify-around">
-            <button id="make_groups_random_btn" onclick="random_groups()"
-                class="mx-16 bg-gray-500 text-center outline p-12 rounded-3xl duration-300">
+        <!-- buttons for group generation -->
+        <div class="flex flex-col">
+            <h1 class="mx-32 text-3xl mb-16">Generate Groups</h1>
+            <a id="make_groups_random_btn" onclick="random_groups()"
+                class="mx-32 outline-pink-500 text-center outline p-12 rounded-3xl duration-300 hover:cursor-pointer hover:bg-pink-200">
                 Randomly generate groups
-            </button>
-            <button id="make_groups_random_btn" onclick="preference_groups()"
-                class="mx-16 bg-gray-500 text-center outline p-12 rounded-3xl duration-300">
+            </a>
+            <a id="make_groups_random_btn" onclick="preference_groups()"
+                class="mx-32 mt-16 outline-pink-500 text-center outline p-12 rounded-3xl duration-300 hover:cursor-pointer hover:bg-pink-300">
                 Preference generate groups
-            </button>
-            <button id="clear_groups" onclick="clear_groups()"
-                class="mx-16 bg-gray-500 text-center outline p-12 rounded-3xl duration-300">
+            </a>
+            <a id="clear_groups" onclick="clear_groups()"
+                class="mx-32 mt-16 outline-red-400 text-center outline p-12 rounded-3xl duration-300 hover:cursor-pointer hover:bg-red-200">
                 Clear groups
-            </button>
-        </div class="=mx-auto py-6 mt-6 ml-64 flex items-start justify-evenly">
-        Custom groups
-        <input id="group_size_slider" name="target_group_size" type="range" min="3" max="7" value="5"
-            oninput="rangeValue.innerText = this.value">
-        <p id="rangeValue">5</p>
+            </a>
+            <div class="flex mx-32 mt-16 justify-around">
+                <label for="range">Custom Groups</label>
+                <input id="group_size_slider" id="range" name="target_group_size" type="range" min="3" max="7" value="5"
+                    oninput="rangeValue.innerText = this.value">
+                <label id="rangeValue">5</label>
+                <div
+                    title="Allows you to make you a custom group, press the 'Randomly Generate Buttons Group' after setting up your prefered group size.">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="text-orange-600" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -76,7 +90,7 @@
         }
     </script>
     <!-- Return to dashboard -->
-    <div class="mt-16 mb-8 mx-96">
+    <div class="mt-16 mb-8 mx-16">
         <a href="/dashboard" class="flex items-center text-pink-400 hover:text-opacity-80">
             <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">

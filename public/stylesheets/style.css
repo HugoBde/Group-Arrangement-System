@@ -631,9 +631,9 @@ video {
   margin-right: 4rem;
 }
 
-.mx-96 {
-  margin-left: 24rem;
-  margin-right: 24rem;
+.mx-32 {
+  margin-left: 8rem;
+  margin-right: 8rem;
 }
 
 .my-6 {
@@ -657,12 +657,8 @@ video {
   margin-top: 4rem;
 }
 
-.mt-6 {
-  margin-top: 1.5rem;
-}
-
-.ml-64 {
-  margin-left: 16rem;
+.mb-16 {
+  margin-bottom: 4rem;
 }
 
 .mb-8 {
@@ -671,6 +667,10 @@ video {
 
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.mt-6 {
+  margin-top: 1.5rem;
 }
 
 .mt-12 {
@@ -833,6 +833,10 @@ video {
   align-items: baseline;
 }
 
+.justify-start {
+  justify-content: flex-start;
+}
+
 .justify-center {
   justify-content: center;
 }
@@ -843,10 +847,6 @@ video {
 
 .justify-around {
   justify-content: space-around;
-}
-
-.justify-evenly {
-  justify-content: space-evenly;
 }
 
 .gap-8 {
@@ -984,14 +984,14 @@ video {
   background-color: rgb(156 163 175 / var(--tw-bg-opacity));
 }
 
-.bg-gray-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(107 114 128 / var(--tw-bg-opacity));
-}
-
 .bg-fuchsia-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(253 244 255 / var(--tw-bg-opacity));
+}
+
+.bg-gray-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(107 114 128 / var(--tw-bg-opacity));
 }
 
 .bg-bgcharcoal {
@@ -1022,11 +1022,6 @@ video {
 .bg-slate-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(226 232 240 / var(--tw-bg-opacity));
-}
-
-.bg-gray-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
 
 .p-12 {
@@ -1063,11 +1058,6 @@ video {
   padding-bottom: 0.75rem;
 }
 
-.py-6 {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-}
-
 .py-5 {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
@@ -1091,6 +1081,11 @@ video {
 .px-8 {
   padding-left: 2rem;
   padding-right: 2rem;
+}
+
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
 .px-4 {
@@ -1195,6 +1190,11 @@ video {
   color: hsl(223 18% 27% / var(--tw-text-opacity));
 }
 
+.text-orange-600 {
+  --tw-text-opacity: 1;
+  color: rgb(234 88 12 / var(--tw-text-opacity));
+}
+
 .text-pink-400 {
   --tw-text-opacity: 1;
   color: rgb(244 114 182 / var(--tw-text-opacity));
@@ -1245,9 +1245,9 @@ video {
           text-decoration-color: #10b981;
 }
 
-.decoration-yellow-200 {
-  -webkit-text-decoration-color: #fef08a;
-          text-decoration-color: #fef08a;
+.decoration-amber-600 {
+  -webkit-text-decoration-color: #d97706;
+          text-decoration-color: #d97706;
 }
 
 .decoration-indigo-500 {
@@ -1263,11 +1263,6 @@ video {
 .decoration-purple-500 {
   -webkit-text-decoration-color: #a855f7;
           text-decoration-color: #a855f7;
-}
-
-.decoration-violet-200 {
-  -webkit-text-decoration-color: #ddd6fe;
-          text-decoration-color: #ddd6fe;
 }
 
 .accent-red-500 {
@@ -1319,6 +1314,14 @@ video {
   outline-color: #f472b6;
 }
 
+.outline-pink-500 {
+  outline-color: #ec4899;
+}
+
+.outline-red-400 {
+  outline-color: #f87171;
+}
+
 .transition-all {
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -1367,9 +1370,28 @@ video {
   cursor: text;
 }
 
+.hover\:cursor-pointer:hover {
+  cursor: pointer;
+}
+
 .hover\:border-pink-300:hover {
   --tw-border-opacity: 1;
   border-color: rgb(249 168 212 / var(--tw-border-opacity));
+}
+
+.hover\:bg-pink-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(251 207 232 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-pink-300:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 168 212 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-red-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 202 202 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-fuchsia-200:hover {
@@ -1377,14 +1399,14 @@ video {
   background-color: rgb(245 208 254 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-gray-700:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
-}
-
 .hover\:bg-gray-300:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-gray-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-opacity-80:hover {
