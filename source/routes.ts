@@ -104,7 +104,6 @@ async function login_form_submit(req: express.Request, res: express.Response) {
     }
 }
 
-
 // Get dashboard page
 function dashboard_page(req: express.Request, res: express.Response) {
     // If no user object is attached to the session, it means 
@@ -120,7 +119,6 @@ function dashboard_page(req: express.Request, res: express.Response) {
     } else {
         res.sendFile(utils.get_views_path("dashboard.html"));
     }
-
 }
 
 function groups_page(req: express.Request, res: express.Response) {
@@ -231,9 +229,6 @@ async function get_all_not_grouped(req: express.Request, res: express.Response){
         // Send the ouput list as json
         res.json(output);
         
-        console.log(output); //delete this line
-
-        //always produces error because there is no students that do not have a group.
     } catch (err) {
         log.error(`Failed fetching members due to internal error: ${err}`)
         if (!res.writableEnded) {
@@ -392,15 +387,8 @@ async function get_interests(req: express.Request, res: express.Response) {
 // Add student preferences to student
 async function pref_form_submit(req: express.Request, res: express.Response) {
     try {
-        //console.log(req.body);
-        
         // If the session does not hold a user object deny the request
         if (req.session.user === undefined) {
-            res.sendStatus(403);
-            return;
-        }
-
-        if (req.session.is_admin) {
             res.sendStatus(403);
             return;
         }
@@ -513,12 +501,12 @@ function register_page(req: express.Request, res: express.Response){
 // Register route
 async function register_form_submit(req: express.Request, res: express.Response) {
     try {
-
-        // Get the students collection
         
         let hash = await bcryptjs.hash(req.body.password, 10);
         
         let student = new Student(req.body.id_num, req.body.first_name, req.body.last_name, req.body.email, hash, req.body.interest);
+
+        student.class_id = 0; //setting the students group (not the best thing to do, but at the moment we are only using 1 class):
         
         var documentCount = await db.students_collection.countDocuments({email: req.body.email}, {limit: 1})
         
