@@ -278,10 +278,10 @@ async function insert_interest(req: express.Request, res: express.Response) {
 
             if (result) {
                 log.info(`Interest successfully added [Interest: ${req.body.interest_name}]`);
-                //res.redirect("/preference");
+                res.redirect("/preferences");
             } else {
                 log.error("Failed to add interest");
-                //res.redirect("/preference");
+                res.redirect("/preferences");
             }
         }
 
@@ -329,10 +329,10 @@ async function remove_interest(req: express.Request, res: express.Response) {
 
             if (result) {
                 log.info(`Interest successfully removed [Interest: ${req.body.interest_name}]`);
-                //res.redirect("/preference");
+                res.redirect("/preferences");
             } else {
                 log.error("Failed to remove interest");
-                //res.redirect("/preference");
+                res.redirect("/preferences");
             }
         }
 
