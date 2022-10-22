@@ -278,10 +278,10 @@ async function insert_interest(req: express.Request, res: express.Response) {
 
             if (result) {
                 log.info(`Interest successfully added [Interest: ${req.body.interest_name}]`);
-                res.redirect("/preference");
+                //res.redirect("/preference");
             } else {
                 log.error("Failed to add interest");
-                res.redirect("/preference");
+                //res.redirect("/preference");
             }
         }
 
@@ -329,10 +329,10 @@ async function remove_interest(req: express.Request, res: express.Response) {
 
             if (result) {
                 log.info(`Interest successfully removed [Interest: ${req.body.interest_name}]`);
-                res.redirect("/preference");
+                //res.redirect("/preference");
             } else {
                 log.error("Failed to remove interest");
-                res.redirect("/preference");
+                //res.redirect("/preference");
             }
         }
 
@@ -418,10 +418,10 @@ async function pref_form_submit(req: express.Request, res: express.Response) {
 
             if (result) {
                 log.info(`User successfully added to User preferences [Degree: ${req.body.degree}] [Year: ${req.body.year}] [Interest: ${req.body.interest}]`);
-                res.redirect("/preference");
+                //res.redirect("/preference");
             } else {
                 log.error("Failed to update user preferences");
-                res.redirect("/preference");
+                //res.redirect("/preference");
             }   
         }
     
