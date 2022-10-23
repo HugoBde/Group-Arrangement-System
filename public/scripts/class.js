@@ -41,6 +41,28 @@ function clear_table() {
     }
 }
 
+function group(students){
+    for (let i = 0; i < 1 << n; i++) {
+            let group_head = document.createElement("th");
+            thead.add("min-w-[50%] border-2 bg-gray-400 text-center outline outline-offset-4 outline-pink-400 hover:cursor-text");
+
+            for(let student of students){
+                let group_row = document.createElement("tr");
+                let name_cell = document.createElement("td");
+                let group_cell = document.createElement("td");
+                name_cell.textContent = `${student.first_name} ${student.last_name}`;
+                if (student.group_id == -1) {
+                    group_cell.textContent = "-";
+                } else {
+                    group_cell.textContent = student.group_id + 1;
+                }
+                group_row.appendChild(name_cell);
+
+            }
+        let class_table = document.createElement("class_table_body");
+    }
+};
+
 // Fill the class table with the students array
 function fill_table(students) {
     // Sort the student array based on their group id so
