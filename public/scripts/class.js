@@ -25,6 +25,12 @@ async function random_groups() {
     // Ask the backend to generate groups randomly
     let response = await fetch(`/make_groups_random/${group_size_slider.value}`);
 
+    
+    if (response.status == 409) {
+        alert("Please clear groups first");
+        return;
+    }
+
     let students = await response.json();
 
     fill_tables_groups(students);
@@ -33,6 +39,11 @@ async function random_groups() {
 async function preference_groups() {
     let response = await fetch(`/make_groups_on_preference/${group_size_slider.value}`);
     
+    if (response.status == 409) {
+        alert("Please clear groups first");
+        return;
+    }
+
     let students = await response.json();
     
     fill_tables_groups(students);
@@ -40,6 +51,11 @@ async function preference_groups() {
 
 async function clear_groups() {
     let response = await fetch("/clear_groups");
+
+    if (response.status == 409) {
+        alert("No groups to clear");
+        return;
+    }
 
     let students = await response.json();
 

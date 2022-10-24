@@ -644,6 +644,17 @@ async function clear_groups(req: express.Request, res: express.Response) {
             return;
         }
         
+        let class_info = await db.class_collection.findOne({id: req.session.user.class_id});
+
+        if (class_info == null) {
+            res.sendStatus(500);
+            return;
+        }
+        
+        if (!class_info.groups_made) {
+            res.sendStatus(409);
+            return;
+        }
         let database_rqs = [];
 
         // DElete groups for the teacher's class
@@ -689,7 +700,19 @@ async function make_groups_random(req: express.Request, res: express.Response) {
             res.sendStatus(404);
             return;
         }
-      
+     
+        let class_info = await db.class_collection.findOne({id: req.session.user.class_id});
+
+        if (class_info ===  null) {
+            res.sendStatus(500);
+            return;
+        }
+
+        if (class_info.groups_made) {
+            res.sendStatus(409);
+            return;
+        }
+        
         let target_group_size = Number(req.params.target_group_size) || 5;
            
         // Fetch students from the teachers class
@@ -766,6 +789,18 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
         let target_group_size = Number(req.params.target_group_size) || 5;
         let class_id = req.session.user.class_id;
 
+        let class_info = await db.class_collection.findOne({id: class_id});
+
+        if (class_info ===  null) {
+            res.sendStatus(500);
+            return;
+        }
+
+        if (class_info.groups_made) {
+            res.sendStatus(409);
+            return;
+        }
+        
         // Fetch students from the teachers class
         let students : Student[] = [];
         await db.students_collection.find<Student>({class_id: class_id}).forEach(student => {
