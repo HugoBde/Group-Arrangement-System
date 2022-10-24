@@ -119,20 +119,33 @@ class Group {
         // fourth pass: throw the rest together
         // and if they start whining tell them
         // to stop being picky
-        while (could_not_be_grouped.length > 0) {
-            let group = new Group(class_id, groups.length);
-           
-            while (group.student_ids.length < target_group_size) {
+
+        let last_group = new Group(class_id, groups.length);
+
+        for(let student of could_not_be_grouped) {
+            last_group.student_ids.push(student.id);
+        }
+
+        if (last_group.student_ids.length / target_group_size < 0.66) {
+            while (could_not_be_grouped.length > 0) {
                 let student = could_not_be_grouped.pop();
 
-                // If student is null, we ran out of students
                 if (student == null) {
                     break;
                 }
-                group.student_ids.push(student.id);
-            }
 
-            groups.push(group);
+                let smallest_group = groups[0];
+
+                for (let group of groups) {
+                    if (group.student_ids.length < smallest_group.student_ids.length) {
+                        smallest_group = group; 
+                    }
+                }
+
+                smallest_group.student_ids.push(student.id);
+            }
+        } else {
+            groups.push(last_group);
         }
 
         return groups;

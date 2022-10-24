@@ -143,6 +143,7 @@ function fill_tables_groups(groups) {
     // last 
 
     for (let [group_id, group] of groups.entries()) {
+    
         // Create table
         let new_table   = document.createElement("table");
 
@@ -155,7 +156,13 @@ function fill_tables_groups(groups) {
         let row         = document.createElement("tr");
         let header_cell = document.createElement("th");
 
-        header_cell.innerText = `Group ${group_id + 1}`;
+        // the last group has this set to true, for students who dont have a group yet
+        if (group.ungrouped) {
+            header_cell.innerText = "Students with no groups";
+        } else {
+            header_cell.innerText = `Group ${group_id + 1}`;
+        }
+
         header_cell.colSpan   = 2;
         
         new_table.appendChild(new_header).appendChild(row).appendChild(header_cell);

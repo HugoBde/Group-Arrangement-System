@@ -589,6 +589,11 @@ async function get_class_info(req: express.Request, res: express.Response) {
         }
 
         let student_info : any[] = [];
+        let ungrouped_group = {
+            ungrouped: true,
+            common_interest: "",
+            students: Array(0)
+        };
 
         await db.students_collection.find<Student>({class_id: req.session.user.class_id}).forEach(student => {
             student_info.push({
@@ -607,6 +612,7 @@ async function get_class_info(req: express.Request, res: express.Response) {
 
             for (let group of groups_data) {
                 groups_info.push({
+                    ungrouped : false,
                     common_interest: group.common_interest,
                     students: Array(0)
                 });
@@ -614,9 +620,16 @@ async function get_class_info(req: express.Request, res: express.Response) {
             }
 
             for (let student of student_info) {
-                groups_info[student.group_id].students.push(student);
+                if (student.group_id == -1) {
+                    ungrouped_group.students.push(student);
+                } else {
+                    groups_info[student.group_id].students.push(student);
+                }
             }
-            
+           
+            if (ungrouped_group.students.length != 0) {
+                groups_info.push(ungrouped_group);  
+            }
             res.json(groups_info);
         } else {
             res.json([student_info]);
@@ -746,6 +759,7 @@ async function make_groups_random(req: express.Request, res: express.Response) {
 
         for (let group of groups) {
             let group_info = {
+                ungrouped: false,
                 common_interest: group.common_interest,
                 students : Array(0),
             };
@@ -836,6 +850,7 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
 
         for (let group of groups) {
             let group_info = {
+                ungrouped: false,
                 common_interest: group.common_interest,
                 students : Array(0),
             };
