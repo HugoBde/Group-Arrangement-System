@@ -771,6 +771,26 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
 
         let groups = Group.make_groups_on_preference(class_id, students, target_group_size);
 
+        // Let's do all database requests asynchronously 
+        // (i.e.: don't wait for the first one to complete to send the second one)
+        // Then use Promise.all([promises]) to wait for all of them to complete before
+        // sending our reponse
+        let database_rqs = [];
+
+        // Update the groups database
+        database_rqs.push(db.groups_collection.insertMany(groups));
+
+        // Update the status of the class grouping
+        database_rqs.push(db.class_collection.updateOne({id: req.session.user.class_id}, {$set: {groups_made: true}}));
+
+        // Update students' group id
+        for(let group of groups) {
+            database_rqs.push(db.students_collection.updateMany({id: {$in: group.student_ids}}, {$set: {group_id: group.id}}));
+        }
+        
+        // Here we wait for all the promises to complete
+        await Promise.all(database_rqs);
+
         let groups_info = [];
 
         for (let group of groups) {
