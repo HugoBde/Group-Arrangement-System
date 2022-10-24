@@ -120,6 +120,7 @@ function fill_tables_groups(groups) {
 
     clear_tables()
 
+
     // Sort the student array based on their group id so
     // that the table looks a little neater
     // The sorting function makes students with no groups go
@@ -146,7 +147,21 @@ function fill_tables_groups(groups) {
         // Create table body
         let table_body = document.createElement("tbody");
 
-        for (let student of group) {
+        let common_interest = group.common_interest || "";
+
+        group.students.sort((a, b) => {
+            if (common_interest == "") {return 0}
+
+            if (!b.interest || b.interest != common_interest) {
+                return -1;
+            } else if (!a.interst || a.interest != common_interest) {
+                return 1;
+            } else {
+                return 0;
+            }
+        })
+
+        for (let student of group.students) {
             let new_row       = document.createElement("tr");
             let name_cell     = document.createElement("td");
             let interest_cell = document.createElement("td");
@@ -166,37 +181,6 @@ function fill_tables_groups(groups) {
         table_container.appendChild(new_table);
     }
 
-    // ============================================================
-    // students.sort(function (a, b) {
-    //     if(a.group_id === -1) {
-    //         return 1;
-    //     }
-    //     if (b.group_id === -1) {
-    //         return -1;
-    //     }
-    //     return a.group_id - b.group_id;
-    // });
-
-    // clear_table();
-
-    // // Loop through the names and create a row for each student
-    // for (let student of students) {
-    //     let new_row = document.createElement("tr");
-    //     let name_cell = document.createElement("td");
-    //     let group_cell = document.createElement("td");
-    //     name_cell.textContent = `${student.first_name} ${student.last_name}`;
-    //     if (student.group_id == -1) {
-    //         group_cell.textContent = "-";
-    //     } else {
-    //         group_cell.textContent = student.group_id + 1;
-    //     }
-    //     name_cell.classList.add('text-xl', 'border-r', 'py-2');
-    //     group_cell.classList.add('text-xl');
-    //     new_row.appendChild(name_cell);
-    //     new_row.appendChild(group_cell);
-    //     new_row.classList.add('border', 'hover:bg-gray-300', 'hover:cursor-text', 'py-2');
-    //     class_table_body.appendChild(new_row);
-    // }
 }
 
 // Call the function above

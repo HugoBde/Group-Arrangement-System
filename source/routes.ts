@@ -513,8 +513,6 @@ async function register_form_submit(req: express.Request, res: express.Response)
         
         let student = new Student(req.body.id_num, req.body.first_name, req.body.last_name, req.body.email, hash, req.body.interest);
 
-        student.class_id = 0; //setting the students group (not the best thing to do, but at the moment we are only using 1 class):
-        
         var documentCount = await db.students_collection.countDocuments({email: req.body.email}, {limit: 1})
         
         //checks if the email already exists
@@ -602,24 +600,21 @@ async function get_class_info(req: express.Request, res: express.Response) {
         });
 
         if (class_data.groups_made) {
-            let number_of_groups = 0;
 
-            // Find the max group id which is the number of groups - 1
-            for (let student of student_info) {
-                if (student.group_id > number_of_groups) {
-                    number_of_groups = student.group_id;
-                }
-            }
-            number_of_groups++;
-            
-            // Make an array big eno
-            let groups_info : any[] = [];
-            for (let i = 0 ; i < number_of_groups; i++) {
-                groups_info.push([]);
+            let groups_data = await db.groups_collection.find({class_id: req.session.user.class_id}).toArray();
+
+            let groups_info = [];
+
+            for (let group of groups_data) {
+                groups_info.push({
+                    common_interest: group.common_interest,
+                    students: Array(0)
+                });
+
             }
 
             for (let student of student_info) {
-                groups_info[student.group_id].push(student);
+                groups_info[student.group_id].students.push(student);
             }
             
             res.json(groups_info);
@@ -727,10 +722,14 @@ async function make_groups_random(req: express.Request, res: express.Response) {
         let groups_info = [];
 
         for (let group of groups) {
-            let group_info = [];
+            let group_info = {
+                common_interest: group.common_interest,
+                students : Array(0),
+            };
+
             for (let student of students) {
                 if (group.student_ids.includes(student.id)) {
-                    group_info.push({
+                    group_info.students.push({
                         first_name : student.first_name,
                         last_name  : student.last_name,
                         interest   : student.interest,
@@ -801,10 +800,14 @@ async function make_groups_on_preference(req: express.Request, res: express.Resp
         let groups_info = [];
 
         for (let group of groups) {
-            let group_info = [];
+            let group_info = {
+                common_interest: group.common_interest,
+                students : Array(0),
+            };
+
             for (let student of students_copy) {
                 if (group.student_ids.includes(student.id)) {
-                    group_info.push({
+                    group_info.students.push({
                         first_name : student.first_name,
                         last_name  : student.last_name,
                         interest   : student.interest,
