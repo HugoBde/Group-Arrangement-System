@@ -101,7 +101,7 @@ function fill_table_no_groups(students) {
         let interest_cell = document.createElement("td");
         
         name_cell.innerText     = `${student.first_name} ${student.last_name}`;
-        interest_cell.innerText = student.interest;
+        interest_cell.innerText = student.interest || "-";
 
         name_cell.classList.add('text-xl', 'border-r', 'py-2');
         interest_cell.classList.add('text-xl', "py-2");
@@ -152,7 +152,7 @@ function fill_tables_groups(groups) {
             let interest_cell = document.createElement("td");
 
             name_cell.innerText     = `${student.first_name} ${student.last_name}`;
-            interest_cell.innerText = student.interest;
+            interest_cell.innerText = student.interest || "-";
 
             name_cell.classList.add('text-xl', 'border-r', 'py-2');
             interest_cell.classList.add('text-xl');
