@@ -575,18 +575,52 @@ async function get_class_info(req: express.Request, res: express.Response) {
             res.sendStatus(404);
             return;
         }
-        
+
+        let class_data = await db.class_collection.findOne({id: req.session.user.class_id});
+
+        if (class_data === null) {
+            res.sendStatus(500);
+            return;
+        }
+
         let student_info : any[] = [];
+
         await db.students_collection.find<Student>({class_id: req.session.user.class_id}).forEach(student => {
             student_info.push({
                 first_name : student.first_name,
                 last_name  : student.last_name,
+                interest   : student.interest,
                 group_id   : student.group_id,
             })
         });
-        res.json(student_info);
+
+        if (class_data.groups_made) {
+            let number_of_groups = 0;
+
+            // Find the max group id which is the number of groups - 1
+            for (let student of student_info) {
+                if (student.group_id > number_of_groups) {
+                    number_of_groups = student.group_id;
+                }
+            }
+            number_of_groups++;
+            
+            // Make an array big eno
+            let groups_info : any[] = [];
+            for (let i = 0 ; i < number_of_groups; i++) {
+                groups_info.push([]);
+            }
+
+            for (let student of student_info) {
+                groups_info[student.group_id].push(student);
+            }
+            
+            res.json(groups_info);
+        } else {
+            res.json([student_info]);
+        }
     } catch (err) {
-        log.error(`Failed login due to internal error: ${err}`)
+        log.error(`Failed fetching class info: ${err}`)
         if (!res.writableEnded) {
             res.sendStatus(500);
         }
@@ -608,11 +642,16 @@ async function clear_groups(req: express.Request, res: express.Response) {
             return;
         }
         
+        let database_rqs = [];
+
         // DElete groups for the teacher's class
-        await db.groups_collection.deleteMany({class_id: req.session.user.class_id});
+        database_rqs.push(db.groups_collection.deleteMany({class_id: req.session.user.class_id}));
+        database_rqs.push(db.class_collection.updateOne({id: req.session.user.class_id}, {$set: {groups_made: false}}));
         
         // Delete group id from students
-        await db.students_collection.updateMany({class_id: req.session.user.class_id}, {$set: {group_id: -1}});
+        database_rqs.push(db.students_collection.updateMany({class_id: req.session.user.class_id}, {$set: {group_id: -1}}));
+
+        await Promise.all(database_rqs);
 
         // Fetch updated students to send it to the front end so that the table can be updated 
         let student_info : any[] = [];
@@ -620,10 +659,11 @@ async function clear_groups(req: express.Request, res: express.Response) {
             student_info.push({
                 first_name : student.first_name,
                 last_name  : student.last_name,
-                group_id   : student.group_id,
+                interest   : student.interest,
             })
         });
-        res.json(student_info);
+
+        res.json([student_info]);
     } catch (err) {
         log.error(`Failed to clear groups due to internal error: ${err}`);
         if (!res.writableEnded) {
@@ -667,6 +707,7 @@ async function make_groups_random(req: express.Request, res: express.Response) {
 
         // Update the groups database
         database_rqs.push(db.groups_collection.insertMany(groups));
+        database_rqs.push(db.class_collection.updateOne({id: req.session.user.class_id}, {$set: {groups_made: true}}));
 
         // Update students' group id
         for(let group of groups) {
@@ -676,17 +717,24 @@ async function make_groups_random(req: express.Request, res: express.Response) {
         // Here we wait for all the promises to complete
         await Promise.all(database_rqs);
 
-        let student_info = [];
+        let groups_info = [];
 
-        for(let student of students) {
-            student_info.push({
-                first_name: student.first_name,
-                last_name : student.last_name,
-                group_id  : student.group_id,
-            })
+        for (let group of groups) {
+            let group_info = [];
+            for (let student of students) {
+                if (group.student_ids.includes(student.id)) {
+                    group_info.push({
+                        first_name : student.first_name,
+                        last_name  : student.last_name,
+                        interest   : student.interest,
+                        id         : student.id
+                    });
+                }
+            }
+            groups_info.push(group_info);
         }
 
-        res.json(student_info);
+        res.json(groups_info)
     } catch (err) {
         log.error(`Failed to generate groups due to internal error: ${err}`);
         if (!res.writableEnded) {

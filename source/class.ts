@@ -14,8 +14,8 @@ class Class {
     subject     : string;
     students    : mongodb.ObjectId[];
     interests   : string[]; //array of subjects of available
-    degree   : string[]; //array of subjects of available
-    year   : string[]; //array of subjects of available
+    degree      : string[]; //array of subjects of available
+    year        : string[]; //array of subjects of available
     groups_made : boolean;
 
     constructor(name: string, subject: string) {
@@ -24,8 +24,8 @@ class Class {
         this.subject     = subject;
         this.students    = [];
         this.interests   = []; //stores the list of interests/topics available to the students
-        this.degree   = []; //stores the list of degrees available to the students
-        this.year   = []; //stores the list of year levels available to the students
+        this.degree      = []; //stores the list of degrees available to the students
+        this.year        = []; //stores the list of year levels available to the students
         this.groups_made = false;
     }
 }
