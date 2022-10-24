@@ -421,7 +421,7 @@ async function pref_form_submit(req: express.Request, res: express.Response) {
         res.sendStatus(200);
     
     } catch (err) {
-        log.error(`Failed registering due to internal error: ${err}`)
+        log.error(`Failed updating preferences due to internal error: ${err}`)
         if (!res.writableEnded) {
             res.sendStatus(500);
         }

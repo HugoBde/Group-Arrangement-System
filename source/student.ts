@@ -25,7 +25,7 @@ class Student {
         this.email_address = email_address;
         this.password      = password;
         this.group_id      = -1; // -1 means no group assigned
-        this.class_id      = -1; // to change
+        this.class_id      = 0; // to change
         this.preferences   = []; 
         //this.degree        = degree;
         //this.year          = year;
