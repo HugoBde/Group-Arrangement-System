@@ -343,7 +343,7 @@ async function remove_interest(req: express.Request, res: express.Response) {
 async function get_interests(req: express.Request, res: express.Response) {
     try {        
         // Ensure the user is allowed to make such request
-        if (req.session.user === undefined || req.session.is_admin == false) {
+        if (req.session.user === undefined) {
             res.sendStatus(403);
             return;
         }
@@ -395,12 +395,17 @@ async function pref_form_submit(req: express.Request, res: express.Response) {
 
         let student_id = req.session.user.id;
 
-        await db.students_collection.findOne();
-
         var documentCount = await db.students_collection.countDocuments({"id":student_id});
         
         //checks the student exists
         if( documentCount == 1 ){
+            let student = await db.students_collection.findOne({id: student_id});
+
+            if (student?.group_id != -1) {
+                res.sendStatus(403);
+                return;
+            }
+
             //updating the student document using mongo's updateOne()
             let result = await db.students_collection.updateOne({"id": student_id}, [{ $set: {"degree": req.body.degree, "year": req.body.year, "interest": req.body.interest} }] );
 
@@ -412,6 +417,8 @@ async function pref_form_submit(req: express.Request, res: express.Response) {
                 //res.redirect("/preference");
             }   
         }
+
+        res.sendStatus(200);
     
     } catch (err) {
         log.error(`Failed registering due to internal error: ${err}`)
