@@ -39,11 +39,13 @@ class Group {
 
     static make_groups_on_preference(class_id: number, students: Student[], target_group_size: number = 5) : Group[] {
         let groups : Group[] = [];
+        let could_not_be_grouped = [];
+
         let target_group_number = Math.round(students.length / target_group_size);
 
         // First pass: Take a student, and match him with people
         // with similar interest until the group is full
-        for (let [i, student] of students.entries()) {
+        while (students.length > 0) {
             let group = new Group(class_id, groups.length);
 
             group.student_ids.push(students[0].id);
@@ -58,7 +60,7 @@ class Group {
 
             // If the group formed is big enough, remove the students from the list
             // and save that group 
-            if (group.student_ids.length >=  target_group_size - 1) {
+            if (group.student_ids.length / target_group_size >= 0.66) {
                 for (let i = 0; i < students.length; ) {
                     if (group.student_ids.includes(students[i].id)) {
                         students.splice(i, 1);
@@ -67,6 +69,15 @@ class Group {
                     }
                 }
                 groups.push(group);
+            } else {
+                for (let i = 0; i < students.length; ) {
+                    if (group.student_ids.includes(students[i].id)) {
+                        could_not_be_grouped.push(students[i]);
+                        students.splice(i, 1);
+                    } else {
+                        i++
+                    }
+                }
             }
         }
 
@@ -74,24 +85,45 @@ class Group {
         // an extra student with matching interest
         for (let group of groups) {
             if (group.student_ids.length <= target_group_size) {
-                for (let i = 0; i < students.length; i++) {
-                    if (students[i].interest == group.common_interest) {
-                        group.student_ids.push(students[i].id); 
-                        students.splice(i, 1);
+                for (let i = 0; i < could_not_be_grouped.length; i++) {
+                    if (could_not_be_grouped[i].interest == group.common_interest) {
+                        group.student_ids.push(could_not_be_grouped[i].id); 
+                        could_not_be_grouped.splice(i, 1);
                         break;
                     }
                 }
             }   
         }
 
-        // Third pass: throw the rest together
+        // Third pass: if some groups are smaller than the
+        // target group size, add a random person in it
+        while (could_not_be_grouped.length > 0){
+            let student = could_not_be_grouped[0];
+
+            let groups_are_all_full = true;
+
+            for (let group of groups) {
+                if (group.student_ids.length < target_group_size) {
+                    groups_are_all_full = false;
+                    group.student_ids.push(student.id);
+                    could_not_be_grouped.splice(0, 1);
+                    break;
+                }
+            }
+
+            if (groups_are_all_full) {
+                break;
+            }
+        }
+
+        // fourth pass: throw the rest together
         // and if they start whining tell them
         // to stop being picky
-        while (students.length > 0) {
+        while (could_not_be_grouped.length > 0) {
             let group = new Group(class_id, groups.length);
            
             while (group.student_ids.length < target_group_size) {
-                let student = students.pop();
+                let student = could_not_be_grouped.pop();
 
                 // If student is null, we ran out of students
                 if (student == null) {
